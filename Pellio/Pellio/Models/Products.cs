@@ -9,6 +9,7 @@ namespace Pellio.Models
     public class Products
     {
         public int Id { get; set; }
+        [Display(Name = "Product Name")]
         public string ProductName { get; set; }
         public string Ingredients { get; set; }
         public decimal Price { get; set; }
