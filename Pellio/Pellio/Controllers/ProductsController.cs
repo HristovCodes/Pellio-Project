@@ -34,14 +34,37 @@ namespace Pellio.Controllers
                 return NotFound();
             }
 
-            var products = await _context.Products
+            /*var products = await _context.Products
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (products == null)
             {
                 return NotFound();
-            }
+            } */
 
-            return View(products);
+            Products product = await _context.Products.FindAsync(id);
+            foreach (var com in _context.Comments)
+            {
+                if (com.ProductId.Equals(id))
+                {
+                    product.Comments.Add(com);
+                }
+            }
+            List<Comments> coms = new List<Comments>();
+            coms.Add(new Comments
+            {
+                Id = 1,
+                Comment = "bla bla",
+                Name = "nekoi si tam"
+            });
+           coms.Add(new Comments
+            {
+                Id = 2,
+                Comment = "bsuper",
+                Name = "nekuv si tam"
+            });
+            product.Comments = coms;
+
+            return View(product);
         }
 
         // GET: Products/Create
@@ -149,25 +172,6 @@ namespace Pellio.Controllers
         private bool ProductsExists(int id)
         {
             return _context.Products.Any(e => e.Id == id);
-        }
-
-
-        //GET: Products/ProductDetails/1
-        public async Task<IActionResult> ProductDetails(int id)
-        {
-            Products product = new Products();
-            Comments comments = new Comments();
-            product = await _context.Products.FindAsync(id);
-            comments = await _context.Comments.FindAsync(id);
-
-            ProductDetails productDetails = new ProductDetails()
-            {
-                Products = product,
-                Comments = comments
-            };
-
-
-            return View(productDetails);
         }
     }
 }

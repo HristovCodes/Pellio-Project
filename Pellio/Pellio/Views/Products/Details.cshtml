@@ -40,3 +40,13 @@
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
+
+@foreach (var comment in Model.Comments)
+{
+    <div>
+        Author: @comment.Name
+    </div>
+    <div>
+        Comment: @comment.Comment
+    </div>
+}

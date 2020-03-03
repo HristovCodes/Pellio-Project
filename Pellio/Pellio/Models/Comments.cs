@@ -11,5 +11,8 @@ namespace Pellio.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public string Comment { get; set; }
+
+        public int ProductId { get; set; }
+        public Products Products { get; set; }
     }
 }
