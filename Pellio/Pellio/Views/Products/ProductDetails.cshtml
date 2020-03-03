@@ -1,0 +1,27 @@
+﻿@using Pellio.ViewModels
+@model ProductDetails
+@{
+    ViewBag.Title = "Home Page";
+
+}
+
+<div>
+    Product name: @Model.Products.ProductName
+</div>
+<div>
+    Ingredients: @Model.Products.Ingredients
+</div>
+<div>
+    Price: @Model.Products.Price;
+</div>
+<!-- this will be a for each loop going through all Models.Products.Comments (its a list) and displaying each comment-->
+
+<div>
+    Comments:
+</div>
+<div>
+    Username: @Model.Comments.Name
+</div>
+<div>
+    Review: @Model.Comments.Comment
+</div>
