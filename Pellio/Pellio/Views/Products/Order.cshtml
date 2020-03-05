@@ -15,11 +15,11 @@
     <input type="button" value="Поръчай" />
 </div>
 
+<div>
+    Comments:
+</div>
 @foreach (var com in Model.Products.Comments)
 {    
-    <div>
-        Comments:
-    </div>
     <div>
         Username: @com.Name
     </div>
