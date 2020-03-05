@@ -1,0 +1,46 @@
+﻿@using Pellio.ViewModels
+@model ProductDetails
+
+<div>
+    Product name: @Model.Products.ProductName
+</div>
+<div>
+    Ingredients: @Model.Products.Ingredients
+</div>
+<div>
+    Price: @Model.Products.Price;
+</div>
+<div>
+
+    <input type="button" value="Поръчай" />
+</div>
+
+@foreach (var com in Model.Products.Comments)
+{    
+    <div>
+        Comments:
+    </div>
+    <div>
+        Username: @com.Name
+    </div>
+    <div>
+        Review: @com.Comment
+    </div>
+}
+
+<form asp-action="AddComment">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="@Model.Comments.Name" class="control-label"></label>
+        <input asp-for="@Model.Comments.Name" class="form-control" />
+        <span asp-validation-for="@Model.Comments.Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="@Model.Comments.Comment" class="control-label"></label>
+        <input asp-for="@Model.Comments.Comment" class="form-control" />
+        <span asp-validation-for="@Model.Comments.Comment" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Create" asp-action="AddComment" asp-route-id="@Model.Products.Id" class="btn btn-primary" />
+    </div>
+</form>

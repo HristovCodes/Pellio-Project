@@ -54,7 +54,7 @@ namespace Pellio.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Comment")] Comments comments)
+        public async Task<IActionResult> Create([Bind("Id,Name,Comment,ProductId")] Comments comments)
         {
             if (ModelState.IsValid)
             {
@@ -86,7 +86,7 @@ namespace Pellio.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Comment")] Comments comments)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Comment,ProductId")] Comments comments)
         {
             if (id != comments.Id)
             {

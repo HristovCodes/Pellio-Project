@@ -10,8 +10,8 @@ using Pellio.Data;
 namespace Pellio.Migrations
 {
     [DbContext(typeof(PellioContext))]
-    [Migration("20200302165434_JoinedOneToMany")]
-    partial class JoinedOneToMany
+    [Migration("20200305152559_GayAf")]
+    partial class GayAf
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -34,12 +34,20 @@ namespace Pellio.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("ProductsId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ProductsId1")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ProductsId");
+
+                    b.HasIndex("ProductsId1");
 
                     b.ToTable("Comments");
                 });
@@ -70,6 +78,10 @@ namespace Pellio.Migrations
                     b.HasOne("Pellio.Models.Products", null)
                         .WithMany("Comments")
                         .HasForeignKey("ProductsId");
+
+                    b.HasOne("Pellio.Models.Products", "Products")
+                        .WithMany()
+                        .HasForeignKey("ProductsId1");
                 });
 #pragma warning restore 612, 618
         }

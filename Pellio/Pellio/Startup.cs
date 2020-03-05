@@ -10,6 +10,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Pellio.Data;
 using Microsoft.EntityFrameworkCore;
+using Pellio.Models;
+using Pellio.ViewModels;
 
 namespace Pellio
 {

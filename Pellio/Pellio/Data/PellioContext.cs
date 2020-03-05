@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Pellio.Models;
+using Pellio.ViewModels;
 
 namespace Pellio.Data
 {
@@ -17,6 +18,7 @@ namespace Pellio.Data
         public DbSet<Products> Products { get; set; }
 
         public DbSet<Comments> Comments { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<Products>()

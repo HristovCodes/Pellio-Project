@@ -34,37 +34,71 @@ namespace Pellio.Controllers
                 return NotFound();
             }
 
-            /*var products = await _context.Products
+            var products = await _context.Products
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (products == null)
             {
                 return NotFound();
-            } */
+            }
 
-            Products product = await _context.Products.FindAsync(id);
+            return View(products);
+        }
+
+        // GET: Products/Order/5
+        public async Task<IActionResult> Order(int? id)
+        {
+            ViewBag.Title = "Order";
+            ViewBag.Header = "Поръчайте";
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var products = await _context.Products
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (products == null)
+            {
+                return NotFound();
+            }
+
+            if (products.Comments == null)
+            {
+                products.Comments = new List<Comments>();
+            }
             foreach (var com in _context.Comments)
             {
-                if (com.ProductId.Equals(id))
+                if (!products.Comments.Contains(com))
                 {
-                    product.Comments.Add(com);
+                    if (com.ProductId == products.Id)
+                    {
+                        products.Comments.Add(com);
+                    }
                 }
             }
-            List<Comments> coms = new List<Comments>();
-            coms.Add(new Comments
-            {
-                Id = 1,
-                Comment = "bla bla",
-                Name = "nekoi si tam"
-            });
-           coms.Add(new Comments
-            {
-                Id = 2,
-                Comment = "bsuper",
-                Name = "nekuv si tam"
-            });
-            product.Comments = coms;
 
-            return View(product);
+            ProductDetails productDetails = new ProductDetails()
+            {
+                Products = products,
+                Comments = new Comments()
+            };
+            Console.WriteLine(HttpContext.Request.Path.ToString().Substring(8) + "from get");
+            return View(productDetails);
+        }
+
+        //POST: Products/AddComment/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddComment(int id, [Bind("Name,Comment")] Comments comments)
+        {
+            if (ModelState.IsValid)
+            {
+                int productid = int.Parse(HttpContext.Request.Path.ToString().Substring(21));
+                comments.ProductId = productid;
+                _context.Add(comments);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(comments);
         }
 
         // GET: Products/Create
@@ -78,7 +112,7 @@ namespace Pellio.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,ProductName,Ingredients,Price")] Products products)
+        public async Task<IActionResult> Create([Bind("Id,ProductName,Ingredients,Price,Comments")] Products products)
         {
             if (ModelState.IsValid)
             {
@@ -110,7 +144,7 @@ namespace Pellio.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,ProductName,Ingredients,Price")] Products products)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,ProductName,Ingredients,Price,Comments")] Products products)
         {
             if (id != products.Id)
             {
