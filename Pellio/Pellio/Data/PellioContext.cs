@@ -19,6 +19,8 @@ namespace Pellio.Data
 
         public DbSet<Comments> Comments { get; set; }
 
+        public DbSet<ShoppingCartItem> ShoppingCartItems { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<Products>()
