@@ -1,54 +1,25 @@
 ﻿@model IEnumerable<Pellio.Models.Products>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Home";
 }
 
-<h1>Index</h1>
+<h1 class="title">Нашите горещи предложения</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.ProductName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Ingredients)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Price)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Comments)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProductName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Ingredients)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Comments)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Order" asp-route-id="@item.Id">Order</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="gridcontainer">
+    @foreach (var item in Model)
+    {
+    <div class="griditem">
+        <div class="card">
+            <div class="bg">
+                <img class="image" src="https://www.delonghi.com/Global/recipes/multifry/pizza_fresca.jpg"></img>
+                <h2 class="productname">@Html.DisplayFor(modelItem => item.ProductName)</h2>
+                <p class="productdesc">
+                    @Html.DisplayFor(modelItem => item.Ingredients)
+                </p>
+                <a asp-action="Order" asp-route-id="@item.Id" class="orderbtn">Поръчай</a>
+            </div>
+        </div>
+    </div>
+    }
+</div>

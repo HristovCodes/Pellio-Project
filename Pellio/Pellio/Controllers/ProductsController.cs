@@ -21,6 +21,9 @@ namespace Pellio.Controllers
         }
 
         // GET: Products
+        [Route("")]
+        [Route("Products")]
+        [Route("Products/Index")]
         public async Task<IActionResult> Index()
         {
             return View(await _context.Products.ToListAsync());
