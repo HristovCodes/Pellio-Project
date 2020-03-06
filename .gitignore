@@ -1,0 +1,6 @@
+
+*.dtbcache
+*.suo
+*.ide-wal
+*.ide-shm
+*.ide
