@@ -5,7 +5,19 @@
 }
 
 <link rel="stylesheet" href="~/css/products.css" />
-<h1 class="title">Нашите горещи предложения</h1>
+
+<div class="banner">
+    <div class="bannertext">
+        <h1 class="bannertitle">
+            Pellio
+        </h1>
+        <p class="bannerdesc">Любимите ви храни на достъпни цени</p>
+        <a class="bannerbutton" href="#items">Разгледай</a>
+    </div>
+</div>
+
+<div id="items"></div>
+<h2 class="title">Нашите горещи предложения</h2>
 
 <div class="gridcontainer">
     @foreach (var item in Model)
@@ -14,7 +26,7 @@
             <div class="card">
                 <div class="bg">
                     <img class="image" src="https://www.delonghi.com/Global/recipes/multifry/pizza_fresca.jpg"></img>
-                    <h2 class="productname">@Html.DisplayFor(modelItem => item.ProductName)</h2>
+                    <h3 class="productname">@Html.DisplayFor(modelItem => item.ProductName)</h3>
                     <p class="productdesc">
                         @Html.DisplayFor(modelItem => item.Ingredients)
                     </p>

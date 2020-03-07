@@ -8,16 +8,22 @@ p, a, input {
     font-family: 'Roboto', sans-serif;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     background-color: #fff;
 }
 
 .navigation {
+    position: absolute;
     display: flex;
     flex-direction: row;
     align-items: center;
-    background-color: rgba(55, 166, 248, 0.05);
+    background-color: rgba(255, 255, 255, .1);
     min-height: 6vh;
+    width: 100%;
 }
 
 .list {
