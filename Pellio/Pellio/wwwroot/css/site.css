@@ -9,14 +9,14 @@ p, a, input {
 }
 
 body {
-    background-color: #9297C4;
+    background-color: #fff;
 }
 
 .navigation {
     display: flex;
     flex-direction: row;
     align-items: center;
-    background-color: #7acaff;
+    background-color: rgba(55, 166, 248, 0.05);
     min-height: 6vh;
 }
 
