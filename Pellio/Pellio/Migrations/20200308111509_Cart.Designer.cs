@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Pellio.Data;
 
 namespace Pellio.Migrations
 {
     [DbContext(typeof(PellioContext))]
-    partial class PellioContextModelSnapshot : ModelSnapshot
+    [Migration("20200308111509_Cart")]
+    partial class Cart
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -78,9 +80,6 @@ namespace Pellio.Migrations
                     b.Property<int?>("CartId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("CartId1")
-                        .HasColumnType("int");
-
                     b.Property<string>("Ingredients")
                         .HasColumnType("nvarchar(max)");
 
@@ -93,8 +92,6 @@ namespace Pellio.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CartId");
-
-                    b.HasIndex("CartId1");
 
                     b.ToTable("Products");
                 });
@@ -112,13 +109,9 @@ namespace Pellio.Migrations
 
             modelBuilder.Entity("Pellio.Models.Products", b =>
                 {
-                    b.HasOne("Pellio.Models.Cart", null)
+                    b.HasOne("Pellio.Models.Cart", "Cart")
                         .WithMany("Products")
                         .HasForeignKey("CartId");
-
-                    b.HasOne("Pellio.Models.Cart", "Cart")
-                        .WithMany()
-                        .HasForeignKey("CartId1");
                 });
 #pragma warning restore 612, 618
         }

@@ -14,5 +14,8 @@ namespace Pellio.Models
         public string Ingredients { get; set; }
         public decimal Price { get; set; }
         public List<Comments> Comments { get; set; }
+
+        public int CardId { get; set; }
+        public Cart Cart { get; set; }
     }
 }

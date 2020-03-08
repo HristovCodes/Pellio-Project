@@ -19,10 +19,16 @@ namespace Pellio.Data
 
         public DbSet<Comments> Comments { get; set; }
 
+        public DbSet<Cart> Cart { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<Products>()
                 .HasMany(p => p.Comments)
+                .WithOne();
+
+            builder.Entity<Cart>()
+                .HasMany(p => p.Products)
                 .WithOne();
         }
     }
