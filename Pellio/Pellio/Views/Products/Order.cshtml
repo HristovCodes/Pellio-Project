@@ -1,26 +1,29 @@
 ﻿@using Pellio.ViewModels
 @model ProductDetails
 
-<link rel="stylesheet" href="~/css/productdetails.css" />
-<div class="product">
-    <div class="productimage">
-        <img class="image" src="https://www.delonghi.com/Global/recipes/multifry/pizza_fresca.jpg" alt="Alternate Text" />
+    <div>
+        Product name: @Model.Products.ProductName
     </div>
-    <div class="productdesc">
-        <h1 class="title">
-            Product name: @Model.Products.ProductName
-        </h1>
-        <p class="desc">
-            Ingredients: @Model.Products.Ingredients
-        </p>
-        <p class="desc">
-            Price: @Model.Products.Price лв;
-        </p>
-        <div>
-            <input type="button" value="Поръчай" />
-        </div>
-    </div>
+<div>
+    Ingredients: @Model.Products.Ingredients
 </div>
+<div>
+    Price: @Model.Products.Price лв;
+</div>
+<div>
+    <form>
+        <button name="btn1" value="@Model.Products.Id" asp-action="Addptocart" >поръчаи</button>
+    </form>
+    <div>
+        
+
+    </div>
+    
+    </div>
+
+@*<script>
+    localStorage.setItem("id", @Model.Products.Id);
+</script>*@
 
 
 <div class="commentsection">
