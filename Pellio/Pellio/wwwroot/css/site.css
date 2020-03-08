@@ -4,20 +4,26 @@ h1, h2, h3, h4, h5, h6 {
     font-family: 'Playfair Display', serif;
 }
 
-p, a {
+p, a, input {
     font-family: 'Roboto', sans-serif;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
-    background-color: #9297C4;
+    background-color: #fff;
 }
 
 .navigation {
+    position: absolute;
     display: flex;
     flex-direction: row;
     align-items: center;
-    background-color: #7acaff;
+    background-color: rgba(255, 255, 255, .1);
     min-height: 6vh;
+    width: 100%;
 }
 
 .list {

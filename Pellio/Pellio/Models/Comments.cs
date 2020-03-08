@@ -9,7 +9,9 @@ namespace Pellio.Models
     public class Comments
     {
         public int Id { get; set; }
+        [Display(Name = "Username")]
         public string Name { get; set; }
+        [Display(Name = "Review")]
         public string Comment { get; set; }
 
         public int ProductId { get; set; }
