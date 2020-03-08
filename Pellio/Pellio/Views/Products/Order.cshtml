@@ -1,23 +1,26 @@
 ﻿@using Pellio.ViewModels
 @model ProductDetails
 
-<form asp-action="Addptocart">
-    <div>
-        Product name:
-        <label asp-for="@Model.Products.ProductName" class="title"></label>
+<link rel="stylesheet" href="~/css/productdetails.css" />
+<div class="product">
+    <div class="productimage">
+        <img class="image" src="https://www.delonghi.com/Global/recipes/multifry/pizza_fresca.jpg" alt="Alternate Text" />
     </div>
-    <div>
-        Ingredients:
-        <label asp-for="@Model.Products.Ingredients" class="title"></label>
+    <div class="productdesc">
+        <h1 class="title">
+            Product name: @Model.Products.ProductName
+        </h1>
+        <p class="desc">
+            Ingredients: @Model.Products.Ingredients
+        </p>
+        <p class="desc">
+            Price: @Model.Products.Price лв;
+        </p>
+        <div>
+            <input type="button" value="Поръчай" />
+        </div>
     </div>
-    <div>
-        Price:
-        <label asp-for="@Model.Products.Price" class="title"></label>
-    </div>
-    <div>
-        <input class="" type="submit" value="Create" asp-action="Addptocart" asp-route-id="@Model.Products.Id" />
-    </div>
-</form>
+</div>
 
 
 <div class="commentsection">
@@ -29,7 +32,7 @@
         <div class="commentconteiner">
             <h3 class="title">
                 Username:
-            </h3>
+            </h3> 
             <p class="text">
                 @com.Name
             </p>

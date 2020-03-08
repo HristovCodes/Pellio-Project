@@ -20,8 +20,6 @@ namespace Pellio.Controllers
             _context = context;
         }
 
-        
-
         // GET: Products
         [Route("")]
         [Route("Products")]
@@ -45,6 +43,7 @@ namespace Pellio.Controllers
             {
                 return NotFound();
             }
+
             return View(products);
         }
 
@@ -102,23 +101,6 @@ namespace Pellio.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(comments);
-        }
-
-        //POST: Products/Order/5 ORDERS A PRODUCTS (ADDS TO CART)
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Addptocart(int id)
-        {
-            if (ModelState.IsValid)
-            {
-                int productid = int.Parse(HttpContext.Request.Path.ToString().Substring(21));
-                //comments.ProductId = productid;
-                //_context.Add(comments);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return null;
-            //return View(comments);
         }
 
         // GET: Products/Create

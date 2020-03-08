@@ -19,21 +19,6 @@ namespace Pellio.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Pellio.Models.Cart", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<decimal>("Total")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Cart");
-                });
-
             modelBuilder.Entity("Pellio.Models.Comments", b =>
                 {
                     b.Property<int>("Id")
@@ -72,15 +57,6 @@ namespace Pellio.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("CardId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("CartId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("CartId1")
-                        .HasColumnType("int");
-
                     b.Property<string>("Ingredients")
                         .HasColumnType("nvarchar(max)");
 
@@ -91,10 +67,6 @@ namespace Pellio.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CartId");
-
-                    b.HasIndex("CartId1");
 
                     b.ToTable("Products");
                 });
@@ -108,17 +80,6 @@ namespace Pellio.Migrations
                     b.HasOne("Pellio.Models.Products", "Products")
                         .WithMany()
                         .HasForeignKey("ProductsId1");
-                });
-
-            modelBuilder.Entity("Pellio.Models.Products", b =>
-                {
-                    b.HasOne("Pellio.Models.Cart", null)
-                        .WithMany("Products")
-                        .HasForeignKey("CartId");
-
-                    b.HasOne("Pellio.Models.Cart", "Cart")
-                        .WithMany()
-                        .HasForeignKey("CartId1");
                 });
 #pragma warning restore 612, 618
         }
