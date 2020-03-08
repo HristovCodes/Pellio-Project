@@ -20,6 +20,22 @@ namespace Pellio.Controllers
             _context = context;
         }
 
+
+        //[TempData]
+        //public string test { get; set; }
+        //[TempData]
+        //public List<int> cart { get; set; }
+
+        //public iactionresult addptocart(int btn1)
+        //{
+
+        //    //// var product = _context.products.find(btn1);
+        //    //cart.add(btn1);
+        //    //tempdata["test"] = cart;
+        //    //return redirecttoaction("index");
+        //}
+
+
         // GET: Products
         [Route("")]
         [Route("Products")]
@@ -43,13 +59,15 @@ namespace Pellio.Controllers
             {
                 return NotFound();
             }
-
+            //var p = (from Products in _context.Products select Products);
             return View(products);
         }
 
         // GET: Products/Order/5
         public async Task<IActionResult> Order(int? id)
         {
+
+
             ViewBag.Title = "Order";
             ViewBag.Header = "Поръчайте";
             if (id == null)

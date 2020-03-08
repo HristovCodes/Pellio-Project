@@ -1,9 +1,9 @@
 ﻿@using Pellio.ViewModels
 @model ProductDetails
 
-<div>
-    Product name: @Model.Products.ProductName
-</div>
+    <div>
+        Product name: @Model.Products.ProductName
+    </div>
 <div>
     Ingredients: @Model.Products.Ingredients
 </div>
@@ -11,9 +11,19 @@
     Price: @Model.Products.Price лв;
 </div>
 <div>
+    <form>
+        <button name="btn1" value="@Model.Products.Id" asp-action="Addptocart" >поръчаи</button>
+    </form>
+    <div>
+        
 
-    <input type="button" value="Поръчай" />
-</div>
+    </div>
+    
+    </div>
+
+@*<script>
+    localStorage.setItem("id", @Model.Products.Id);
+</script>*@
 
 <div>
     Comments:

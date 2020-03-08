@@ -9,17 +9,17 @@
 <div class="gridcontainer">
     @foreach (var item in Model)
     {
-    <div class="griditem">
-        <div class="card">
-            <div class="bg">
-                <img class="image" src="https://www.delonghi.com/Global/recipes/multifry/pizza_fresca.jpg"></img>
-                <h2 class="productname">@Html.DisplayFor(modelItem => item.ProductName)</h2>
-                <p class="productdesc">
-                    @Html.DisplayFor(modelItem => item.Ingredients)
-                </p>
-                <a asp-action="Order" asp-route-id="@item.Id" class="orderbtn">Поръчай</a>
+        <div class="griditem">
+            <div class="card">
+                <div class="bg">
+                    <img class="image" src="https://www.delonghi.com/Global/recipes/multifry/pizza_fresca.jpg">
+                    <h2 class="productname">@Html.DisplayFor(modelItem => item.ProductName)</h2>
+                    <p class="productdesc">
+                        @Html.DisplayFor(modelItem => item.Ingredients)
+                    </p>
+                    <a asp-action="Order" asp-route-id="@item.Id" class="orderbtn">Поръчай</a>
+                </div>
             </div>
         </div>
-    </div>
     }
 </div>
