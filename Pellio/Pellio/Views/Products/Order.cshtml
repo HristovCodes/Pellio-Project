@@ -1,29 +1,23 @@
 ﻿@using Pellio.ViewModels
 @model ProductDetails
 
+<form asp-action="Addptocart">
     <div>
-        Product name: @Model.Products.ProductName
+        Product name:
+        <label asp-for="@Model.Products.ProductName" class="title"></label>
     </div>
-<div>
-    Ingredients: @Model.Products.Ingredients
-</div>
-<div>
-    Price: @Model.Products.Price лв;
-</div>
-<div>
-    <form>
-        <button name="btn1" value="@Model.Products.Id" asp-action="Addptocart" >поръчаи</button>
-    </form>
     <div>
-        
-
+        Ingredients:
+        <label asp-for="@Model.Products.Ingredients" class="title"></label>
     </div>
-    
+    <div>
+        Price:
+        <label asp-for="@Model.Products.Price" class="title"></label>
     </div>
-
-@*<script>
-    localStorage.setItem("id", @Model.Products.Id);
-</script>*@
+    <div>
+        <input class="" type="submit" value="Create" asp-action="Addptocart" asp-route-id="@Model.Products.Id" />
+    </div>
+</form>
 
 
 <div class="commentsection">
@@ -35,7 +29,7 @@
         <div class="commentconteiner">
             <h3 class="title">
                 Username:
-            </h3> 
+            </h3>
             <p class="text">
                 @com.Name
             </p>

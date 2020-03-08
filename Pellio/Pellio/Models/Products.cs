@@ -15,7 +15,7 @@ namespace Pellio.Models
         public decimal Price { get; set; }
         public List<Comments> Comments { get; set; }
 
-        public int CardId { get; set; }
+        public int CartId { get; set; }
         public Cart Cart { get; set; }
     }
 }

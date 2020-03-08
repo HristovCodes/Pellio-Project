@@ -20,21 +20,7 @@ namespace Pellio.Controllers
             _context = context;
         }
 
-
-        //[TempData]
-        //public string test { get; set; }
-        //[TempData]
-        //public List<int> cart { get; set; }
-
-        //public iactionresult addptocart(int btn1)
-        //{
-
-        //    //// var product = _context.products.find(btn1);
-        //    //cart.add(btn1);
-        //    //tempdata["test"] = cart;
-        //    //return redirecttoaction("index");
-        //}
-
+        
 
         // GET: Products
         [Route("")]
@@ -59,15 +45,12 @@ namespace Pellio.Controllers
             {
                 return NotFound();
             }
-            //var p = (from Products in _context.Products select Products);
             return View(products);
         }
 
         // GET: Products/Order/5
         public async Task<IActionResult> Order(int? id)
         {
-
-
             ViewBag.Title = "Order";
             ViewBag.Header = "Поръчайте";
             if (id == null)
@@ -102,7 +85,6 @@ namespace Pellio.Controllers
                 Products = products,
                 Comments = new Comments()
             };
-            Console.WriteLine(HttpContext.Request.Path.ToString().Substring(8) + "from get");
             return View(productDetails);
         }
 
@@ -120,6 +102,23 @@ namespace Pellio.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(comments);
+        }
+
+        //POST: Products/Order/5 ORDERS A PRODUCTS (ADDS TO CART)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Addptocart(int id)
+        {
+            if (ModelState.IsValid)
+            {
+                int productid = int.Parse(HttpContext.Request.Path.ToString().Substring(21));
+                //comments.ProductId = productid;
+                //_context.Add(comments);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return null;
+            //return View(comments);
         }
 
         // GET: Products/Create
