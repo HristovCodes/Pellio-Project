@@ -26,8 +26,7 @@ namespace Pellio.Controllers
         [Route("Products/Index")]
         public async Task<IActionResult> Index()
         {
-            var pellioContext = _context.Products.Include(p => p.Cart);
-            return View(await pellioContext.ToListAsync());
+            return View(await _context.Products.ToListAsync());
         }
 
         // GET: Products/Order/5
@@ -87,7 +86,6 @@ namespace Pellio.Controllers
             return View(comments);
         }
 
-
         // GET: Products/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -97,7 +95,6 @@ namespace Pellio.Controllers
             }
 
             var products = await _context.Products
-                .Include(p => p.Cart)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (products == null)
             {
@@ -110,7 +107,6 @@ namespace Pellio.Controllers
         // GET: Products/Create
         public IActionResult Create()
         {
-            ViewData["CartId"] = new SelectList(_context.Cart, "Id", "Id");
             return View();
         }
 
@@ -119,7 +115,7 @@ namespace Pellio.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,ProductName,Ingredients,Price,ImageUrl,CartId")] Products products)
+        public async Task<IActionResult> Create([Bind("Id,ProductName,Ingredients,Price,ImageUrl")] Products products)
         {
             if (ModelState.IsValid)
             {
@@ -127,7 +123,6 @@ namespace Pellio.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CartId"] = new SelectList(_context.Cart, "Id", "Id", products.CartId);
             return View(products);
         }
 
@@ -144,7 +139,6 @@ namespace Pellio.Controllers
             {
                 return NotFound();
             }
-            ViewData["CartId"] = new SelectList(_context.Cart, "Id", "Id", products.CartId);
             return View(products);
         }
 
@@ -153,7 +147,7 @@ namespace Pellio.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,ProductName,Ingredients,Price,ImageUrl,CartId")] Products products)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,ProductName,Ingredients,Price,ImageUrl")] Products products)
         {
             if (id != products.Id)
             {
@@ -180,7 +174,6 @@ namespace Pellio.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CartId"] = new SelectList(_context.Cart, "Id", "Id", products.CartId);
             return View(products);
         }
 
@@ -193,7 +186,6 @@ namespace Pellio.Controllers
             }
 
             var products = await _context.Products
-                .Include(p => p.Cart)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (products == null)
             {

@@ -1,0 +1,13 @@
+﻿.container {
+    padding-top: 50px;
+    display: flex;
+    flex-direction: column;
+}
+
+.item {
+    margin: 15px 0;
+}
+
+.title {
+    font-size: 1.4em;
+}

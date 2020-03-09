@@ -16,8 +16,5 @@ namespace Pellio.Models
         public string ImageUrl { get; set; }
         public List<Comments> Comments { get; set; }
 
-        public int CartId { get; set; }
-        public Cart Cart { get; set; }
-
     }
 }

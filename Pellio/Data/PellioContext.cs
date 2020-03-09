@@ -8,12 +8,13 @@ namespace Pellio.Data
         public PellioContext(DbContextOptions<PellioContext> options)
             : base(options)
         {
+            Database.EnsureCreated();
         }
 
         public DbSet<Products> Products { get; set; }
 
         public DbSet<Comments> Comments { get; set; }
 
-        public DbSet<Cart> Cart { get; set; }
+        public DbSet<OrdersList> OrdersList { get; set; }
     }
 }

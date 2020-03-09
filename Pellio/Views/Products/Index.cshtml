@@ -1,59 +1,41 @@
 ﻿@model IEnumerable<Pellio.Models.Products>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Home";
 }
 
-<h1>Index</h1>
+<link rel="stylesheet" href="~/css/products.css" />
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.ProductName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Ingredients)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Price)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ImageUrl)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Cart)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProductName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Ingredients)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ImageUrl)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Cart.Id)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="banner">
+    <div class="bannertext">
+        <h1 class="bannertitle">
+            Pellio
+        </h1>
+        <p class="bannerdesc">Любимите ви храни на достъпни цени</p>
+        <a class="bannerbutton" href="#items">Разгледай</a>
+    </div>
+</div>
+
+<div id="items"></div>
+<h2 class="title">Нашите горещи предложения</h2>
+
+<div class="gridcontainer">
+    @foreach (var item in Model)
+    {
+        @if (item.Ingredients != "dont show")
+        {
+            <div class="griditem">
+                <div class="card">
+                    <div class="bg">
+                        <img class="image" src="https://www.delonghi.com/Global/recipes/multifry/pizza_fresca.jpg">
+                        <h3 class="productname">@Html.DisplayFor(modelItem => item.ProductName)</h3>
+                        <p class="productdesc">
+                            @Html.DisplayFor(modelItem => item.Ingredients)
+                        </p>
+                        <a asp-action="Order" asp-route-id="@item.Id" class="orderbtn">Поръчай</a>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>

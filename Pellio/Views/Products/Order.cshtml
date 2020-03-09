@@ -1,5 +1,66 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@using Pellio.ViewModels
+@model ProductComment
+
+<link rel="stylesheet" href="~/css/productdetails.css" />
+<div class="product">
+    <div class="productimage">
+        <img class="image" src="https://www.delonghi.com/Global/recipes/multifry/pizza_fresca.jpg" alt="Alternate Text" />
+    </div>
+    <div class="productdesc">
+        <h1 class="title">
+            Product name: @Model.Products.ProductName
+        </h1>
+        <p class="desc">
+            Ingredients: @Model.Products.Ingredients
+        </p>
+        <p class="desc">
+            Price: @Model.Products.Price лв;
+        </p>
+        <div>
+            <form asp-action="AddToCart">
+                <input class="" type="submit" value="Поръчай" asp-controller="OrdersLists" asp-action="AddToCart" asp-route-id="@Model.Products.Id" />
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div class="commentsection">
+    <h2 class="commenttitle">
+        Comments:
+    </h2>
+    @foreach (var com in Model.Products.Comments)
+    {
+        <div class="commentconteiner">
+            <h3 class="title">
+                Username:
+            </h3>
+            <p class="text">
+                @com.Name
+            </p>
+            <h3 class="title">
+                Review:
+            </h3>
+            <p class="text">
+                @com.Comment
+            </p>
+        </div>
+    }
+
+    <form class="" asp-action="AddComment">
+        <div asp-validation-summary="ModelOnly" class=""></div>
+        <div class="commentconteiner">
+            <label asp-for="@Model.Comments.Name" class="title"></label>
+            <input asp-for="@Model.Comments.Name" class="text" />
+            <span asp-validation-for="@Model.Comments.Name" class=""></span>
+        </div>
+        <div class="commentconteiner">
+            <label asp-for="@Model.Comments.Comment" class="title"></label>
+            <input asp-for="@Model.Comments.Comment" class="text inputcomment" />
+            <span asp-validation-for="@Model.Comments.Comment" class=""></span>
+        </div>
+        <div class="">
+            <input class="" type="submit" value="Create" asp-action="AddComment" asp-route-id="@Model.Products.Id" />
+        </div>
+    </form>
+</div>

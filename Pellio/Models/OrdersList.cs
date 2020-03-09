@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
 
 namespace Pellio.Models
 {
-    public class Cart
+    public class OrdersList
     {
         public int Id { get; set; }
         public decimal Total { get; set; }

@@ -2,12 +2,12 @@
 
 namespace Pellio.Migrations
 {
-    public partial class InitialMigration : Migration
+    public partial class newest : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Cart",
+                name: "OrdersList",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -17,7 +17,7 @@ namespace Pellio.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Cart", x => x.Id);
+                    table.PrimaryKey("PK_OrdersList", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -30,17 +30,17 @@ namespace Pellio.Migrations
                     Ingredients = table.Column<string>(nullable: true),
                     Price = table.Column<decimal>(nullable: false),
                     ImageUrl = table.Column<string>(nullable: true),
-                    CartId = table.Column<int>(nullable: false)
+                    OrdersListId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Products", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Products_Cart_CartId",
-                        column: x => x.CartId,
-                        principalTable: "Cart",
+                        name: "FK_Products_OrdersList_OrdersListId",
+                        column: x => x.OrdersListId,
+                        principalTable: "OrdersList",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -70,9 +70,9 @@ namespace Pellio.Migrations
                 column: "ProductsId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Products_CartId",
+                name: "IX_Products_OrdersListId",
                 table: "Products",
-                column: "CartId");
+                column: "OrdersListId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -84,7 +84,7 @@ namespace Pellio.Migrations
                 name: "Products");
 
             migrationBuilder.DropTable(
-                name: "Cart");
+                name: "OrdersList");
         }
     }
 }
