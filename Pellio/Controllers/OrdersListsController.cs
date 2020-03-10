@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -30,6 +31,14 @@ namespace Pellio.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddToCart(int? id)
         {
+            //var uuid = "";
+            if (Request.Cookies["uuidc"] == null)
+            {
+                var uuid = Guid.NewGuid().ToString();
+                CookieOptions cookieOptionss = new CookieOptions();
+                cookieOptionss.Expires = DateTime.Now.AddYears(99);
+                Response.Cookies.Append("uuidc", uuid, cookieOptionss);
+            }
             //later on will check from cookies for user id
             var userorders = await _context.OrdersList
             .FirstOrDefaultAsync(m => m.UserId == "pesho" || m.UserId == "pesho1");
