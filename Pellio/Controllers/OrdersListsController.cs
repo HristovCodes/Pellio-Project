@@ -23,6 +23,13 @@ namespace Pellio.Controllers
         // GET: OrdersLists
         public async Task<IActionResult> Index()
         {
+            if (Request.Cookies["uuidc"] == null)
+            {
+                var uuid = Guid.NewGuid().ToString();
+                CookieOptions cookieOptionss = new CookieOptions();
+                cookieOptionss.Expires = DateTime.Now.AddDays(7);
+                Response.Cookies.Append("uuidc", uuid, cookieOptionss);
+            }
             return View(await _context.OrdersList.ToListAsync());
         }
 
@@ -31,14 +38,7 @@ namespace Pellio.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddToCart(int? id)
         {
-            //var uuid = "";
-            if (Request.Cookies["uuidc"] == null)
-            {
-                var uuid = Guid.NewGuid().ToString();
-                CookieOptions cookieOptionss = new CookieOptions();
-                cookieOptionss.Expires = DateTime.Now.AddYears(99);
-                Response.Cookies.Append("uuidc", uuid, cookieOptionss);
-            }
+
             //later on will check from cookies for user id
             var userorders = await _context.OrdersList
             .FirstOrDefaultAsync(m => m.UserId == "pesho" || m.UserId == "pesho1");
