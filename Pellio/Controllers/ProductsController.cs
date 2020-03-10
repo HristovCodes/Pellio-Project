@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -26,6 +27,13 @@ namespace Pellio.Controllers
         [Route("Products/Index")]
         public async Task<IActionResult> Index()
         {
+            if (Request.Cookies["uuidc"] == null)
+            {
+                var uuid = Guid.NewGuid().ToString();
+                CookieOptions cookieOptionss = new CookieOptions();
+                cookieOptionss.Expires = DateTime.Now.AddDays(7);
+                Response.Cookies.Append("uuidc", uuid, cookieOptionss);
+            }
             return View(await _context.Products.ToListAsync());
         }
 
