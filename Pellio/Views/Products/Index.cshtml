@@ -15,6 +15,12 @@
         <a class="bannerbutton" href="#items">Разгледай</a>
     </div>
 </div>
+<form asp-action="DeleteAll">
+    <input type="submit" value="DeleteAll" class="btn btn-danger" />
+</form>
+<form asp-action="FillDB">
+    <input type="submit" value="FillDB" class="btn btn-danger" />
+</form>
 
 <div id="items"></div>
 <h2 class="title">Нашите горещи предложения</h2>
@@ -27,7 +33,7 @@
             <div class="griditem">
                 <div class="card">
                     <div class="bg">
-                        <img class="image" src="https://www.delonghi.com/Global/recipes/multifry/pizza_fresca.jpg"></img>
+                        <img class="image" src="@Html.DisplayFor(modelItem => item.ImageUrl)"/>
                         <h3 class="productname">@Html.DisplayFor(modelItem => item.ProductName)</h3>
                         <p class="productdesc">
                             @Html.DisplayFor(modelItem => item.Ingredients)

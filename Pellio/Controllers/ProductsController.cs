@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -34,6 +35,12 @@ namespace Pellio.Controllers
                 cookieOptionss.Expires = DateTime.Now.AddDays(7);
                 Response.Cookies.Append("uuidc", uuid, cookieOptionss);
             }
+            return View(await _context.Products.ToListAsync());
+        }
+
+        //GET: Products/CheckAll
+        public async Task<IActionResult> CheckAll()
+        {
             return View(await _context.Products.ToListAsync());
         }
 
@@ -74,7 +81,7 @@ namespace Pellio.Controllers
                 Products = products,
                 Comments = new Comments()
             };
-            
+
             return View(productComment);
         }
 
@@ -123,7 +130,7 @@ namespace Pellio.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,ProductName,Ingredients,Price,ImageUrl")] Products products)
+        public async Task<IActionResult> Create([Bind("ProductName,Ingredients,Price,ImageUrl")] Products products)
         {
             if (ModelState.IsValid)
             {
@@ -210,6 +217,45 @@ namespace Pellio.Controllers
         {
             var products = await _context.Products.FindAsync(id);
             _context.Products.Remove(products);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        //POST : Products/DeleteAll
+        [HttpPost, ActionName("DeleteAll")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteAll()
+        {
+            foreach (Products item in _context.Products)
+            {
+                _context.Products.Remove(item);
+            }
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        //POST : Products/FillDB
+        [HttpPost, ActionName("FillDB")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> FillDB()
+        {
+            string line;
+
+            // Read the file and display it line by line.  
+            System.IO.StreamReader file =
+                new System.IO.StreamReader(@"d:\Repos\Pellio-Project\Danni.txt");
+            while ((line = file.ReadLine()) != null)
+            {
+                string[] values = line.Split('|');
+                _context.Products.Add(new Products
+                {
+                    ProductName = values[0],
+                    Ingredients = values[1].Trim('\"'),
+                    Price = Convert.ToDecimal(values[2].Trim('\"')), //Convert.ToDecimal(values[2].Trim('\"'))
+                    ImageUrl = values[3]
+                }); ;
+            }
+            file.Close();
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

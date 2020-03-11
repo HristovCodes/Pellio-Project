@@ -163,6 +163,7 @@ namespace Pellio.Controllers
             }
 
             var ordersList = await _context.OrdersList
+                .Include(c => c.Products)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (ordersList == null)
             {
@@ -181,7 +182,9 @@ namespace Pellio.Controllers
             var ordersList = await _context.OrdersList
                 .Include(c => c.Products)
                 .FirstAsync(m => m.Id == id);
+            var productList = ordersList.Products;
             _context.OrdersList.Remove(ordersList);
+            _context.Products.RemoveRange(productList);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

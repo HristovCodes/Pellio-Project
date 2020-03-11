@@ -1,0 +1,16 @@
+Пица Римини|"дом. паста, кашкавал, бекон, шунка, топ. сирене, царевица, маслини"|"9.8"|http://pizzatempo.bg/wp-content/uploads/2018/10/rimini-1.jpg
+Пица Капричоза|"тесто за пица, дом.паста, кашкавал, гъби, яйце, шунка, луканков салам, кисели краставички, зехтин, босилек"|"7.98"|http://pizzatempo.bg/wp-content/uploads/2018/10/kaprichoza.jpg
+Пица Йорк|"тесто за пица, дом.паста, кашкавал, шунка, пуешко, бекон, царевица, маслини, кис. краставички, зехтин, босилек"|"7.2"|http://pizzatempo.bg/wp-content/uploads/2018/10/iork-1.jpg
+Пица Патиланци|"тесто за пица, дом.паста, кашкавал, шунка, царевица"|"9.79"|http://pizzatempo.bg/wp-content/uploads/2018/10/patilanci.jpg
+Пица Францискана|"тесто за пица, дом.паста, кашкавал, шунка, гъби, зехтин, босилек"|"7.73"|http://pizzatempo.bg/wp-content/uploads/2018/10/franciskana.jpg
+Пица Тоскана|"питка, скомрия, кисела краставичка, маионза"|"7.42"|http://pizzatempo.bg/wp-content/uploads/2018/10/toskana.jpg
+Салата Цезар с пиле|"айсберг, пилешко филе, крутони, чери, пармезан, сос (яйце)"|"7.51"|https://pizzatempo.bg/wp-content/uploads/2018/10/cezarspile.jpg
+Пица Mаргарита|"тесто за пица, дом. паста, кашкавал, зехтин, риган"|"9.64"|http://pizzatempo.bg/wp-content/uploads/2018/10/margarita.jpg
+Лазаня на Пещ|"паста, кайма, домати, кашкавал, топено сирене"|"10.3"|https://pizzatempo.bg/wp-content/uploads/2018/10/lazania.jpg
+Салата Цезар с пиле|"айсберг, пилешко филе, крутони, чери, пармезан, сос (яйце)"|"11.14"|http://pizzatempo.bg/wp-content/uploads/2018/10/cezarspile.jpg
+Спагети Болонезе|"спагети, домати, лук, кайма, кашкавал, босилек"|"7.92"|https://pizzatempo.bg/wp-content/uploads/2018/10/spagetibolonez.jpg
+Салата спанак с киноа|"спанак, киноа, печени чушки, яйце, сирене, домат, дресинг"|"9.6"|http://pizzatempo.bg/wp-content/uploads/2018/10/spanakikinoa.jpg
+Пипероне с пилешко месо|"спагети, пил. месо, лук, чушки, дом. паста, кашкавал"|"10.88"|https://pizzatempo.bg/wp-content/uploads/2018/10/piperone-1.jpg
+Пъстърва на скара|"Пъстърва пържена, брашно"|"10.56"|http://pizzatempo.bg/wp-content/uploads/2018/10/pystyrva.jpg
+Зелена салата|"зелена салата, краставици, лук, репички, яйце"|"7.62"|https://pizzatempo.bg/wp-content/uploads/2018/10/zelenasalata.jpg
+Филе от сьомга с броколи и киноа|"филе сьомга, броколи, киноа, картофи, кр. масло"|"7.11"|http://pizzatempo.bg/wp-content/uploads/2019/11/siomga-1.jpg
