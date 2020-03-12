@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -242,18 +244,26 @@ namespace Pellio.Controllers
             string line;
 
             // Read the file and display it line by line.  
+            string file_name = "Danni.txt";
+            string path = Path.Combine(Environment.CurrentDirectory, file_name);
             System.IO.StreamReader file =
-                new System.IO.StreamReader(@"d:\Repos\Pellio-Project\Danni.txt");
+                new System.IO.StreamReader(path);
             while ((line = file.ReadLine()) != null)
             {
                 string[] values = line.Split('|');
-                _context.Products.Add(new Products
-                {
-                    ProductName = values[0],
-                    Ingredients = values[1].Trim('\"'),
-                    Price = Convert.ToDecimal(values[2].Trim('\"')), //Convert.ToDecimal(values[2].Trim('\"'))
-                    ImageUrl = values[3]
-                }); ;
+                Products tobeadded = new Products();
+                tobeadded.ProductName = values[0];
+                tobeadded.Ingredients = values[1].Trim('\"');
+                tobeadded.Price = Convert.ToDecimal(values[2].Trim('"'), new CultureInfo("en-US"));
+                tobeadded.ImageUrl = values[3];
+                _context.Products.Add(tobeadded);
+                //_context.Products.Add(new Products
+                //{
+                //    ProductName = values[0],
+                //    Ingredients = values[1].Trim('\"'),
+                //    Price = Convert.ToDecimal(values[2].Trim('\"')), //Convert.ToDecimal(values[2].Trim('\"'))
+                //    ImageUrl = values[3]
+                //}); ;
             }
             file.Close();
             await _context.SaveChangesAsync();
