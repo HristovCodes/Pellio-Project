@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Mail;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -25,30 +23,44 @@ namespace Pellio.Controllers
         // GET: OrdersLists
         public async Task<IActionResult> Index()
         {
-            return View(await _context.OrdersList.ToListAsync());
+            string uid = Request.Cookies["uuidc"];
+            return View(await _context.OrdersList
+                .Include(c => c.Products).FirstOrDefaultAsync(m => m.UserId == uid));
         }
 
-       
-        //sendmail
+        //POST: OrdersLists/AddToCart/5
         [HttpPost]
-        public async Task<IActionResult> SendMail(string rec, string mes)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddToCart(int? id)
         {
-            try
+            string uid = Request.Cookies["uuidc"];
+            var userorders = await _context.OrdersList
+            .FirstOrDefaultAsync(m => m.UserId == uid);
+            if (userorders == null)
             {
-                if(ModelState.IsValid)
+                userorders = new OrdersList
                 {
-                    var client = new SmtpClient("smtp.gmail.com", 587)
-                    {
-                        Credentials = new NetworkCredential("fokenlasersights@gmail.com", "***REMOVED***"),
-                        EnableSsl = true
-                    };
-                    client.Send("bagmanxdd@gmail.com", rec, "Вашата покупка от Pellio-Foods направена на " + DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"), mes);
-                }
+                    Total = 0,
+                    UserId = uid
+                };
+                _context.OrdersList.Add(userorders);
             }
-            catch(Exception)
+            if (userorders.Products == null)
             {
-
+                userorders.Products = new List<Products>();
             }
+            var product = _context.Products.Find(id);
+            var newproduct = new Products
+            {
+                ProductName = product.ProductName,
+                Price = product.Price,
+                ImageUrl = product.ImageUrl,
+                Ingredients = "dont show"
+            };
+
+            userorders.Products.Add(newproduct);
+
+            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
