@@ -25,7 +25,9 @@ namespace Pellio.Controllers
         // GET: OrdersLists
         public async Task<IActionResult> Index()
         {
-            return View(await _context.OrdersList.ToListAsync());
+            string uid = Request.Cookies["uuidc"];
+            return View(await _context.OrdersList
+                .Include(c => c.Products).FirstOrDefaultAsync(m => m.UserId == uid));
         }
 
        
