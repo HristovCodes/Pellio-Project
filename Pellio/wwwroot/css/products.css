@@ -120,3 +120,8 @@
     width: 100%;
     margin-bottom: 50px;
 }
+
+.forcewh{
+    width: 40vw;
+    height: 15vh;
+}

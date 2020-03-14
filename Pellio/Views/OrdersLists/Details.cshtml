@@ -1,6 +1,4 @@
-﻿@using System.Linq;
-
-@model Pellio.Models.OrdersList
+﻿@model Pellio.Models.OrdersList
 
 @{
     ViewData["Title"] = "Details";
@@ -30,28 +28,14 @@
     @foreach (var item in Model.Products)
     {
         messegformail += item.ProductName + ", ";
-        @*<div class="flex flex-row content-center justify-center items-center rounded-full border-2 p-10">
-                <div>
-                    <img class="h-48 w-48 flex-1 rounded-full border-2" src="@item.ImageUrl" alt="@item.ProductName" />
-                </div>
-                <div class="flex flex-row items-center ml-10">
-                    <div class="text-center flex-1">
-                        @item.ProductName
-                    </div>
-                    <div class="text-center flex-1">
-                        @item.Price
-                        @{ all_price += item.Price;}
-                    </div>
-                </div>
-            </div>*@
-        <div class="flex flex-row overflow-hidden content-center justify-center items-center rounded-full border-2 p-10">
-            <div class="w-1/6 overflow-hidden sm:w-1/6 md:w-1/6 lg:w-1/6 xl:w-1/6">
+        <div class="grid grid-cols-3 ">
+            <div class="col-span-1">
                 <img class="h-48 w-48 flex-1 rounded-full border-2" src="@item.ImageUrl" alt="@item.ProductName" />
             </div>
-            <div class="w-1/6 overflow-hidden sm:w-1/6 md:w-1/6 lg:w-1/6 xl:w-1/6 items-center">
+            <div class="col-span-1">
                 @item.ProductName
             </div>
-            <div class="w-1/6 overflow-hidden sm:w-1/6 md:w-1/6 lg:w-1/6 xl:w-1/6 items-center">
+            <div class="col-span-1">
                 @item.Price
                 @{ Model.Total += item.Price;}
             </div>
