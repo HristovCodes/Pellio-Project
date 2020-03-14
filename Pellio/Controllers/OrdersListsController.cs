@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Mail;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -21,10 +19,7 @@ namespace Pellio.Controllers
         {
             _context = context;
         }
-        /// <summary>
-        /// Hello world
-        /// </summary>
-        /// <returns></returns>
+
         // GET: OrdersLists
         public async Task<IActionResult> Index()
         {
@@ -33,44 +28,39 @@ namespace Pellio.Controllers
                 .Include(c => c.Products).FirstOrDefaultAsync(m => m.UserId == uid));
         }
 
-       
-        //sendmail
+        //POST: OrdersLists/AddToCart/5
         [HttpPost]
-        public async Task<IActionResult> SendMail(string rec, string mes)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddToCart(int? id)
         {
-            try
+            string uid = Request.Cookies["uuidc"];
+            var userorders = await _context.OrdersList
+            .FirstOrDefaultAsync(m => m.UserId == uid);
+            if (userorders == null)
             {
-                if (ModelState.IsValid)
+                userorders = new OrdersList
                 {
-                    var senderEmail = new MailAddress("bagmanxdd@gmail.com", "Pellio-Foods");
-                    var receiverEmail = new MailAddress(rec, "Receiver");
-                    var password = "zaiobg123";
-                    var sub = "Вашата покупка от Pellio-Foods направена на " + DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss");
-                    var body = mes;
-                    var smtp = new SmtpClient
-                    {
-                        Host = "mtp.gmail.com",
-                        Port = 587,
-                        EnableSsl = true,
-                        DeliveryMethod = SmtpDeliveryMethod.Network,
-                        UseDefaultCredentials = false,
-                        Credentials = new NetworkCredential(senderEmail.Address, password)
-                    };
-                    using (var mess = new MailMessage(senderEmail, receiverEmail)
-                    {
-                        Subject = sub,
-                        Body = body
-                    })
-                    {
-                        smtp.Send(mess);
-                    }
-                    return RedirectToAction(nameof(Index));
-                }
+                    Total = 0,
+                    UserId = uid
+                };
+                _context.OrdersList.Add(userorders);
             }
-            catch (Exception)
+            if (userorders.Products == null)
             {
-                ViewBag.Error = "Some Error";
+                userorders.Products = new List<Products>();
             }
+            var product = _context.Products.Find(id);
+            var newproduct = new Products
+            {
+                ProductName = product.ProductName,
+                Price = product.Price,
+                ImageUrl = product.ImageUrl,
+                Ingredients = "dont show"
+            };
+
+            userorders.Products.Add(newproduct);
+
+            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
