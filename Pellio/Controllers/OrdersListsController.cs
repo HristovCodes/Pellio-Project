@@ -35,36 +35,19 @@ namespace Pellio.Controllers
         {
             try
             {
-                if (ModelState.IsValid)
+                if(ModelState.IsValid)
                 {
-                    var senderEmail = new MailAddress("bagmanxdd@gmail.com", "Pellio-Foods");
-                    var receiverEmail = new MailAddress(rec, "Receiver");
-                    var password = "zaiobg123";
-                    var sub = "Вашата покупка от Pellio-Foods направена на " + DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss");
-                    var body = mes;
-                    var smtp = new SmtpClient
+                    var client = new SmtpClient("smtp.gmail.com", 587)
                     {
-                        Host = "mtp.gmail.com",
-                        Port = 587,
-                        EnableSsl = true,
-                        DeliveryMethod = SmtpDeliveryMethod.Network,
-                        UseDefaultCredentials = false,
-                        Credentials = new NetworkCredential(senderEmail.Address, password)
+                        Credentials = new NetworkCredential("fokenlasersights@gmail.com", "***REMOVED***"),
+                        EnableSsl = true
                     };
-                    using (var mess = new MailMessage(senderEmail, receiverEmail)
-                    {
-                        Subject = sub,
-                        Body = body
-                    })
-                    {
-                        smtp.Send(mess);
-                    }
-                    return RedirectToAction(nameof(Index));
+                    client.Send("bagmanxdd@gmail.com", rec, "Вашата покупка от Pellio-Foods направена на " + DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"), mes);
                 }
             }
-            catch (Exception)
+            catch(Exception)
             {
-                ViewBag.Error = "Some Error";
+
             }
             return RedirectToAction(nameof(Index));
         }
