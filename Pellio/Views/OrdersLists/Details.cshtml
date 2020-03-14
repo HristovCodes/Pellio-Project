@@ -1,4 +1,6 @@
-﻿@model Pellio.Models.OrdersList
+﻿@using System.Linq;
+
+@model Pellio.Models.OrdersList
 
 @{
     ViewData["Title"] = "Details";
@@ -8,35 +10,75 @@
 <link rel="stylesheet" href="~/css/products.css" />
 <div>
     @{ Model.Total = 0;}
+    @*@{var query = Model.Products.GroupBy(x => x)
+        .Where(g => g.Count() > 1)
+        .ToDictionary(x => x.Key, y => y.Count());}*@
+    @*@{List<Products> uniqpro = new List<Products>();
+            List<int> howmany = new List<int>();}
+        @foreach (var item in Model.Products)
+        {
+            if (!uniqpro.Contains(item))
+            {
+                uniqpro.Add(item);
+            }
+            else
+            {
+
+            }
+        }*@
+    @{ string messegformail = "Храните коуто поръчахте са: ";}
     @foreach (var item in Model.Products)
     {
-        <div class="flex flex-row content-center justify-center items-center rounded-full border-2 p-10">
-            <div>
+        messegformail += item.ProductName + ", ";
+        @*<div class="flex flex-row content-center justify-center items-center rounded-full border-2 p-10">
+                <div>
+                    <img class="h-48 w-48 flex-1 rounded-full border-2" src="@item.ImageUrl" alt="@item.ProductName" />
+                </div>
+                <div class="flex flex-row items-center ml-10">
+                    <div class="text-center flex-1">
+                        @item.ProductName
+                    </div>
+                    <div class="text-center flex-1">
+                        @item.Price
+                        @{ all_price += item.Price;}
+                    </div>
+                </div>
+            </div>*@
+        <div class="flex flex-row overflow-hidden content-center justify-center items-center rounded-full border-2 p-10">
+            <div class="w-1/6 overflow-hidden sm:w-1/6 md:w-1/6 lg:w-1/6 xl:w-1/6">
                 <img class="h-48 w-48 flex-1 rounded-full border-2" src="@item.ImageUrl" alt="@item.ProductName" />
             </div>
-            <div class="flex flex-row items-center ml-10">
-                <div class="text-center flex-1">
-                    @item.ProductName
-                </div>
-                <div class="text-center flex-1">
-                    @item.Price
-                    @{ Model.Total += item.Price;}
-                </div>
+            <div class="w-1/6 overflow-hidden sm:w-1/6 md:w-1/6 lg:w-1/6 xl:w-1/6 items-center">
+                @item.ProductName
+            </div>
+            <div class="w-1/6 overflow-hidden sm:w-1/6 md:w-1/6 lg:w-1/6 xl:w-1/6 items-center">
+                @item.Price
+                @{ all_price += item.Price;}
             </div>
         </div>
     }
     <br />
-    <div class="flex flex-row content-center justify-center items-center">
-        <div>
+    <div class="flex flex-wrap overflow-hidden content-center justify-center items-center">
+        <div class="w-1/6 overflow-hidden sm:w-1/6 md:w-1/6 lg:w-1/6 xl:w-1/6">
             <h1 class="flex-1 mr-24">Total:</h1>
         </div>
-        <div class="flex flex-row items-center ">
-            <div class="text-center flex-1 hidden">
-                @Model.Products.Count
-            </div>
-            <div class="text-center flex-1">
-                @Model.Total
-            </div>
+        <div class="w-1/6 overflow-hidden sm:w-1/6 md:w-1/6 lg:w-1/6 xl:w-1/6 items-center hidden">
+            @Model.Products.Count
         </div>
+        <div class="w-1/6 overflow-hidden sm:w-1/6 md:w-1/6 lg:w-1/6 xl:w-1/6 items-center">
+            @all_price лв.
+        </div>
+    </div>
+    <br />
+    <div> 
+        <form asp-controller="OrdersLists" asp-action="SendMail">
+            <p>Please provide us with your e-mail to let you know when the delivery will occur.</p>
+            <div class="flex flex-row">
+                <p> e-mail:</p>
+                <input type="text" name="rec" id="rec" />
+            </div>
+            <input class="hidden" type="text" name="mes" id="mes" value="@messegformail" />
+            <input type="submit" value="SendMail" />
+        </form>
     </div>
 </div>
