@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -43,39 +45,27 @@ namespace Pellio.Controllers
             return View(userorders);
         }
 
-        //POST: OrdersLists/AddToCart/5
+       
+        //sendmail
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddToCart(int? id)
+        public async Task<IActionResult> SendMail(string rec, string mes)
         {
-            string uid = Request.Cookies["uuidc"];
-            var userorders = await _context.OrdersList
-            .FirstOrDefaultAsync(m => m.UserId == uid);
-            if (userorders == null)
+            try
             {
-                userorders = new OrdersList
+                if(ModelState.IsValid)
                 {
-                    Total = 0,
-                    UserId = uid
-                };
-                _context.OrdersList.Add(userorders);
+                    var client = new SmtpClient("smtp.gmail.com", 587)
+                    {
+                        Credentials = new NetworkCredential("fokenlasersights@gmail.com", "***REMOVED***"),
+                        EnableSsl = true
+                    };
+                    client.Send("bagmanxdd@gmail.com", rec, "Вашата покупка от Pellio-Foods направена на " + DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"), mes);
+                }
             }
-            if (userorders.Products == null)
+            catch(Exception)
             {
-                userorders.Products = new List<Products>();
+
             }
-            var product = _context.Products.Find(id);
-            var newproduct = new Products
-            {
-                ProductName = product.ProductName,
-                Price = product.Price,
-                ImageUrl = product.ImageUrl,
-                Ingredients = "dont show"
-            };
-
-            userorders.Products.Add(newproduct);
-
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
