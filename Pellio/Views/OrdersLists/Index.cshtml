@@ -1,41 +1,42 @@
-﻿@model IEnumerable<Pellio.Models.OrdersList>
+﻿@model Pellio.Models.OrdersList
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Cart";
 }
 
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Total)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UserId)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Total)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserId)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<link rel="stylesheet" href="~/css/tailwind.css" />
+<link rel="stylesheet" href="~/css/products.css" />
+<div>
+    @{ decimal all_price = 0;}
+    @foreach (var item in Model.Products)
+    {
+        <div class="flex flex-row content-center justify-center items-center rounded-full border-2 p-10">
+            <div>
+                <img class="h-48 w-48 flex-1 rounded-full border-2" src="@item.ImageUrl" alt="@item.ProductName" />
+            </div>
+            <div class="flex flex-row items-center ml-10">
+                <div class="text-center flex-1">
+                    @item.ProductName
+                </div>
+                <div class="text-center flex-1">
+                    @item.Price
+                    @{ all_price += item.Price;}
+                </div>
+            </div>
+        </div>
+    }
+    <br />
+    <div class="flex flex-row content-center justify-center items-center">
+        <div>
+            <h1 class="flex-1 mr-24">Total:</h1>
+        </div>
+        <div class="flex flex-row items-center ">
+            <div class="text-center flex-1 hidden">
+                @Model.Products.Count
+            </div>
+            <div class="text-center flex-1">
+                @all_price
+            </div>
+        </div>
+    </div>
+</div>

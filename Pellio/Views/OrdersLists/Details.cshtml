@@ -6,22 +6,8 @@
 
 <link rel="stylesheet" href="~/css/tailwind.css" />
 <link rel="stylesheet" href="~/css/products.css" />
-
-@*<h1>Details</h1>*@
-    @*<dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Total)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Total)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.UserId)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.UserId)
-        </dd>*@
 <div>
-    @{ decimal all_price = 0;}
+    @{ Model.Total = 0;}
     @foreach (var item in Model.Products)
     {
         <div class="flex flex-row content-center justify-center items-center rounded-full border-2 p-10">
@@ -34,7 +20,7 @@
                 </div>
                 <div class="text-center flex-1">
                     @item.Price
-                    @{ all_price += item.Price;}
+                    @{ Model.Total += item.Price;}
                 </div>
             </div>
         </div>
@@ -49,12 +35,8 @@
                 @Model.Products.Count
             </div>
             <div class="text-center flex-1">
-                @all_price
+                @Model.Total
             </div>
         </div>
     </div>
-</div>
-<div>
-     @*<a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |*@
-     @*<a asp-action="Index">Back to List</a>*@
 </div>
