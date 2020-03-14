@@ -10,20 +10,19 @@
     @{ decimal all_price = 0;}
     @foreach (var item in Model.Products)
     {
-        <div class="flex flex-row content-center justify-center items-center rounded-full border-2 p-10">
-            <div>
-                <img class="h-48 w-48 flex-1 rounded-full border-2" src="@item.ImageUrl" alt="@item.ProductName" />
+        <div class="parent items-center ml-32">
+            <div class="div1">
+                <img class="h-48 w-48 rounded-full border-2" src="@item.ImageUrl" alt="@item.ProductName" />
             </div>
-            <div class="flex flex-row items-center ml-10">
-                <div class="text-center flex-1">
+                <div class="div2">
                     @item.ProductName
                 </div>
-                <div class="text-center flex-1">
+                <div class="div3">
                     @item.Price
                     @{ all_price += item.Price;}
                 </div>
-            </div>
         </div>
+        <br />
     }
     <br />
     <div class="flex flex-row content-center justify-center items-center">
