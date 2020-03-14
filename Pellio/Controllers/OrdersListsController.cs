@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -26,39 +28,44 @@ namespace Pellio.Controllers
             return View(await _context.OrdersList.ToListAsync());
         }
 
-        //POST: OrdersLists/AddToCart/5
+       
+        //sendmail
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddToCart(int? id)
+        public async Task<IActionResult> SendMail(string rec, string mes)
         {
-            string uid = Request.Cookies["uuidc"];
-            var userorders = await _context.OrdersList
-            .FirstOrDefaultAsync(m => m.UserId == uid);
-            if (userorders == null)
+            try
             {
-                userorders = new OrdersList
+                if (ModelState.IsValid)
                 {
-                    Total = 0,
-                    UserId = uid
-                };
-                _context.OrdersList.Add(userorders);
+                    var senderEmail = new MailAddress("bagmanxdd@gmail.com", "Pellio-Foods");
+                    var receiverEmail = new MailAddress(rec, "Receiver");
+                    var password = "zaiobg123";
+                    var sub = "Вашата покупка от Pellio-Foods направена на " + DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss");
+                    var body = mes;
+                    var smtp = new SmtpClient
+                    {
+                        Host = "mtp.gmail.com",
+                        Port = 587,
+                        EnableSsl = true,
+                        DeliveryMethod = SmtpDeliveryMethod.Network,
+                        UseDefaultCredentials = false,
+                        Credentials = new NetworkCredential(senderEmail.Address, password)
+                    };
+                    using (var mess = new MailMessage(senderEmail, receiverEmail)
+                    {
+                        Subject = sub,
+                        Body = body
+                    })
+                    {
+                        smtp.Send(mess);
+                    }
+                    return RedirectToAction(nameof(Index));
+                }
             }
-            if (userorders.Products == null)
+            catch (Exception)
             {
-                userorders.Products = new List<Products>();
+                ViewBag.Error = "Some Error";
             }
-            var product = _context.Products.Find(id);
-            var newproduct = new Products
-            {
-                ProductName = product.ProductName,
-                Price = product.Price,
-                ImageUrl = product.ImageUrl,
-                Ingredients = "dont show"
-            };
-
-            userorders.Products.Add(newproduct);
-
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
