@@ -4,50 +4,44 @@
     ViewData["Title"] = "Cart";
 }
 
-<link rel="stylesheet" href="~/css/tailwind.css" />
-<link rel="stylesheet" href="~/css/products.css" />
+<link rel="stylesheet" href="~/css/cart.css" />
 <div>
-    @{ decimal all_price = 0;}
+    @{ Model.Total = 0;}
     @{ string messegformail = "Храните коуто поръчахте са: ";}
-    @foreach (var item in Model.Products)
-    {
-        <div class="parent items-center ml-32">
-            <div class="div1">
-                <img class="h-48 w-48 rounded-full border-2" src="@item.ImageUrl" alt="@item.ProductName" />
-            </div>
-            <div class="div2">
+    <div class="grid">
+        @foreach (var item in Model.Products)
+        {
+            <img class="image" src="@item.ImageUrl" alt="@item.ProductName" />
+            <h2 class="name">
                 @item.ProductName
-            </div>
-            <div class="div3">
-                @item.Price
-                @{ all_price += item.Price;}
-            </div>
-        </div>
-        <br />
-    }
-    <br />
-    <div class="flex flex-row content-center justify-center items-center">
+            </h2>
+            <p class="price">
+                @item.Price лв
+                @{ Model.Total += item.Price;}
+            </p>
+        }
+    </div>
+    <div class="">
         <div>
-            <h1 class="flex-1 mr-24">Total:</h1>
+            <h1 class="">Total:</h1>
         </div>
-        <div class="flex flex-row items-center ">
-            <div class="text-center flex-1 hidden">
+        <div class="">
+            <div class="">
                 @Model.Products.Count
             </div>
-            <div class="text-center flex-1">
-                @all_price
+            <div class="">
+                @Model.Total
             </div>
         </div>
     </div>
-    <br />
     <div>
         <form asp-controller="OrdersLists" asp-action="SendMail">
             <p>Please provide us with your e-mail to let you know when the delivery will occur.</p>
-            <div class="flex flex-row">
-                <p> e-mail:</p>
+            <div class="">
+                <label for="rec"> e-mail:</label>
                 <input type="text" name="rec" id="rec" />
             </div>
-            <input class="hidden" type="text" name="mes" id="mes" value="@messegformail" />
+            <input class="" type="text" name="mes" id="mes" value="@messegformail" />
             <input type="submit" value="SendMail" />
         </form>
     </div>
