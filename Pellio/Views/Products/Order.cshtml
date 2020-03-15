@@ -18,8 +18,8 @@
             Price: @Model.Products.Price лв;
         </p>
         <div>
-            <form asp-controller="AddTocart" asp-action="AddToCart">
-                <input class="" type="submit" value="Поръчай"  asp-route-id="@Model.Products.Id" />
+            <form asp-action="AddToCart">
+                <input class="" type="submit" value="Поръчай" asp-controller="OrdersLists" asp-action="AddToCart" asp-route-id="@Model.Products.Id" />
             </form>
         </div>
     </div>
