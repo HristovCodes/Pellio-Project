@@ -8,19 +8,20 @@
 <link rel="stylesheet" href="~/css/products.css" />
 <div>
     @{ decimal all_price = 0;}
+    @{ string messegformail = "Храните коуто поръчахте са: ";}
     @foreach (var item in Model.Products)
     {
         <div class="parent items-center ml-32">
             <div class="div1">
                 <img class="h-48 w-48 rounded-full border-2" src="@item.ImageUrl" alt="@item.ProductName" />
             </div>
-                <div class="div2">
-                    @item.ProductName
-                </div>
-                <div class="div3">
-                    @item.Price
-                    @{ all_price += item.Price;}
-                </div>
+            <div class="div2">
+                @item.ProductName
+            </div>
+            <div class="div3">
+                @item.Price
+                @{ all_price += item.Price;}
+            </div>
         </div>
         <br />
     }
@@ -37,5 +38,17 @@
                 @all_price
             </div>
         </div>
+    </div>
+    <br />
+    <div>
+        <form asp-controller="OrdersLists" asp-action="SendMail">
+            <p>Please provide us with your e-mail to let you know when the delivery will occur.</p>
+            <div class="flex flex-row">
+                <p> e-mail:</p>
+                <input type="text" name="rec" id="rec" />
+            </div>
+            <input class="hidden" type="text" name="mes" id="mes" value="@messegformail" />
+            <input type="submit" value="SendMail" />
+        </form>
     </div>
 </div>
