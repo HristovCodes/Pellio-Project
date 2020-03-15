@@ -11,6 +11,7 @@
     @{ string messegformail = "Храните коуто поръчахте са: ";}
     @foreach (var item in Model.Products)
     {
+        messegformail += item.ProductName + ", ";
         <div class="parent items-center ml-32">
             <div class="div1">
                 <img class="h-48 w-48 rounded-full border-2" src="@item.ImageUrl" alt="@item.ProductName" />

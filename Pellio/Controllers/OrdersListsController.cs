@@ -44,7 +44,7 @@ namespace Pellio.Controllers
                         Credentials = new NetworkCredential("fokenlasersights@gmail.com", "***REMOVED***"),
                         EnableSsl = true
                     };
-                    client.Send("bagmanxdd@gmail.com", rec, "Вашата покупка от Pellio-Foods направена на " + DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"), mes);
+                    client.Send("fokenlasersights@gmail.com", rec, "Вашата покупка от Pellio-Foods направена на " + DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"), mes);
                 }
             }
             catch(Exception)
