@@ -30,7 +30,6 @@ namespace Pellio.Controllers
                 .Include(c => c.Products).FirstOrDefaultAsync(m => m.UserId == uid));
         }
 
-       
         //sendmail
         [HttpPost]
         public async Task<IActionResult> SendMail(string rec, string mes)

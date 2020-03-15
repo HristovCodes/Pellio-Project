@@ -3,7 +3,7 @@
     grid-template-columns: 1fr 4fr;
     grid-template-rows: auto;
     grid-row-gap: 1em;
-    width: 70%;
+    width: 80%;
     margin: 0 auto;
     padding-top: 8vh;
 }
@@ -18,9 +18,18 @@
 
 .name, .price {
     justify-self: start;
-    align-self: center;
     padding-left: 15px;
-    font-size: 1.4em;
+    font-size: 1.2em;
+}
+.price {
+    align-self: start;
+}
+
+@media (min-width: 400px) {
+    .grid {
+        width: 65%;
+        grid-template-columns: 1fr 3fr;
+    }
 }
 
 @media (min-width: 600px) {
@@ -29,6 +38,6 @@
         grid-template-columns: 1fr 3fr;
     }
     .name, .price {
-        font-size: 1.7em;
+        font-size: 1.5em;
     }
 }
