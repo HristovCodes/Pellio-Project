@@ -19,6 +19,9 @@
                 @item.Price лв
                 @{ Model.Total += item.Price;}
             </p>
+            <form >
+                <input asp-controller="OrdersLists" asp-action="DeleteProduct" asp-route-id="@item.Id" type="submit"  value="X" class="removebutton"/>
+            </form>
         }
     </div>
     <div class="">

@@ -1,9 +1,8 @@
 ﻿@using Pellio.ViewModels
 @model ProductComment
 <link rel="stylesheet" href="~/css/productdetails.css" />
-<div></div>
 
-<div class="product">
+<div class="grid">
     <div class="productimage">
         <img class="image" src="@Model.Products.ImageUrl" alt="@Model.Products.ProductName" />
     </div>
@@ -23,9 +22,6 @@
             </form>
         </div>
     </div>
-</div>
-
-<div class="commentsection">
     <h2 class="commenttitle">
         Comments:
     </h2>
@@ -47,7 +43,7 @@
         </div>
     }
 
-    <form class="" asp-action="AddComment">
+    <form class="form" asp-action="AddComment">
         <div asp-validation-summary="ModelOnly" class=""></div>
         <div class="commentconteiner">
             <label asp-for="@Model.Comments.Name" class="title"></label>
@@ -59,7 +55,7 @@
             <input asp-for="@Model.Comments.Comment" class="text inputcomment" />
             <span asp-validation-for="@Model.Comments.Comment" class=""></span>
         </div>
-        <div class="">
+        <div class="pushtoend">
             <input class="addcbtn" type="submit" value="Create" asp-action="AddComment" asp-route-id="@Model.Products.Id" />
         </div>
     </form>

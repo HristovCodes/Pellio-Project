@@ -1,6 +1,7 @@
 ﻿.grid {
     display: grid;
-    grid-template-columns: 1fr 4fr;
+    grid-template-areas: 
+        "img text btn";
     grid-template-rows: auto;
     grid-row-gap: 1em;
     width: 80%;
@@ -13,16 +14,27 @@
     border-radius: 100px;
     justify-self: end;
     align-self: center;
+    grid-area: img;
     grid-row: span 2;
 }
 
 .name, .price {
+    grid-area: text;
     justify-self: start;
     padding-left: 15px;
     font-size: 1.2em;
+    grid-row: span 1;
 }
 .price {
     align-self: start;
+}
+
+.removebutton {
+    background-color: #ff0000;
+    color: #ffffffff;
+    border-radius: 50px;
+    width: 35px;
+    height: 35px;
 }
 
 @media (min-width: 400px) {
