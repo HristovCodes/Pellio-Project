@@ -24,7 +24,7 @@ body {
     width: 100%;
 }
 
-.list {
+.flex {
     display: flex;
     flex-direction: row;
     list-style: none;
@@ -34,7 +34,8 @@ body {
     text-decoration: none;
     font-size: 1.2em;
     color: black;
-    margin: 0 15px;
+    text-align: center;
+    padding: 10px 15px;
 }
 
 .navhome {
@@ -43,4 +44,102 @@ body {
 
 .navlinks {
     flex-grow: 1;
+}
+
+.burger {
+    background-image: url(../images/027-tasks.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 35px;
+    cursor: pointer;
+    padding: 10px 5px;
+    margin: 0 10px;
+}
+
+.hidden { /* menu is hidden */
+    position: absolute;
+    height: 100vh;
+    width: 100%;
+    top: -100vh;
+    left: 0;
+    z-index: 1;
+    background-color: #e0ffd1;
+    transition: top 300ms ease-in-out;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    grid-template-areas: ". . . . burger" ". contacts about cart ." ". contactstext abouttext carttext .";
+}
+
+.menu { /* menu is shown */
+    top: 0;
+}
+
+#burgerclose {
+    grid-area: burger;
+    width: 35px;
+    padding: 10px 5px;
+    margin: 15px 10px;
+    justify-self: end;
+    align-self: start;
+}
+
+.about img, .contacts img, .cart img {
+    width: 100%;
+    margin: 0 auto;
+}
+
+.about, .contacts, .cart {
+    display: block;
+    width: 50%;
+    align-self: end;
+    justify-self: center;
+}
+
+.about {
+    grid-area: about;
+}
+
+.contacts {
+    grid-area: contacts;
+}
+
+.cart {
+    grid-area: cart;
+}
+
+.abouttext, .contactstext, .carttext {
+    align-self: start;
+    font-weight: bold;
+    width: 100%;
+    padding: 15px 0;
+    color: #ff5cf0;
+}
+
+.abouttext {
+    grid-area: abouttext;
+}
+
+.contactstext {
+    grid-area: contactstext;
+}
+
+.carttext {
+    grid-area: carttext;
+}
+
+@media (max-width: 500px) {
+    .menu { /* menu is shown */
+        grid-template-areas: ". . . . ." ". . . . ." ". contacts about cart ." ". . . . burger";
+    }
+
+    #burgerclose {
+        grid-area: burger;
+        width: 35px;
+        padding: 10px 5px;
+        margin: 15px 10px;
+        justify-self: end;
+        align-self: end;
+    }
 }
