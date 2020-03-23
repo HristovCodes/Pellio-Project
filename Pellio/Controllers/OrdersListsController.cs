@@ -69,13 +69,15 @@ namespace Pellio.Controllers
         [HttpPost]
         public async Task<IActionResult> SendMail(string rec, string mes)
         {
+            var credsfromdb = _context.EmailCredentials.Find(1);
             try
             {
                 if(ModelState.IsValid)
                 {
                     var client = new SmtpClient("smtp.gmail.com", 587)
                     {
-                        Credentials = new NetworkCredential("fokenlasersights@gmail.com", "***REMOVED***"),
+                        
+                        Credentials = new NetworkCredential(credsfromdb.Email, credsfromdb.Password),
                         EnableSsl = true
                     };
                     client.Send("fokenlasersights@gmail.com", rec, "Вашата покупка от Pellio-Foods направена на " + DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"), mes);

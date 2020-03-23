@@ -11,6 +11,7 @@
     <div class="grid">
         @foreach (var item in Model.Products)
         {
+            @messegformail+= item.ProductName + " (" + item.Price + "), "; 
             <img class="image" src="@item.ImageUrl" alt="@item.ProductName" />
             <h2 class="name">
                 @item.ProductName

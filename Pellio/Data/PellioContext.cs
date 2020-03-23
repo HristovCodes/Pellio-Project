@@ -16,5 +16,7 @@ namespace Pellio.Data
         public DbSet<Comments> Comments { get; set; }
 
         public DbSet<OrdersList> OrdersList { get; set; }
+
+        public DbSet<EmailCredentials> EmailCredentials { get; set; }
     }
 }
