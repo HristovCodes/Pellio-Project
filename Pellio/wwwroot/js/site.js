@@ -3,14 +3,12 @@
 
 // Write your JavaScript code.
 
-const burgeropen = document.getElementById("burgeropen");
-const burgerclose = document.getElementById("burgerclose");
+const burger = document.getElementById("burger");
 const menu = document.getElementById("menu");
 
 burgeropen.addEventListener("click", () => {
-    menu.classList.add("menu")
-})
-
-burgerclose.addEventListener("click", () => {
-    menu.classList.remove("menu");
+    if (!menu.classList.contains("menu"))
+        menu.classList.add("menu")
+    else
+        menu.classList.remove("menu");
 })

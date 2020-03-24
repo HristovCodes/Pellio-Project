@@ -76,6 +76,11 @@ body {
     top: 0;
 }
 
+#burgeropen {
+    z-index: 2;
+}
+
+/*
 #burgerclose {
     grid-area: burger;
     width: 35px;
@@ -84,6 +89,7 @@ body {
     justify-self: end;
     align-self: start;
 }
+*/
 
 .about img, .contacts img, .cart img {
     width: 100%;
