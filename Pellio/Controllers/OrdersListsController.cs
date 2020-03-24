@@ -65,6 +65,18 @@ namespace Pellio.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        //pm;sdfmk;lds
+        public async Task<IActionResult> DeleteProduct(int? id)
+        {
+             var removed = _context.Products
+            .First(m => m.Id == id);
+            _context.Products
+           .Remove(removed);
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
         //sendmail
         [HttpPost]
         public async Task<IActionResult> SendMail(string rec, string mes)
@@ -72,18 +84,18 @@ namespace Pellio.Controllers
             var credsfromdb = _context.EmailCredentials.Find(1);
             try
             {
-                if(ModelState.IsValid)
+                if (ModelState.IsValid)
                 {
                     var client = new SmtpClient("smtp.gmail.com", 587)
                     {
-                        
+
                         Credentials = new NetworkCredential(credsfromdb.Email, credsfromdb.Password),
                         EnableSsl = true
                     };
                     client.Send("fokenlasersights@gmail.com", rec, "Вашата покупка от Pellio-Foods направена на " + DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"), mes);
                 }
             }
-            catch(Exception)
+            catch (Exception)
             {
 
             }
