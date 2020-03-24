@@ -55,6 +55,7 @@ body {
     cursor: pointer;
     padding: 10px 5px;
     margin: 0 10px;
+    z-index: 2;
 }
 
 .hidden { /* menu is hidden */
@@ -75,21 +76,6 @@ body {
 .menu { /* menu is shown */
     top: 0;
 }
-
-#burgeropen {
-    z-index: 2;
-}
-
-/*
-#burgerclose {
-    grid-area: burger;
-    width: 35px;
-    padding: 10px 5px;
-    margin: 15px 10px;
-    justify-self: end;
-    align-self: start;
-}
-*/
 
 .about img, .contacts img, .cart img {
     width: 100%;

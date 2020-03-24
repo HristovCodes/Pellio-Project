@@ -6,7 +6,7 @@
 const burger = document.getElementById("burger");
 const menu = document.getElementById("menu");
 
-burgeropen.addEventListener("click", () => {
+burger.addEventListener("click", () => {
     if (!menu.classList.contains("menu"))
         menu.classList.add("menu")
     else
