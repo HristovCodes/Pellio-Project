@@ -28,16 +28,31 @@ namespace Pellio.Controllers
         [Route("")]
         [Route("Products")]
         [Route("Products/Index")]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string production)
         {
+            
             if (Request.Cookies["uuidc"] == null)
             {
+                Generateuuidc();//on boot we check for uuidc if not found call function to generate one
+            }
+
+            if(production == null || production == "Всички")
+            {
+                return View(await _context.Products.ToListAsync());
+            }
+            else
+            {
+                return View(await _context.Products.Where(x => x.PlaceOfProduction == production).ToListAsync());
+            }
+            
+        }
+
+        public void Generateuuidc()
+        {
                 var uuid = Guid.NewGuid().ToString();
                 CookieOptions cookieOptionss = new CookieOptions();
                 cookieOptionss.Expires = DateTime.Now.AddDays(7);
                 Response.Cookies.Append("uuidc", uuid, cookieOptionss);
-            }
-            return View(await _context.Products.ToListAsync());
         }
 
         //GET: Products/CheckAll

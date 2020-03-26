@@ -88,7 +88,7 @@ namespace Pellio.Controllers
                 {
                     var client = new SmtpClient("smtp.gmail.com", 587)
                     {
-
+                        
                         Credentials = new NetworkCredential(credsfromdb.Email, credsfromdb.Password),
                         EnableSsl = true
                     };
