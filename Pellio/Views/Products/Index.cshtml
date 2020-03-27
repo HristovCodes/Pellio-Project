@@ -25,11 +25,19 @@
 <div id="items"></div>
 <h2 class="title">Нашите горещи предложения</h2>
 <div>
+    @{List<string> placesofproduction = new List<string>();}
     <form asp-controller="Products" asp-action="Index">
         <select name="production" id="production">
             <option selected>Всички</option>
-            <option>Пицца Темпо</option>
-            <option>McDonalds</option>
+            @foreach (var item in Model)
+            {
+                if (!placesofproduction.Contains(item.PlaceOfProduction) && item.PlaceOfProduction != "")
+                {
+                    <option>@item.PlaceOfProduction</option>
+                    placesofproduction.Add(@item.PlaceOfProduction);
+                }
+
+            }
         </select>
         <input type="submit" value="Сортираи"/>
     </form>
