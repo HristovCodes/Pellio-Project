@@ -26,8 +26,16 @@ namespace Pellio.Controllers
         public async Task<IActionResult> Index()
         {
             string uid = Request.Cookies["uuidc"];
-            return View(await _context.OrdersList
-                .Include(c => c.Products).FirstOrDefaultAsync(m => m.UserId == uid));
+
+            var cart = await _context.OrdersList
+                .Include(c => c.Products).FirstOrDefaultAsync(m => m.UserId == uid);
+
+            if (cart == null)
+            {
+                return NotFound();
+            }
+
+            return View(cart);
         }
         //POST: OrdersLists/AddToCart/5
         [HttpPost]

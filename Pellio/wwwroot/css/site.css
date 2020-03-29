@@ -25,9 +25,11 @@ body {
 }
 
 .flex {
+    height: 100%;
     display: flex;
     flex-direction: row;
     list-style: none;
+    align-content: center;
 }
 
 .navlink {
@@ -39,10 +41,12 @@ body {
 }
 
 .navhome {
+    height: 100%;
     flex-grow: 2;
 }
 
 .navlinks {
+    height: 100%;
     flex-grow: 1;
 }
 
@@ -134,4 +138,11 @@ body {
         justify-self: end;
         align-self: end;
     }
+}
+
+.gotocart {
+    background-image: url(/images/101-interest.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
 }

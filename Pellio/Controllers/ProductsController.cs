@@ -34,8 +34,21 @@ namespace Pellio.Controllers
             {
                 var uuid = Guid.NewGuid().ToString();
                 CookieOptions cookieOptionss = new CookieOptions();
-                cookieOptionss.Expires = DateTime.Now.AddDays(7);
+                cookieOptionss.Expires = DateTime.Now.AddDays(30);
                 Response.Cookies.Append("uuidc", uuid, cookieOptionss);
+
+                if (await _context.OrdersList
+                    .Include(c => c.Products).FirstOrDefaultAsync(m => m.UserId == uuid) == null)
+                {
+                    _context.Add(new OrdersList
+                    {
+                        Products = new List<Products>(),
+                        Total = 0,
+                        UserId = uuid
+                    });
+                    await _context.SaveChangesAsync();
+                }
+
             }
             return View(await _context.Products.ToListAsync());
         }
@@ -98,6 +111,7 @@ namespace Pellio.Controllers
                 comments.ProductsId = productid;
                 _context.Add(comments);
                 await _context.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
             return View(comments);
