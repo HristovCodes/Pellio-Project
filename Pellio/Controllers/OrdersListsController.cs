@@ -92,21 +92,53 @@ namespace Pellio.Controllers
             var credsfromdb = _context.EmailCredentials.Find(1);
             try
             {
-                if (ModelState.IsValid)
+                var smtp = new SmtpClient
                 {
-                    var client = new SmtpClient("smtp.gmail.com", 587)
-                    {
+                    Host = "smtp.gmail.com",
+                    Port = 25,
+                    EnableSsl = true,
+                    DeliveryMethod = SmtpDeliveryMethod.Network,
+                    UseDefaultCredentials = false,
+                    Credentials = new System.Net.NetworkCredential(credsfromdb.Email, credsfromdb.Password)
+                };
 
-                        Credentials = new NetworkCredential(credsfromdb.Email, credsfromdb.Password),
-                        EnableSsl = true
-                    };
-                    client.Send("fokenlasersights@gmail.com", rec, "Вашата покупка от Pellio-Foods направена на " + DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"), mes);
+                using (MailMessage message = new MailMessage("fokenlasersights@gmail.com", rec)
+                {
+                    Subject = "Вашата покупка от Pellio-Foods направена на " + DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"),
+                    Body = mes,
+                    IsBodyHtml = true,
+                    BodyEncoding = System.Text.Encoding.UTF8,
+
+                })
+                {
+                    smtp.Send(message);
                 }
             }
-            catch (Exception)
+            catch(Exception)
             {
 
             }
+            //try
+            //{
+            //    if (ModelState.IsValid)
+            //    {
+            //        var client = new SmtpClient("smtp.gmail.com", 587)
+            //        {
+                        
+            //            Credentials = new NetworkCredential(credsfromdb.Email, credsfromdb.Password),
+            //            EnableSsl = true
+            //        };
+            //        client.Send("fokenlasersights@gmail.com", rec, "Вашата покупка от Pellio-Foods направена на " + DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"), mes);
+            //        var curr_cart = _context.OrdersList.Find(Request.Cookies["uuidc"]);
+            //        curr_cart.Products.Clear();
+            //        curr_cart.Total = 0;
+            //        await _context.SaveChangesAsync();
+            //    }
+            //}
+            //catch (Exception)
+            //{
+      
+            //}
             return RedirectToAction(nameof(Index));
         }
 

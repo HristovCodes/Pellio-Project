@@ -28,17 +28,35 @@ namespace Pellio.Controllers
         [Route("")]
         [Route("Products")]
         [Route("Products/Index")]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string production)
         {
+            
             if (Request.Cookies["uuidc"] == null)
             {
+                Generateuuidc();//on boot we check for uuidc if not found call function to generate one
+            }
+
+            if(production == null || production == "Всички")
+            {
+                return View(await _context.Products.ToListAsync());
+            }
+            else
+            {
+                return View(await _context.Products.Where(x => x.PlaceOfProduction == production).ToListAsync());
+            }
+            
+        }
+
+        public async void Generateuuidc()
+        {
                 var uuid = Guid.NewGuid().ToString();
                 CookieOptions cookieOptionss = new CookieOptions();
                 cookieOptionss.Expires = DateTime.Now.AddDays(30);
                 Response.Cookies.Append("uuidc", uuid, cookieOptionss);
 
+                //after we generate the uuid we also add a cart to the db
                 if (await _context.OrdersList
-                    .Include(c => c.Products).FirstOrDefaultAsync(m => m.UserId == uuid) == null)
+                        .Include(c => c.Products).FirstOrDefaultAsync(m => m.UserId == uuid) == null)
                 {
                     _context.Add(new OrdersList
                     {
@@ -48,9 +66,6 @@ namespace Pellio.Controllers
                     });
                     await _context.SaveChangesAsync();
                 }
-
-            }
-            return View(await _context.Products.ToListAsync());
         }
 
         //GET: Products/CheckAll
