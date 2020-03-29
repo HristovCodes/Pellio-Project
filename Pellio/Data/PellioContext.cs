@@ -18,5 +18,6 @@ namespace Pellio.Data
         public DbSet<OrdersList> OrdersList { get; set; }
 
         public DbSet<EmailCredentials> EmailCredentials { get; set; }
+        public DbSet<MadeOrder> MadeOrder { get; set; }
     }
 }

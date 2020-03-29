@@ -28,16 +28,19 @@
             Total:
             @Model.Total лв
         </p>
-        <form class="orderform" asp-controller="OrdersLists" asp-action="SendMail">
-            <p>Please provide us with your e-mail to let you know when the delivery will occur.</p>
-            <label class="label" for="rec"> e-mail:</label>
+        <form class="orderform" asp-controller="OrdersLists" asp-action="OrderingMainLogicFunc">
+            <p>Моля даите вашият адрес, телефон, име и E-Mail за да можем да изплъним вашате поръчка.</p>
+            <label class="label" for="name">Име:</label>
+            <input class="input" type="text" name="name" id="name" />
+            <label class="label" for="address">Адрес:</label>
+            <input class="input" type="text" name="address" id="address" />
+            <label class="label" for="rec">E-Mail:</label>
             <input class="input" type="text" name="rec" id="rec" />
-            <label class="label" for="rec"> e-mail:</label>
-            <input class="input" type="text" name="rec" id="rec" />
-            <label class="label" for="rec"> e-mail:</label>
-            <input class="input" type="text" name="rec" id="rec" />
-            <input class="hide" type="text" name="mes" id="mes" value="@messegformail" />
-            <input class="input" type="submit" value="SendMail" />
+            <label class="label" for="phone">Телефонен номер:</label>
+            <input class="input" type="tel" name="phone" id="phone" pattern="[0-9]{10}" />
+            <input class="hide" type="text" name="mes" id="mes" value="@messegformail.TrimEnd(',')" />
+            @*<input class="hide" type="text" name="bought" id="bought" value="@messegformail.Remove(0,28)" />*@
+            <input class="input" type="submit" value="Поръчаи" />
         </form>
     </div>
 </div>

@@ -87,7 +87,36 @@ namespace Pellio.Controllers
 
         //sendmail
         [HttpPost]
-        public async Task<IActionResult> SendMail(string rec, string mes)
+        public async Task<IActionResult> OrderingMainLogicFunc(string name, string address, string rec, int phone, string mes)
+        {
+            await SendMail(rec, mes);
+            await AddOrderToDb(name, address, phone, rec);
+            return RedirectToAction(nameof(Index));
+        }
+
+        async public Task AddOrderToDb(string name, string address, int phone, string rec)
+        {
+            try
+            {
+                MadeOrder neworder = new MadeOrder();
+                neworder.CustomerName = name;
+                neworder.CustomerAddress = address;
+                neworder.CustomerPhoneNumber = phone;
+                neworder.CustomerEmail = rec;
+                string uid = Request.Cookies["uuidc"];
+                var userorders = await _context.OrdersList
+                .FirstOrDefaultAsync(m => m.UserId == uid);
+                neworder.Products = userorders.Products;
+                _context.MadeOrder.Add(neworder);
+                await _context.SaveChangesAsync();
+            }
+            catch(Exception e)
+            {
+                throw e;
+            }
+        }
+
+        async public Task SendMail(string rec, string mes)
         {
             var credsfromdb = _context.EmailCredentials.Find(1);
             try
@@ -103,11 +132,10 @@ namespace Pellio.Controllers
                     client.Send("fokenlasersights@gmail.com", rec, "Вашата покупка от Pellio-Foods направена на " + DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"), mes);
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
-
+                throw e;
             }
-            return RedirectToAction(nameof(Index));
         }
 
         // GET: OrdersLists/Details/5
