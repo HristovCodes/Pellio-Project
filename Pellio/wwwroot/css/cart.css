@@ -1,8 +1,6 @@
 ﻿.grid {
     display: grid;
-    grid-template-areas: 
-        "img text btn";
-    grid-template-rows: auto;
+    grid-template-areas: "img text removebtn";
     grid-row-gap: 1em;
     width: 80%;
     margin: 0 auto;
@@ -29,25 +27,69 @@
     align-self: start;
 }
 
+.removeform {
+    grid-row: span 2;
+    justify-self: end;
+    align-self: start;
+}
 .removebutton {
-    background-color: #ff0000;
+    background-color: #cf3e3e;
     color: #ffffffff;
+    border: 2px solid #d06464;
     border-radius: 50px;
     width: 35px;
     height: 35px;
 }
 
+.orderform {
+    grid-column: span 3;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.orderform p {
+    margin: 10px 0;
+    text-align: end;
+}
+
+.orderform .input {
+    -moz-box-sizing: content-box; /* or `border-box` */
+    -webkit-box-sizing: content-box;
+    box-sizing: content-box;
+    border: 2px solid #ccc;
+    display: block;
+    line-height: 20px;
+    margin: 10px 0;
+    min-width: 200px;
+    padding: 0;
+}
+
+.orderform .label {
+    padding-right: 160px;
+}
+
+.total {
+    grid-column: span 3;
+    font-size: 2em;
+    text-align: end;
+}
+
+.hide {
+    display: none;
+}
+
 @media (min-width: 400px) {
     .grid {
         width: 65%;
-        grid-template-columns: 1fr 3fr;
+        grid-template-columns: 1fr 3fr 1fr;
     }
 }
 
 @media (min-width: 600px) {
     .grid {
         width: 55%;
-        grid-template-columns: 1fr 3fr;
+        grid-template-columns: 1fr 3fr 1fr;
     }
     .name, .price {
         font-size: 1.5em;

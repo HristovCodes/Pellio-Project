@@ -2,7 +2,7 @@
     font-family: 'Playfair Display', serif;
 }
 
-p, a, input {
+p, a, input, li {
     font-family: 'Roboto', sans-serif;
 }
 
@@ -57,7 +57,7 @@ body {
     background-position: center;
     width: 35px;
     cursor: pointer;
-    padding: 10px 5px;
+    padding: 12px 5px;
     margin: 0 10px;
     z-index: 2;
 }
@@ -123,21 +123,6 @@ body {
 
 .carttext {
     grid-area: carttext;
-}
-
-@media (max-width: 500px) {
-    .menu { /* menu is shown */
-        grid-template-areas: ". . . . ." ". . . . ." ". contacts about cart ." ". . . . burger";
-    }
-
-    #burgerclose {
-        grid-area: burger;
-        width: 35px;
-        padding: 10px 5px;
-        margin: 15px 10px;
-        justify-self: end;
-        align-self: end;
-    }
 }
 
 .gotocart {

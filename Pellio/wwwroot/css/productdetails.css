@@ -7,6 +7,8 @@
 }
 
 .image {
+    display: block;
+    margin: 0 auto;
     grid-area: img;
     width: 300px;
     height: 300px;
@@ -73,5 +75,6 @@
 @media (min-width: 750px) {
     .grid {
         grid-template-areas: "img text" "comtitle comtitle" "comment comment" "form form";
+        grid-gap: 1rem;
     }
 }

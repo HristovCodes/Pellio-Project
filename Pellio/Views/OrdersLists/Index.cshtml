@@ -11,42 +11,33 @@
     <div class="grid">
         @foreach (var item in Model.Products)
         {
-            messegformail = messegformail + item.ProductName + " (" + item.Price + "), "; 
+            messegformail = messegformail + item.ProductName + " (" + item.Price + "), ";
             <img class="image" src="@item.ImageUrl" alt="@item.ProductName" />
             <h2 class="name">
                 @item.ProductName
             </h2>
+            <form class="removeform">
+                <input asp-controller="OrdersLists" asp-action="DeleteProduct" asp-route-id="@item.Id" type="submit" value="X" class="removebutton" />
+            </form>
             <p class="price">
                 @item.Price лв
                 @{ Model.Total += item.Price;}
             </p>
-            <form >
-                <input asp-controller="OrdersLists" asp-action="DeleteProduct" asp-route-id="@item.Id" type="submit"  value="X" class="removebutton"/>
-            </form>
         }
-    </div>
-    <div class="">
-        <div>
-            <h1 class="">Total:</h1>
-        </div>
-        <div class="">
-            <div class="">
-                @Model.Products.Count
-            </div>
-            <div class="">
-                @Model.Total
-            </div>
-        </div>
-    </div>
-    <div>
-        <form asp-controller="OrdersLists" asp-action="SendMail">
+        <p class="total">
+            Total:
+            @Model.Total лв
+        </p>
+        <form class="orderform" asp-controller="OrdersLists" asp-action="SendMail">
             <p>Please provide us with your e-mail to let you know when the delivery will occur.</p>
-            <div class="">
-                <label for="rec"> e-mail:</label>
-                <input type="text" name="rec" id="rec" />
-            </div>
-            <input class="" type="text" name="mes" id="mes" value="@messegformail" />
-            <input type="submit" value="SendMail" />
+            <label class="label" for="rec"> e-mail:</label>
+            <input class="input" type="text" name="rec" id="rec" />
+            <label class="label" for="rec"> e-mail:</label>
+            <input class="input" type="text" name="rec" id="rec" />
+            <label class="label" for="rec"> e-mail:</label>
+            <input class="input" type="text" name="rec" id="rec" />
+            <input class="hide" type="text" name="mes" id="mes" value="@messegformail" />
+            <input class="input" type="submit" value="SendMail" />
         </form>
     </div>
 </div>
