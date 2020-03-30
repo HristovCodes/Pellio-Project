@@ -19,7 +19,7 @@
         </p>
         <div>
             <form asp-action="AddToCart">
-                <input class="" type="submit" value="Поръчай" asp-controller="OrdersLists" asp-action="AddToCart" asp-route-id="@Model.Products.Id" />
+                <input class="input" type="submit" value="Поръчай" asp-controller="OrdersLists" asp-action="AddToCart" asp-route-id="@Model.Products.Id" />
             </form>
         </div>
     </div>
@@ -57,7 +57,7 @@
             <span asp-validation-for="@Model.Comments.Comment" class=""></span>
         </div>
         <div class="pushtoend">
-            <input class="addcbtn" type="submit" value="Create" asp-action="AddComment" asp-route-id="@Model.Products.Id" />
+            <input class="input addcbtn" type="submit" value="Create" asp-action="AddComment" asp-route-id="@Model.Products.Id" />
         </div>
     </form>
 </div>

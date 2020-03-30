@@ -43,17 +43,27 @@
 .orderbtn {
     display: block;
     text-align: center;
-    background-color: #5e1266;
-    border-radius: 5px;
-    padding: 5px 5px;
     width: 40%;
     text-decoration: none;
-    color: white;
+    color: #fff;
+    padding: 5px 5px;
     position: absolute;
+    border: 2px solid #102094;
+    border-radius: 5px;
+    background-color: #1428BE;
     bottom: 0;
     left: 50%;
+    transform: translateX(-50%);
     margin-bottom: 15px;
-    margin-left: -45px;
+    transition: transform 200ms ease-in-out, background-color 300ms ease-in-out, color 300ms ease-in-out;
+}
+
+.orderbtn:hover {
+    transform: translateX(-50%) scale(1.05);
+    color: #000000;
+    border: 2px solid #051487;
+    background-color: #6f7eea;
+    border-radius: 5px;
 }
 
 .gridcontainer {

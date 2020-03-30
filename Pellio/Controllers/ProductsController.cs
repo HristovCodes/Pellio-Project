@@ -37,8 +37,8 @@ namespace Pellio.Controllers
                 cookieOptionss.Expires = DateTime.Now.AddDays(30);
                 Response.Cookies.Append("uuidc", uuid, cookieOptionss);
 
-                if (await _context.OrdersList
-                    .Include(c => c.Products).FirstOrDefaultAsync(m => m.UserId == uuid) == null)
+                if (_context.OrdersList
+                    .Include(c => c.Products).FirstOrDefault(m => m.UserId == uuid) == null)
                 {
                     _context.Add(new OrdersList
                     {

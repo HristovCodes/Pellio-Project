@@ -7,6 +7,11 @@
     padding-top: 8vh;
 }
 
+.orderform .flex {
+    display: flex;
+    flex-direction: column;
+}
+
 .image {
     width: 100%;
     border-radius: 100px;
@@ -16,19 +21,25 @@
     grid-row: span 2;
 }
 
-.name, .price {
+.name {
     grid-area: text;
-    justify-self: start;
+    justify-self: center;
+    align-self: start;
     padding-left: 15px;
     font-size: 1.2em;
     grid-row: span 1;
 }
 .price {
+    grid-area: text;
+    font-size: 1.2em;
+    grid-row: span 1;
+    grid-column: span 2;
     align-self: start;
+    text-align: end;
+    color: #1428BE;
 }
 
 .removeform {
-    grid-row: span 2;
     justify-self: end;
     align-self: start;
 }
@@ -39,6 +50,13 @@
     border-radius: 50px;
     width: 35px;
     height: 35px;
+    transition: transform 300ms ease-in-out, color 100ms ease-in-out, background-color 100ms ease-in-out;
+}
+
+.removebutton:hover {
+    background-color: #cc0000;
+    color: #000000;
+    transform: rotate(180deg);
 }
 
 .orderform {
@@ -50,10 +68,10 @@
 
 .orderform p {
     margin: 10px 0;
-    text-align: end;
+    text-align: start;
 }
 
-.orderform .input {
+.input {
     -moz-box-sizing: content-box; /* or `border-box` */
     -webkit-box-sizing: content-box;
     box-sizing: content-box;
@@ -65,8 +83,35 @@
     padding: 0;
 }
 
-.orderform .label {
-    padding-right: 160px;
+.input {
+    padding: 2px 3px;
+    border: 2px solid #1428BE;
+    border-radius: 5px;
+}
+
+.input:valid {
+    background-color: #6f7eea;
+}
+
+.input[type=submit] {
+    color: #fff;
+    padding: 5px 0;
+    border: 2px solid #102094;
+    background-color: #1428BE;
+    border-radius: 5px;
+    transition: transform 200ms ease-in-out, background-color 300ms ease-in-out, color 300ms ease-in-out;
+}
+
+.input[type=submit]:hover {
+    transform: scale(1.05);
+    color: #000000;
+    border: 2px solid #051487;
+    background-color: #6f7eea;
+    border-radius: 5px;
+}
+
+.label {
+    text-align: left;
 }
 
 .total {
@@ -75,6 +120,9 @@
     text-align: end;
 }
 
+.total span {    
+    color: #1428BE;
+}
 .hide {
     display: none;
 }
@@ -88,10 +136,27 @@
 
 @media (min-width: 600px) {
     .grid {
-        width: 55%;
-        grid-template-columns: 1fr 3fr 1fr;
+        width: 80%;
+        grid-template-columns: 1fr 4fr 1fr 4fr;
+        grid-template-areas: "img text removebtn form";
     }
-    .name, .price {
+
+    .price {
         font-size: 1.5em;
+    }
+
+    .name {
+        font-size: 1.7em;
+        font-weight: 600;
+    }
+
+    .orderform {
+        grid-area: form;
+        grid-row: 1 / 7;
+        grid-gap: 2rem;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding-left: 35px;
     }
 }

@@ -8,7 +8,6 @@
 
 .image {
     display: block;
-    margin: 0 auto;
     grid-area: img;
     width: 300px;
     height: 300px;
@@ -60,7 +59,7 @@
 }
 
 .inputcomment {
-    height: 150px;
+    padding-bottom: 100px;
 }
 
 .pushtoend {
@@ -68,8 +67,21 @@
     justify-content: flex-end;
 }
 
-.addcbtn {
-    margin-bottom: 25px;
+.input[type=submit] {
+    color: #fff;
+    padding: 5px 10px;
+    border: 2px solid #102094;
+    background-color: #1428BE;
+    border-radius: 5px;
+    transition: transform 200ms ease-in-out, background-color 300ms ease-in-out, color 300ms ease-in-out;
+}
+
+.input[type=submit]:hover {
+    transform: scale(1.05);
+    color: #000000;
+    border: 2px solid #051487;
+    background-color: #6f7eea;
+    border-radius: 5px;
 }
 
 @media (min-width: 750px) {
