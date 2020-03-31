@@ -15,6 +15,7 @@ namespace Pellio.Models
         public decimal Price { get; set; }
         public string ImageUrl { get; set; }
         public List<Comments> Comments { get; set; }
+        public List<Ingredient> ListOfIngredients { get; set; }
 
     }
 }

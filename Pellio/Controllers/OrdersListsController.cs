@@ -118,11 +118,11 @@ namespace Pellio.Controllers
 
         async public Task SendMail(string rec, string mes)
         {
-            var credsfromdb = _context.EmailCredentials.Find(1);
             try
             {
                 if (ModelState.IsValid)
                 {
+                    var credsfromdb = _context.EmailCredentials.FirstOrDefault();
                     var client = new SmtpClient("smtp.gmail.com", 587)
                     {
 

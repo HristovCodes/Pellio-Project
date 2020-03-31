@@ -19,5 +19,6 @@ namespace Pellio.Data
 
         public DbSet<EmailCredentials> EmailCredentials { get; set; }
         public DbSet<MadeOrder> MadeOrder { get; set; }
+        public DbSet<Ingredient> Ingredients { get; set; }
     }
 }

@@ -30,6 +30,14 @@ namespace Pellio.Controllers
         [Route("Products/Index")]
         public async Task<IActionResult> Index()
         {
+            //var pro = _context.Products.Include(c => c.ListOfIngredients).FirstOrDefault();
+            //var ing = _context.Ingredients.FirstOrDefault();
+            ////Ingredient ing1 = new Ingredient();
+            ////ing1.Name = "царевица";
+            ////ing1.Available = true;
+            ////_context.Ingredients.Add(ing1);
+            //pro.ListOfIngredients.Add(ing);
+            //await _context.SaveChangesAsync();
             if (Request.Cookies["uuidc"] == null)
             {
                 var uuid = Guid.NewGuid().ToString();
