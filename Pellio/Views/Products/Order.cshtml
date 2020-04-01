@@ -15,7 +15,7 @@
             Ingredients: @Model.Products.Ingredients
         </p>*@
         @{ bool not_av_ing = false;}
-    @*<div>
+    <div>
         @foreach (var ing in Model.Products.ListOfIngredients)
         {
             if (ing.Available != true)
@@ -34,22 +34,22 @@
             {
                  <p>Ingredient: @ing.Name 1</p>
             }
-        }*@
+        }
     </div>
         <p class="desc">
             Price: @Model.Products.Price лв;
         </p>
         <div>
-            @*@if (not_av_ing)
+            @if (not_av_ing)
             {
                 <p>not in stock sorry come back later</p>
             }
             else
-            {*@
+            {
                 <form asp-action="AddToCart">
                     <input class="input" type="submit" value="Поръчай" asp-controller="OrdersLists" asp-action="AddToCart" asp-route-id="@Model.Products.Id" />
                 </form>
-            @*}*@
+            }
         </div>
     </div>
     <h2 class="commenttitle">

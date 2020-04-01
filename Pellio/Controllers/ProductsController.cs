@@ -31,12 +31,21 @@ namespace Pellio.Controllers
         public async Task<IActionResult> Index()
         {
             //var pro = _context.Products.Include(c => c.ListOfIngredients).FirstOrDefault();
-            //var ing = _context.Ingredients.FirstOrDefault();
-            ////Ingredient ing1 = new Ingredient();
-            ////ing1.Name = "царевица";
-            ////ing1.Available = true;
+            //var ing = await _context.Ingredients.FirstOrDefaultAsync();
+            //Ingredient ing1 = new Ingredient();
+            //ing1.Name = "царевица";
+            //ing1.Available = true;
+            //var newpro = new Products();
+            //newpro.ProductName = "bruh";
+            //newpro.Price = 5;
+            //newpro.ImageUrl = "https://i.imgur.com/uVue8N5.jpg";
+            //newpro.ListOfIngredients = new List<Ingredient>
+            //{
+            //    ing1
+            //};
             ////_context.Ingredients.Add(ing1);
-            //pro.ListOfIngredients.Add(ing);
+            //////pro.ListOfIngredients.Add(ing);
+            //_context.Products.Add(newpro);
             //await _context.SaveChangesAsync();
             if (Request.Cookies["uuidc"] == null)
             {
@@ -77,7 +86,7 @@ namespace Pellio.Controllers
                 return NotFound();
             }
 
-            var products = await _context.Products
+            var products = await _context.Products.Include(c => c.ListOfIngredients)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (products == null)
             {
