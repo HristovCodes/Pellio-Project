@@ -2,7 +2,7 @@
     font-family: 'Playfair Display', serif;
 }
 
-p, a, input, li, input, label {
+p, a, input, li, input, label, strong {
     font-family: 'Roboto', sans-serif;
 }
 
@@ -55,7 +55,7 @@ body {
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    width: 35px;
+    width: 40px;
     cursor: pointer;
     padding: 12px 5px;
     margin: 0 10px;

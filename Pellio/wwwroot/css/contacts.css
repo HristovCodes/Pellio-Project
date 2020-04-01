@@ -1,0 +1,33 @@
+﻿.column {
+    display: block;
+    width: 80%;
+    margin: 0 auto;
+    padding-top: 10vh;
+}
+
+
+.questions h3, .contacts h3 {
+    padding: 10px 0;
+    font-size: 2em;
+}
+
+.questions h4, .contacts h4 {
+    color: #1428BE;
+    padding: 10px 0;
+    font-weight: 700;
+    font-size: 1.4em;
+}
+
+.questions strong, .contacts strong {
+    padding: 10px 0;
+    font-weight: 600;
+}
+
+.questions p, .contacts p {
+    padding: 10px 0;
+}
+
+.column a, .column a:visited, .column a:hover, .column a:active, .column a:focus {
+    color: #1428BE;
+    text-decoration: none;
+}
