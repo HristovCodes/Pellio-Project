@@ -11,38 +11,35 @@
         <h1 class="title">
             Product name: @Model.Products.ProductName
         </h1>
-        @*<p class="desc">
-            Ingredients: @Model.Products.Ingredients
-        </p>*@
         @{ bool not_av_ing = false;}
-    <div>
-        @foreach (var ing in Model.Products.ListOfIngredients)
-        {
-            if (ing.Available != true)
+        <ul class="desc">
+            @foreach (var ing in Model.Products.ListOfIngredients)
             {
-                not_av_ing = true;
-                break;
+                if (ing.Available != true)
+                {
+                    not_av_ing = true;
+                    break;
+                }
             }
-        }
-        @foreach (var ing in Model.Products.ListOfIngredients)
-        {
-            if (ing.Available == true)
+            @foreach (var ing in Model.Products.ListOfIngredients)
             {
-                 <p>Ingredient: @ing.Name</p>
+                if (ing.Available == true)
+                {
+                    <li>@ing.Name</li>
+                }
+                else
+                {
+                    <li class="notinstock">@ing.Name</li>
+                }
             }
-            else
-            {
-                 <p>Ingredient: @ing.Name 1</p>
-            }
-        }
-    </div>
+        </ul>
         <p class="desc">
             Price: @Model.Products.Price лв;
         </p>
         <div>
             @if (not_av_ing)
             {
-                <p>not in stock sorry come back later</p>
+            <p>Съжаляваме, но един или няколко продукта нужни са готвенето на избраната от вас храна не са в наличност. Моля опитаите по-късно.</p>
             }
             else
             {

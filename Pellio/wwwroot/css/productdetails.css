@@ -90,3 +90,12 @@
         grid-gap: 1rem;
     }
 }
+
+.notinstock {
+    color: red;
+    font-weight: bold;
+}
+
+ul {
+    list-style-type: disc;
+}
