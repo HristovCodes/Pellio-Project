@@ -103,6 +103,9 @@ namespace Pellio.Controllers
                 neworder.CustomerAddress = address;
                 neworder.CustomerPhoneNumber = phone;
                 neworder.CustomerEmail = rec;
+                neworder.TimeOfOrder = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss");
+                neworder.Complete = false;
+                neworder.Canceled = false;
                 string uid = Request.Cookies["uuidc"];
                 var userorders = await _context.OrdersList
                 .FirstOrDefaultAsync(m => m.UserId == uid);
