@@ -14,6 +14,19 @@ body {
     background-color: #fff;
 }
 
+body, html {
+    margin: 0;
+    height: 100%;
+}
+
+.content {
+    min-height: 100%;
+}
+
+.insidecontent {
+    padding-bottom: 50px;
+}
+
 .navigation {
     position: absolute;
     display: flex;
@@ -130,4 +143,24 @@ body {
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
+}
+
+footer {
+    height: 50px;
+    margin-top: -50px;
+    background-color: #292c2f;
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.12);
+    box-sizing: border-box;
+    width: 100%;
+    text-align: left;
+
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: auto;
+}
+
+footer a, footer p {
+    align-self: center;
+    justify-self: center;
+    color: #ffffff;
 }

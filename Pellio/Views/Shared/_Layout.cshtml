@@ -10,7 +10,7 @@
 </head>
 <body>
     <header>
-        <nav class="">
+        <nav class="" id="start">
             <div class="navigation">
                 <div class="navhome">
                     <a class="navlink" asp-area="" asp-controller="Products" asp-action="Index">Pellio</a>
@@ -42,16 +42,17 @@
             </div>
         </nav>
     </header>
-    <div class="">
-        <main role="main" class="">
+    <div class="content">
+        <main role="main" class="insidecontent">
             @RenderBody()
         </main>
     </div>
 
     <footer class="">
-        <div class="">
-            &copy; 2020 - Pellio - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
+        <p>2020 - Pellio</p>
+        <a asp-area="" asp-controller="Home" asp-action="Contacts">Contacts</a>
+        <a asp-area="" asp-controller="Home" asp-action="About">About</a>
+        <a href="#start">Back to top</a>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="/js/site.js" asp-append-version="true"></script>

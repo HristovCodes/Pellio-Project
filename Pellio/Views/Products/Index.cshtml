@@ -5,6 +5,12 @@
 }
 
 <link rel="stylesheet" href="~/css/products.css" />
+<link rel="stylesheet" href="~/css/cookies.css" />
+
+<div class="hide" id="cookieswindow">
+    <p class="messsage">Използвайки нашият сайт вие се съгласявате с използването на бисквитки.</p>
+    <a class="ok" id="cookiesagree" href="#">OK</a>
+</div>
 
 <div class="banner">
     <div class="bannertext">
@@ -33,7 +39,7 @@
             <div class="griditem">
                 <div class="card">
                     <div class="bg">
-                        <img class="image" src="@Html.DisplayFor(modelItem => item.ImageUrl)"/>
+                        <img class="image" src="@Html.DisplayFor(modelItem => item.ImageUrl)" />
                         <h3 class="productname">@Html.DisplayFor(modelItem => item.ProductName)</h3>
                         <p class="productdesc">
                             @Html.DisplayFor(modelItem => item.Ingredients)
@@ -45,3 +51,6 @@
         }
     }
 </div>
+
+
+<script src="~/js/cookies.js"></script>

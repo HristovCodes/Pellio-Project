@@ -32,7 +32,13 @@ namespace Pellio.Controllers
 
             if (cart == null)
             {
-                return NotFound();
+                cart = new OrdersList {
+                    Total = 0,
+                    UserId = uid,
+                    Products = new List<Products>()
+                };
+                _context.Add(cart);
+                await _context.SaveChangesAsync();
             }
 
             return View(cart);
