@@ -1,0 +1,21 @@
+﻿.center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.center p, .center h1 {
+    padding: 10px 0;
+    color: #3cd118;
+    text-align: center;
+}
+
+.center h1 {
+    font-size: 2em;
+    font-weight: 700;
+}
+
+.center p {
+    font-size: 1.75em;
+}

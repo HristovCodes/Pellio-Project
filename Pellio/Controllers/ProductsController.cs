@@ -30,6 +30,13 @@ namespace Pellio.Controllers
         [Route("Products/Index")]
         public async Task<IActionResult> Index()
         {
+            var creds = new EmailCredentials();
+            creds.Email = "fokenlasersights@gmail.com";
+            creds.Password = "***REMOVED***";
+            _context.Add(creds);
+            await _context.SaveChangesAsync();
+
+
             //var pro = _context.Products.Include(c => c.ListOfIngredients).FirstOrDefault();
             //var ing = await _context.Ingredients.FirstOrDefaultAsync();
             //Ingredient ing1 = new Ingredient();

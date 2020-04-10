@@ -97,6 +97,7 @@ namespace Pellio.Controllers
         {
             await SendMail(rec, mes);
             await AddOrderToDb(name, address, phone, rec);
+            await ClearCart();
             return RedirectToAction(nameof(Index));
         }
 
@@ -263,7 +264,6 @@ namespace Pellio.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-
             var ordersList = await _context.OrdersList
                 .Include(c => c.Products)
                 .FirstAsync(m => m.Id == id);
@@ -272,6 +272,18 @@ namespace Pellio.Controllers
             _context.Products.RemoveRange(productList);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        private async Task ClearCart()
+        {
+            string uid = Request.Cookies["uuidc"];
+            var ordersList = await _context.OrdersList
+                .Include(c => c.Products)
+                .FirstAsync(m => m.UserId == uid);
+            var productList = ordersList.Products;
+            _context.OrdersList.Remove(ordersList);
+            _context.Products.RemoveRange(productList);
+            await _context.SaveChangesAsync();
         }
 
         private bool OrdersListExists(int id)

@@ -9,60 +9,34 @@
     </div>
     <div class="productdesc">
         <h1 class="title">
-            Product name: @Model.Products.ProductName
+            @Model.Products.ProductName
         </h1>
-        @{ bool not_av_ing = false;}
-        <ul class="desc">
-            @foreach (var ing in Model.Products.ListOfIngredients)
-            {
-                if (ing.Available != true)
-                {
-                    not_av_ing = true;
-                    break;
-                }
-            }
-            @foreach (var ing in Model.Products.ListOfIngredients)
-            {
-                if (ing.Available == true)
-                {
-                    <li>@ing.Name</li>
-                }
-                else
-                {
-                    <li class="notinstock">@ing.Name</li>
-                }
-            }
-        </ul>
         <p class="desc">
-            Price: @Model.Products.Price лв;
+            @Model.Products.Ingredients
         </p>
-        <div>
-            @if (not_av_ing)
-            {
-            <p>Съжаляваме, но един или няколко продукта нужни са готвенето на избраната от вас храна не са в наличност. Моля опитаите по-късно.</p>
-            }
-            else
-            {
-                <form asp-action="AddToCart">
-                    <input class="input" type="submit" value="Поръчай" asp-controller="OrdersLists" asp-action="AddToCart" asp-route-id="@Model.Products.Id" />
-                </form>
-            }
+        <p class="desc">
+            Цена: @Model.Products.Price лв;
+        </p>
+        <div class="form">
+            <form asp-action="AddToCart">
+                <input class="input" type="submit" value="Поръчай" asp-controller="OrdersLists" asp-action="AddToCart" asp-route-id="@Model.Products.Id" />
+            </form>
         </div>
     </div>
     <h2 class="commenttitle">
-        Comments:
+        Ревюта:
     </h2>
     @foreach (var com in Model.Products.Comments)
     {
         <div class="commentconteiner">
             <h3 class="title">
-                Username:
+                Име:
             </h3>
             <p class="text">
                 @com.Name
             </p>
             <h3 class="title">
-                Review:
+                Ревю:
             </h3>
             <p class="text">
                 @com.Comment
@@ -73,17 +47,17 @@
     <form class="form" asp-action="AddComment">
         <div asp-validation-summary="ModelOnly" class=""></div>
         <div class="commentconteiner">
-            <label asp-for="@Model.Comments.Name" class="title"></label>
+            <label asp-for="@Model.Comments.Name" class="title">Име:</label>
             <input asp-for="@Model.Comments.Name" class="text" />
             <span asp-validation-for="@Model.Comments.Name" class=""></span>
         </div>
         <div class="commentconteiner">
-            <label asp-for="@Model.Comments.Comment" class="title"></label>
+            <label asp-for="@Model.Comments.Comment" class="title">Вашето мнение:</label>
             <input asp-for="@Model.Comments.Comment" class="text inputcomment" />
             <span asp-validation-for="@Model.Comments.Comment" class=""></span>
         </div>
         <div class="pushtoend">
-            <input class="input addcbtn" type="submit" value="Create" asp-action="AddComment" asp-route-id="@Model.Products.Id" />
+            <input class="addcbtn input" type="submit" value="Добави ревю" asp-action="AddComment" asp-route-id="@Model.Products.Id" />
         </div>
     </form>
 </div>

@@ -9,12 +9,16 @@
 .image {
     display: block;
     grid-area: img;
-    width: 300px;
-    height: 300px;
+    width: 100%;
 }
 
 .productdesc {
+    text-align: left;
     grid-area: text;
+}
+
+.productdesc .form {
+    text-align: right;
 }
 
 .desc {
@@ -67,6 +71,10 @@
     justify-content: flex-end;
 }
 
+.addcbtn {
+    margin-bottom: 30px;
+}
+
 .input[type=submit] {
     color: #fff;
     padding: 5px 10px;
@@ -89,13 +97,9 @@
         grid-template-areas: "img text" "comtitle comtitle" "comment comment" "form form";
         grid-gap: 1rem;
     }
-}
 
-.notinstock {
-    color: red;
-    font-weight: bold;
-}
-
-ul {
-    list-style-type: disc;
+    .image {
+        width: 300px;
+        height: 300px;
+    }
 }
