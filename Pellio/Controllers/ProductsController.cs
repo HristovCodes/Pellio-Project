@@ -88,9 +88,23 @@ namespace Pellio.Controllers
         {
             ViewBag.Title = "Order";
             ViewBag.Header = "Поръчайте";
+
             if (id == null)
             {
                 return NotFound();
+            }
+
+            if (_context.Comments.Where(m => m.ProductsId == id).Any())//check if there any records in comments table
+            {
+                //if avarage score and add to viewbag
+                var avg_score = _context.Comments
+                .Where(m => m.ProductsId == id)
+                .Average(m => m.Score);
+                ViewBag.avg_score = "Нашите потребители средно дават на това ястие оценката: " + avg_score;
+            }
+            else
+            {//if not tell user there is no score
+                ViewBag.avg_score = "За съжаление този продукт все още няма потребителски оценки. Можете да помогнете да промените това!";
             }
 
             var products = await _context.Products.Include(c => c.ListOfIngredients)
@@ -127,7 +141,7 @@ namespace Pellio.Controllers
         //POST: Products/AddComment/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddComment(int id, [Bind("Name,Comment")] Comments comments)
+        public async Task<IActionResult> AddComment(int id, [Bind("Name,Comment,Score")] Comments comments)
         {
             if (ModelState.IsValid)
             {

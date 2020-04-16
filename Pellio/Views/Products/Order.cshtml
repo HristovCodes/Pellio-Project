@@ -15,7 +15,10 @@
             @Model.Products.Ingredients
         </p>
         <p class="desc">
-            Цена: @Model.Products.Price лв;
+            Цена: @Model.Products.Price лв
+        </p>
+        <p class="desc">
+            @ViewBag.avg_score
         </p>
         <div class="form">
             <form asp-action="AddToCart">
@@ -37,6 +40,12 @@
                     @com.Name
                 </p>
                 <h3 class="title">
+                    Средна оценка:
+                </h3>
+                <p class="text">
+                    @com.Score
+                </p>
+                <h3 class="title">
                     Ревю:
                 </h3>
                 <p class="text">
@@ -56,6 +65,17 @@
             <label asp-for="@Model.Comments.Comment" class="title">Вашето мнение:</label>
             <input asp-for="@Model.Comments.Comment" class="text inputcomment" />
             <span asp-validation-for="@Model.Comments.Comment" class=""></span>
+        </div>
+        <div class="comment">
+            <label asp-for="@Model.Comments.Score">Как бихте оценили храната от 1 до 5?</label>
+            <select asp-for="@Model.Comments.Score" required>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+            <span asp-validation-for="@Model.Comments.Score" class=""></span>
         </div>
         <div class="pushtoend">
             <input class="addcbtn input" type="submit" value="Добави ревю" asp-action="AddComment" asp-route-id="@Model.Products.Id" />

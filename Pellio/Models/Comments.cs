@@ -13,7 +13,7 @@ namespace Pellio.Models
         public string Name { get; set; }
         [Display(Name = "Review")]
         public string Comment { get; set; }
-
+        public double Score { get; set; }
         public int ProductsId { get; set; }
         public Products Products { get; set; }
     }
