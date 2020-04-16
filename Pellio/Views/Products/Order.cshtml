@@ -26,32 +26,33 @@
     <h2 class="commenttitle">
         Ревюта:
     </h2>
-    @foreach (var com in Model.Products.Comments)
-    {
-        <div class="commentconteiner">
-            <h3 class="title">
-                Име:
-            </h3>
-            <p class="text">
-                @com.Name
-            </p>
-            <h3 class="title">
-                Ревю:
-            </h3>
-            <p class="text">
-                @com.Comment
-            </p>
-        </div>
-    }
-
+    <div class="commentsconteiner">
+        @foreach (var com in Model.Products.Comments)
+        {
+            <div class="comment">
+                <h3 class="title">
+                    Име:
+                </h3>
+                <p class="text">
+                    @com.Name
+                </p>
+                <h3 class="title">
+                    Ревю:
+                </h3>
+                <p class="text">
+                    @com.Comment
+                </p>
+            </div>
+        }
+    </div>
     <form class="form" asp-action="AddComment">
         <div asp-validation-summary="ModelOnly" class=""></div>
-        <div class="commentconteiner">
+        <div class="comment">
             <label asp-for="@Model.Comments.Name" class="title">Име:</label>
             <input asp-for="@Model.Comments.Name" class="text" />
             <span asp-validation-for="@Model.Comments.Name" class=""></span>
         </div>
-        <div class="commentconteiner">
+        <div class="comment">
             <label asp-for="@Model.Comments.Comment" class="title">Вашето мнение:</label>
             <input asp-for="@Model.Comments.Comment" class="text inputcomment" />
             <span asp-validation-for="@Model.Comments.Comment" class=""></span>

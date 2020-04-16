@@ -41,8 +41,12 @@
     grid-area: form;
 }
 
-.commentconteiner {
+.commentsconteiner {
     grid-area: comment;
+    width: 100%;
+}
+
+.comment {
     width: 100%;
     padding: 25px 0;
     display: grid;
