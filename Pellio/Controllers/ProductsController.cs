@@ -25,6 +25,10 @@ namespace Pellio.Controllers
         }
 
         // GET: Products
+        /// <summary>
+        /// Acts as a Main function. Makes call to uuidc create function.
+        /// </summary>
+        /// <returns>Displays all products from db.</returns>
         [Route("")]
         [Route("Products")]
         [Route("Products/Index")]
@@ -54,6 +58,15 @@ namespace Pellio.Controllers
             //////pro.ListOfIngredients.Add(ing);
             //_context.Products.Add(newpro);
             //await _context.SaveChangesAsync();
+            GenUUID();
+            return View(await _context.Products.ToListAsync());
+        }
+
+        /// <summary>
+        /// Generates UUID. Generates new cart entry in db with said UUID.
+        /// </summary>
+        private void GenUUID()
+        {
             if (Request.Cookies["uuidc"] == null)
             {
                 var uuid = Guid.NewGuid().ToString();
@@ -70,11 +83,10 @@ namespace Pellio.Controllers
                         Total = 0,
                         UserId = uuid
                     });
-                    await _context.SaveChangesAsync();
+                    _context.SaveChanges();
                 }
 
             }
-            return View(await _context.Products.ToListAsync());
         }
 
         //GET: Products/CheckAll
