@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
@@ -10,6 +11,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Pellio.Data;
 using Pellio.Models;
+using Pellio.ViewModels;
 
 namespace Pellio.Controllers
 {
@@ -41,7 +43,14 @@ namespace Pellio.Controllers
                 await _context.SaveChangesAsync();
             }
 
-            return View(cart);
+
+            OrderListMadeOrder combo = new OrderListMadeOrder
+            {
+                OrdersList = cart,
+                MadeOrder = _context.MadeOrder.Where(mo => mo.UserId == uid).ToList()
+            };
+
+            return View(combo);
         }
         //POST: OrdersLists/AddToCart/5
         [HttpPost]
@@ -72,7 +81,7 @@ namespace Pellio.Controllers
                 ImageUrl = product.ImageUrl,
                 Ingredients = "dont show"
             };
-
+            userorders.Total += product.Price;
             userorders.Products.Add(newproduct);
 
             await _context.SaveChangesAsync();
@@ -105,20 +114,31 @@ namespace Pellio.Controllers
         {
             try
             {
+                string uid = Request.Cookies["uuidc"];
                 MadeOrder neworder = new MadeOrder();
                 neworder.CustomerName = name;
                 neworder.CustomerAddress = address;
                 neworder.CustomerPhoneNumber = phone;
                 neworder.CustomerEmail = rec;
+                neworder.UserId = uid; 
                 neworder.TimeOfOrder = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss");
                 neworder.Complete = false;
                 neworder.Canceled = false;
-                string uid = Request.Cookies["uuidc"];
                 var userorders = await _context.OrdersList
-                .FirstOrDefaultAsync(m => m.UserId == uid);
-                neworder.Products = userorders.Products;
+                    .Include(m => m.Products)
+                    .FirstOrDefaultAsync(m => m.UserId == uid);
+                string temp_product_names = "";
+                foreach(var nameb in userorders.Products)
+                {
+                    temp_product_names += nameb.ProductName;
+                    temp_product_names += ',';
+                }
+                neworder.Products_names = temp_product_names;
+                //supposted to be a many-to-many????
+                //"works" fix^
+                neworder.FinalPrice = userorders.Total;
                 _context.MadeOrder.Add(neworder);
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
             }
             catch(Exception e)
             {
@@ -139,7 +159,8 @@ namespace Pellio.Controllers
                         Credentials = new NetworkCredential(credsfromdb.Email, credsfromdb.Password),
                         EnableSsl = true
                     };
-                    client.Send("fokenlasersights@gmail.com", rec, "Вашата покупка от Pellio-Foods направена на " + DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"), mes);
+                    mes = mes.TrimEnd(',');
+                    client.Send("fokenlasersights@gmail.com", rec, "Вашата покупка от Pellio-Foods направена на " + DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"), mes.TrimEnd(','));
                 }
             }
             catch (Exception e)

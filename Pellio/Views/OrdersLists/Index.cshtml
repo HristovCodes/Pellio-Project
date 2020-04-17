@@ -1,4 +1,4 @@
-﻿@model Pellio.Models.OrdersList
+﻿@model Pellio.ViewModels.OrderListMadeOrder
 
 @{
     ViewData["Title"] = "Cart";
@@ -7,10 +7,9 @@
 <link rel="stylesheet" href="~/css/cart.css" />
 
 <div>
-    @{ Model.Total = 0;}
     @{ string messegformail = "Храните коуто поръчахте са: ";}
     <div class="grid">
-        @foreach (var item in Model.Products)
+        @foreach (var item in Model.OrdersList.Products)
         {
             messegformail = messegformail + item.ProductName + " (" + item.Price + "), ";
             <img class="image" src="@item.ImageUrl" alt="@item.ProductName" />
@@ -22,13 +21,12 @@
             </form>
             <p class="price">
                 @item.Price лв
-                @{Model.Total += item.Price;}
             </p>
         }
         <p class="total">
             Total:
             <span>
-                @Model.Total лв
+                @Model.OrdersList.Total лв
             </span>
         </p>
         <form class="orderform" asp-controller="OrdersLists" asp-action="OrderingMainLogicFunc">
@@ -42,10 +40,26 @@
                 <input class="input" type="email" name="rec" id="rec" required />
                 <label class="label" for="phone">Телефонен номер:</label>
                 <input class="input" type="tel" name="phone" id="phone" pattern="[0-9]{10}" required />
-                <input class="hide" type="text" name="mes" id="mes" value="@messegformail.TrimEnd(',')" />
+                <input class="hide" type="text" name="mes" id="mes" value="@messegformail" />
                 <input class="input" type="submit" value="Поръчаи" />
             </div>
         </form>
+    </div>
+
+    <div>
+        @if(!Model.MadeOrder.Any())@*no items*@
+        {
+            <p>Хммммм... Изглжда че до сега не сте направили поръчки</p>
+        }
+        else
+        {
+            foreach(var madeorder in Model.MadeOrder)
+            {
+                <p>@madeorder.TimeOfOrder</p>
+                <p>@madeorder.Products_names</p>
+                <p>@madeorder.FinalPrice</p>
+            }
+        }
     </div>
 </div>
 
