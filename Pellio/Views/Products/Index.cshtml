@@ -31,6 +31,14 @@
 <div id="items"></div>
 <h2 class="title">Нашите горещи предложения</h2>
 
+<div>
+    <form asp-controller="Products" asp-action="Index">
+        @Html.DropDownList("TagsDropdown", (IEnumerable<SelectListItem>)ViewBag.TagsforDropdown, "Всички")
+        <input type="submit" value="Сортираи" />
+    </form>
+    
+</div>
+
 <div class="gridcontainer">
     @foreach (var item in Model)
     {

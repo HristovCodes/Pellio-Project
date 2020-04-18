@@ -32,7 +32,7 @@ namespace Pellio.Controllers
         [Route("")]
         [Route("Products")]
         [Route("Products/Index")]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string TagsDropdown)
         {
             var creds = new EmailCredentials();
             creds.Email = "fokenlasersights@gmail.com";
@@ -40,7 +40,7 @@ namespace Pellio.Controllers
             _context.Add(creds);
             await _context.SaveChangesAsync();
 
-
+            FillDropDownTags();
             //var pro = _context.Products.Include(c => c.ListOfIngredients).FirstOrDefault();
             //var ing = await _context.Ingredients.FirstOrDefaultAsync();
             //Ingredient ing1 = new Ingredient();
@@ -58,8 +58,18 @@ namespace Pellio.Controllers
             //////pro.ListOfIngredients.Add(ing);
             //_context.Products.Add(newpro);
             //await _context.SaveChangesAsync();
+
+            //test code delete before realese^ !!!!!
             GenUUID();
-            return View(await _context.Products.ToListAsync());
+            if(TagsDropdown == null)
+            {
+                return View(await _context.Products.ToListAsync());
+            }
+            else
+            {
+                return View(await _context.Products.Where(p => p.Tag == TagsDropdown).ToListAsync());
+            }
+            
         }
 
         /// <summary>
@@ -87,6 +97,17 @@ namespace Pellio.Controllers
                 }
 
             }
+        }
+
+        public void FillDropDownTags()
+        {
+            IEnumerable<SelectListItem> tags = _context.Products.Select(t => new SelectListItem
+            {
+                Value = t.Tag,
+                Text = t.Tag
+            }).Distinct();
+            ViewBag.TagsforDropdown = tags;
+
         }
 
         //GET: Products/CheckAll
@@ -320,6 +341,7 @@ namespace Pellio.Controllers
                 tobeadded.Ingredients = values[1].Trim('\"');
                 tobeadded.Price = Convert.ToDecimal(values[2].Trim('"'), new CultureInfo("en-US"));
                 tobeadded.ImageUrl = values[3];
+                tobeadded.Tag = values[4];
                 _context.Products.Add(tobeadded);
                 //_context.Products.Add(new Products
                 //{
