@@ -53,6 +53,11 @@ namespace Pellio.Controllers
             return View(combo);
         }
         //POST: OrdersLists/AddToCart/5
+        /// <summary>
+        /// Adds Product object to Orderlist entry in db with specific uuidc
+        /// </summary>
+        /// <param name="id">id of Product queried from db</param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddToCart(int? id)
@@ -88,7 +93,6 @@ namespace Pellio.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        //pm;sdfmk;lds
         public async Task<IActionResult> DeleteProduct(int? id)
         {
              var removed = _context.Products
@@ -100,7 +104,10 @@ namespace Pellio.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        //sendmail
+        /// <summary>
+        /// Called from view (Order.chhtml). Calls subfunctions associated with ordering. 
+        /// </summary>
+        /// <returns>The cart view after ordering. (empty cart)</returns>
         [HttpPost]
         public async Task<IActionResult> OrderingMainLogicFunc(string name, string address, string rec, int phone, string mes)
         {
@@ -110,6 +117,9 @@ namespace Pellio.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        /// <summary>
+        /// Creates MadeOrder objects. feeds it data. Saves it to DB.
+        /// </summary>
         async public Task AddOrderToDb(string name, string address, int phone, string rec)
         {
             try
@@ -146,6 +156,11 @@ namespace Pellio.Controllers
             }
         }
 
+        /// <summary>
+        /// Sends the email via gmail smtp server
+        /// </summary>
+        /// <param name="rec">short for reciver</param>
+        /// <param name="mes">short for messege</param>
         async public Task SendMail(string rec, string mes)
         {
             try
@@ -295,6 +310,9 @@ namespace Pellio.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        /// <summary>
+        /// Clears all Product items from DB table OrderList with specific UUIDC
+        /// </summary>
         private async Task ClearCart()
         {
             string uid = Request.Cookies["uuidc"];
