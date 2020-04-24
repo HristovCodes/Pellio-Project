@@ -41,25 +41,6 @@ namespace Pellio.Controllers
             await _context.SaveChangesAsync();
 
             FillDropDownTags();
-            //var pro = _context.Products.Include(c => c.ListOfIngredients).FirstOrDefault();
-            //var ing = await _context.Ingredients.FirstOrDefaultAsync();
-            //Ingredient ing1 = new Ingredient();
-            //ing1.Name = "царевица";
-            //ing1.Available = true;
-            //var newpro = new Products();
-            //newpro.ProductName = "bruh";
-            //newpro.Price = 5;
-            //newpro.ImageUrl = "https://i.imgur.com/uVue8N5.jpg";
-            //newpro.ListOfIngredients = new List<Ingredient>
-            //{
-            //    ing1
-            //};
-            ////_context.Ingredients.Add(ing1);
-            //////pro.ListOfIngredients.Add(ing);
-            //_context.Products.Add(newpro);
-            //await _context.SaveChangesAsync();
-
-            //test code delete before realese^ !!!!!
             GenUUID();
             if(TagsDropdown == null)
             {
