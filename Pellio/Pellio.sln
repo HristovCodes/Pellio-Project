@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29609.76
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pellio", "Pellio.csproj", "{FEA13860-6960-4AA9-BEE2-E8CDBBBA086C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pellio", "Pellio.csproj", "{FEA13860-6960-4AA9-BEE2-E8CDBBBA086C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest", "..\UnitTest\UnitTest.csproj", "{C724D95B-CBF9-46BC-A3D2-28D4AB02122D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{FEA13860-6960-4AA9-BEE2-E8CDBBBA086C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FEA13860-6960-4AA9-BEE2-E8CDBBBA086C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FEA13860-6960-4AA9-BEE2-E8CDBBBA086C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C724D95B-CBF9-46BC-A3D2-28D4AB02122D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C724D95B-CBF9-46BC-A3D2-28D4AB02122D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C724D95B-CBF9-46BC-A3D2-28D4AB02122D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C724D95B-CBF9-46BC-A3D2-28D4AB02122D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
