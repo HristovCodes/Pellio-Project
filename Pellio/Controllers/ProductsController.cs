@@ -92,17 +92,16 @@ namespace Pellio.Controllers
         }
 
         //GET: Products/CheckAll
+        //Returns a view with all the products the in database.
         public async Task<IActionResult> CheckAll()
         {
             return View(await _context.Products.ToListAsync());
         }
 
         // GET: Products/Order/5
+        //Returns a view of the chosen products (by id) with additional information about it and comments.
         public async Task<IActionResult> Order(int? id)
         {
-            ViewBag.Title = "Order";
-            ViewBag.Header = "Поръчайте";
-
             if (id == null)
             {
                 return NotFound();
