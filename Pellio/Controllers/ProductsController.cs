@@ -84,7 +84,6 @@ namespace Pellio.Controllers
         {
             var tags = _context.Products.Select(t => t.Tag).Distinct();
             ViewBag.TagsforDropdown = tags;
-
         }
 
         //GET: Products/CheckAll
