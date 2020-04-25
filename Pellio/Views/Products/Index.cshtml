@@ -1,8 +1,5 @@
 ﻿@model IEnumerable<Pellio.Models.Products>
 
-@{
-    ViewData["Title"] = "Home";
-}
 
 <link rel="stylesheet" href="~/css/products.css" />
 <link rel="stylesheet" href="~/css/cookies.css" />
@@ -31,12 +28,25 @@
 <div id="items"></div>
 <h2 class="title">Нашите горещи предложения</h2>
 
-<div>
+@*<div>
     <form asp-controller="Products" asp-action="Index">
         @Html.DropDownList("TagsDropdown", (IEnumerable<SelectListItem>)ViewBag.TagsforDropdown, "Всички")
         <input type="submit" value="Сортираи" />
     </form>
     
+</div>*@
+
+<div>
+    <form asp-controller="Products" asp-action="Index">
+        <ul>
+            @foreach(var tag in ViewBag.TagsforDropdown)
+            {
+                <li>
+                    <input type="submit" name="TagsDropdown" value="@tag" id="TagsDropdown"/>
+                </li>
+            }
+        </ul>
+    </form>
 </div>
 
 <div class="gridcontainer">

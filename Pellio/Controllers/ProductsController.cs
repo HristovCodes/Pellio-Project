@@ -82,11 +82,7 @@ namespace Pellio.Controllers
 
         public void FillDropDownTags()
         {
-            IEnumerable<SelectListItem> tags = _context.Products.Select(t => new SelectListItem
-            {
-                Value = t.Tag,
-                Text = t.Tag
-            }).Distinct();
+            var tags = _context.Products.Select(t => t.Tag).Distinct();
             ViewBag.TagsforDropdown = tags;
 
         }
