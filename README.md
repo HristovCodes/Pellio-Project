@@ -40,6 +40,6 @@ https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/inside-a-progra
 Поръчай - При натискане те отвежда в друга страница в която можеш да поръчаш, видиш съставки и да напишеш или видиш коментар;
 
 # Клас диаграма:
-ADD LINK TO IMAGE
+![Image of website](https://i.imgur.com/NLXSK85.png)
 # Диаграма на базите данни:
 ADD LINK TO IMAGE
