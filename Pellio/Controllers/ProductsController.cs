@@ -43,7 +43,7 @@ namespace Pellio.Controllers
 
             FillDropDownTags();
             GenUUIDC();
-            if(TagsDropdown == null || TagsDropdown == "Всички")
+            if (TagsDropdown == null || TagsDropdown == "Всички")
             {
                 return View(await _context.Products.ToListAsync());
             }
@@ -51,7 +51,7 @@ namespace Pellio.Controllers
             {
                 return View(await _context.Products.Where(p => p.Tag == TagsDropdown).ToListAsync());
             }
-            
+
         }
 
         /// <summary>
@@ -95,7 +95,10 @@ namespace Pellio.Controllers
         }
 
         // GET: Products/Order/5
-        //Returns a view of the chosen products (by id) with additional information about it and comments.
+        /// <summary>
+        /// Returns a view of the chosen products (by id) with additional information about it and comments.
+        /// </summary>
+        /// <returns>View with both Product data and comments for Product</returns>
         public async Task<IActionResult> Order(int? id)
         {
             if (id == null)
@@ -103,39 +106,39 @@ namespace Pellio.Controllers
                 return NotFound();
             }
 
-            if (_context.Comments.Where(m => m.ProductsId == id).Any())//check if there any records in comments table
-            {
-                //if avarage score and add to viewbag
-                var avg_score = _context.Comments
-                .Where(m => m.ProductsId == id)
-                .Average(m => m.Score);
-                ViewBag.avg_score = "Нашите потребители средно дават на това ястие оценката: " + avg_score;
-            }
-            else
-            {//if not tell user there is no score
-                ViewBag.avg_score = "За съжаление този продукт все още няма потребителски оценки. Можете да помогнете да промените това!";
-            }
-
-            var products = await _context.Products.Include(c => c.ListOfIngredients)
+            var products = await _context.Products.Include(co => co.Comments)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (products == null)
             {
                 return NotFound();
             }
 
-            if (products.Comments == null)
+            if (products.Comments == null)//check if there any records in comments table or if it is null
             {
                 products.Comments = new List<Comments>();
-            }
-            foreach (var com in _context.Comments)
-            {
-                if (!products.Comments.Contains(com))
+                foreach (var com in _context.Comments)
                 {
-                    if (com.ProductsId == products.Id)
+                    if (!products.Comments.Contains(com))
                     {
-                        products.Comments.Add(com);
+                        if (com.ProductsId == products.Id)
+                        {
+                            products.Comments.Add(com);
+                        }
                     }
                 }
+                ViewBag.avg_score = "За съжаление този продукт все още няма потребителски оценки. Можете да помогнете да промените това!";
+            }
+            else if (!products.Comments.Any())
+            {//if not tell user there is no score
+                ViewBag.avg_score = "За съжаление този продукт все още няма потребителски оценки. Можете да помогнете да промените това!";
+
+            }
+            else
+            {
+                //if avarage score and add to viewbag
+                var avg_score = products.Comments.Average(sc => sc.Score);
+                var rounded = Math.Round(avg_score, 2);
+                ViewBag.avg_score = "Нашите потребители средно дават на това ястие оценката: " + rounded;
             }
 
             ProductComment productComment = new ProductComment()
@@ -171,7 +174,7 @@ namespace Pellio.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> FillDB()
         {
-            string line; 
+            string line;
             string file_name = "Danni.txt";
             string path = Path.Combine(Environment.CurrentDirectory, file_name);
             System.IO.StreamReader file =
@@ -190,6 +193,12 @@ namespace Pellio.Controllers
             file.Close();
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        //Checks if a product exists. Accepts ID as an argument.
+        private bool ProductsExists(int id)
+        {
+            return _context.Products.Any(e => e.Id == id);
         }
     }
 }

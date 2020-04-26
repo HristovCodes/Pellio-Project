@@ -40,6 +40,7 @@ namespace Pellio.Controllers
                 {
                     Total = 0,
                     UserId = uid,
+                    TimeMade = DateTime.Now.ToString("MM/dd/yyyy"),
                     Products = new List<Products>()
                 };
                 _context.Add(cart);
