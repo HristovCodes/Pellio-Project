@@ -10,6 +10,7 @@ namespace Pellio.Models
         public int Id { get; set; }
         public decimal Total { get; set; }
         public string UserId { get; set; }
+        public string TimeMade { get; set; }
 
         public List<Products> Products { get; set; }
     }

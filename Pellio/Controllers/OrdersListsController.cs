@@ -27,6 +27,8 @@ namespace Pellio.Controllers
         // GET: OrdersLists
         public async Task<IActionResult> Index()
         {
+            OrderListCleanUp();
+
             string uid = Request.Cookies["uuidc"];
 
             var cart = await _context.OrdersList
@@ -53,6 +55,22 @@ namespace Pellio.Controllers
             return View(combo);
         }
 
+        private void OrderListCleanUp()
+        {
+            string curr_time = DateTime.Now.ToString("MM/dd/yyyy");
+            var entries = _context.OrdersList.Include(c => c.Products).ToList();
+            foreach(var entry in entries)
+            {
+                DateTime parsed_now = DateTime.ParseExact(curr_time, "MM/dd/yyyy", null);
+                DateTime parsed_entry = DateTime.ParseExact(entry.TimeMade, "MM/dd/yyyy", null);
+                if ((parsed_entry.Date - parsed_now.Date).Days >= 31)
+                {
+                    _context.OrdersList.Remove(entry);
+                }
+            }
+            _context.SaveChanges();
+        }
+
         //POST: OrdersLists/AddToCart/5
         /// <summary>
         /// Adds Product object to Orderlist entry in db with specific uuidc
@@ -71,7 +89,8 @@ namespace Pellio.Controllers
                 userorders = new OrdersList
                 {
                     Total = 0,
-                    UserId = uid
+                    UserId = uid,
+                    TimeMade = DateTime.Now.ToString("MM/dd/yyyy")
                 };
                 _context.OrdersList.Add(userorders);
             }
@@ -95,7 +114,9 @@ namespace Pellio.Controllers
         }
 
         // POST: OrdersLists/DeleteProduct/5
-        // Deletes an ordered product from the database. Accepts ID as an argument. 
+        /// <summary>
+        /// Deletes an ordered product from the database. Accepts ID as an argument. 
+        /// </summary>
         public async Task<IActionResult> DeleteProduct(int? id)
         {
              var removed = _context.Products

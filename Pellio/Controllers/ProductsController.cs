@@ -39,9 +39,10 @@ namespace Pellio.Controllers
             creds.Password = "***REMOVED***";
             _context.Add(creds);
             await _context.SaveChangesAsync();
+            //debug^
 
             FillDropDownTags();
-            GenUUID();
+            GenUUIDC();
             if(TagsDropdown == null || TagsDropdown == "Всички")
             {
                 return View(await _context.Products.ToListAsync());
@@ -56,7 +57,7 @@ namespace Pellio.Controllers
         /// <summary>
         /// Generates UUID. Generates new cart entry in db with said UUID.
         /// </summary>
-        private void GenUUID()
+        private void GenUUIDC()
         {
             if (Request.Cookies["uuidc"] == null)
             {
