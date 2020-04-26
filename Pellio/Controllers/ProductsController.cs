@@ -113,7 +113,7 @@ namespace Pellio.Controllers
                 return NotFound();
             }
 
-            if (products.Comments == null)//check if there any records in comments table or if it is null
+            if (products.Comments == null)//check if it is null
             {
                 products.Comments = new List<Comments>();
                 foreach (var com in _context.Comments)
@@ -126,12 +126,11 @@ namespace Pellio.Controllers
                         }
                     }
                 }
-                ViewBag.avg_score = "За съжаление този продукт все още няма потребителски оценки. Можете да помогнете да промените това!";
             }
-            else if (!products.Comments.Any())
+
+            if (!products.Comments.Any())//check if any comments connected to product
             {//if not tell user there is no score
                 ViewBag.avg_score = "За съжаление този продукт все още няма потребителски оценки. Можете да помогнете да промените това!";
-
             }
             else
             {
