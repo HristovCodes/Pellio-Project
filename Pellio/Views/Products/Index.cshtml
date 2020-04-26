@@ -25,9 +25,10 @@
 
 <h3 class="title">Категории:</h3>
 <form asp-controller="Products" asp-action="Index" class="categories">
+    <input type="submit" name="TagsDropdown" value="Всички" id="TagsDropdown" class="input" />
     @foreach (var tag in ViewBag.TagsforDropdown)
     {
-    <input type="submit" name="TagsDropdown" value="@tag" id="TagsDropdown" class="input" />
+        <input type="submit" name="TagsDropdown" value="@tag" id="TagsDropdown" class="input" />
     }
 </form>
 <h2 class="title">Нашите горещи предложения</h2>

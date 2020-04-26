@@ -42,7 +42,7 @@ namespace Pellio.Controllers
 
             FillDropDownTags();
             GenUUID();
-            if(TagsDropdown == null)
+            if(TagsDropdown == null || TagsDropdown == "Всички")
             {
                 return View(await _context.Products.ToListAsync());
             }
