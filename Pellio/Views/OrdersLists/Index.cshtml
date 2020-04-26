@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="~/css/cart.css" />
 
 <div>
-    @{ string messegformail = "Храните коуто поръчахте са: ";}
+    @{ string messegformail = "Храните които поръчахте са: ";}
     <div class="grid">
         @foreach (var item in Model.OrdersList.Products)
         {
@@ -49,7 +49,7 @@
     <div>
         @if(!Model.MadeOrder.Any())@*no items*@
         {
-            <p>Хммммм... Изглжда че до сега не сте направили поръчки</p>
+            <p>Изглжда че до сега не сте направили поръчки</p>
         }
         else
         {
