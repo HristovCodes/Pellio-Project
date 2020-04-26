@@ -1,23 +1,29 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="Pellio.Controllers.HomeController">
-    <Position X="8.25" Y="1.5" Width="1.5" />
+    <Position X="2" Y="1.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>BAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Controllers\HomeController.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Pellio.Controllers.OrdersListsController">
-    <Position X="5.75" Y="1.25" Width="1.5" />
+    <Position X="4" Y="1.25" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAABAEAACAABAAAAAAAAAgAAAAAAAAAAAEIAAAAACA=</HashCode>
+      <HashCode>AAAABAEAACAABAAAAAAAAAgAAAAAAAAAAAEIAQAAACA=</HashCode>
       <FileName>Controllers\OrdersListsController.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Pellio.Controllers.ProductsController">
-    <Position X="3.5" Y="1.25" Width="1.5" />
+    <Position X="6" Y="1.25" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
     <TypeIdentifier>
-      <HashCode>AAEACBAIAAAABAAAAAAAAAAABAAAAgAAAQEAAAAAAAA=</HashCode>
+      <HashCode>AAEACAAIAAAABACAAAAAAAAABAAAAgAAAAEAAAAAAAA=</HashCode>
       <FileName>Controllers\ProductsController.cs</FileName>
     </TypeIdentifier>
   </Class>

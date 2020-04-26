@@ -191,11 +191,5 @@ namespace Pellio.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-
-        //Checks if a product exists. Accepts ID as an argument.
-        private bool ProductsExists(int id)
-        {
-            return _context.Products.Any(e => e.Id == id);
-        }
     }
 }
