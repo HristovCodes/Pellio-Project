@@ -36,7 +36,8 @@ namespace Pellio.Controllers
 
             if (cart == null)
             {
-                cart = new OrdersList {
+                cart = new OrdersList
+                {
                     Total = 0,
                     UserId = uid,
                     Products = new List<Products>()
@@ -59,7 +60,7 @@ namespace Pellio.Controllers
         {
             string curr_time = DateTime.Now.ToString("MM/dd/yyyy");
             var entries = _context.OrdersList.Include(c => c.Products).ToList();
-            foreach(var entry in entries)
+            foreach (var entry in entries)
             {
                 DateTime parsed_now = DateTime.ParseExact(curr_time, "MM/dd/yyyy", null);
                 DateTime parsed_entry = DateTime.ParseExact(entry.TimeMade, "MM/dd/yyyy", null);
@@ -90,11 +91,12 @@ namespace Pellio.Controllers
                 {
                     Total = 0,
                     UserId = uid,
-                    TimeMade = DateTime.Now.ToString("MM/dd/yyyy")
+                    TimeMade = DateTime.Now.ToString("MM/dd/yyyy"),
+                    Products = new List<Products>()
                 };
                 _context.OrdersList.Add(userorders);
             }
-            if (userorders.Products == null)
+            else if (userorders.Products == null)
             {
                 userorders.Products = new List<Products>();
             }
@@ -119,8 +121,8 @@ namespace Pellio.Controllers
         /// </summary>
         public async Task<IActionResult> DeleteProduct(int? id)
         {
-             var removed = _context.Products
-            .First(m => m.Id == id);
+            var removed = _context.Products
+           .First(m => m.Id == id);
             _context.Products
            .Remove(removed);
 
@@ -154,7 +156,7 @@ namespace Pellio.Controllers
                 neworder.CustomerAddress = address;
                 neworder.CustomerPhoneNumber = phone;
                 neworder.CustomerEmail = rec;
-                neworder.UserId = uid; 
+                neworder.UserId = uid;
                 neworder.TimeOfOrder = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss");
                 neworder.Complete = false;
                 neworder.Canceled = false;
@@ -162,7 +164,7 @@ namespace Pellio.Controllers
                     .Include(m => m.Products)
                     .FirstOrDefaultAsync(m => m.UserId == uid);
                 string temp_product_names = "";
-                foreach(var nameb in userorders.Products)
+                foreach (var nameb in userorders.Products)
                 {
                     temp_product_names += nameb.ProductName;
                     temp_product_names += ',';
@@ -174,7 +176,7 @@ namespace Pellio.Controllers
                 _context.MadeOrder.Add(neworder);
                 _context.SaveChanges();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 throw e;
             }
