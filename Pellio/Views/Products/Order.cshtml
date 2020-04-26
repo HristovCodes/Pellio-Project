@@ -67,13 +67,13 @@
             <span asp-validation-for="@Model.Comments.Comment" class=""></span>
         </div>
         <div class="comment">
-            <label asp-for="@Model.Comments.Score">Как бихте оценили храната от 1 до 5?</label>
+            <label asp-for="@Model.Comments.Score" class="title">Как бихте оценили храната от 1 до 5?</label>
             <select asp-for="@Model.Comments.Score" required>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
+                <option value="1" class="text">1</option>
+                <option value="2" class="text">2</option>
+                <option value="3" class="text">3</option>
+                <option value="4" class="text">4</option>
+                <option value="5" class="text">5</option>
             </select>
             <span asp-validation-for="@Model.Comments.Score" class=""></span>
         </div>

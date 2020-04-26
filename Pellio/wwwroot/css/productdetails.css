@@ -79,23 +79,6 @@
     margin-bottom: 30px;
 }
 
-.input[type=submit] {
-    color: #fff;
-    padding: 5px 10px;
-    border: 2px solid #102094;
-    background-color: #1428BE;
-    border-radius: 5px;
-    transition: transform 200ms ease-in-out, background-color 300ms ease-in-out, color 300ms ease-in-out;
-}
-
-.input[type=submit]:hover {
-    transform: scale(1.05);
-    color: #000000;
-    border: 2px solid #051487;
-    background-color: #6f7eea;
-    border-radius: 5px;
-}
-
 @media (min-width: 750px) {
     .grid {
         grid-template-areas: "img text" "comtitle comtitle" "comment comment" "form form";
