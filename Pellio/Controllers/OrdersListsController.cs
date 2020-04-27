@@ -59,18 +59,21 @@ namespace Pellio.Controllers
 
         private void OrderListCleanUp()
         {
-            string curr_time = DateTime.Now.ToString("MM/dd/yyyy");
             var entries = _context.OrdersList.Include(c => c.Products).ToList();
-            foreach (var entry in entries)
+            if (entries.Any())
             {
-                DateTime parsed_now = DateTime.ParseExact(curr_time, "MM/dd/yyyy", null);
-                DateTime parsed_entry = DateTime.ParseExact(entry.TimeMade, "MM/dd/yyyy", null);
-                if ((parsed_entry.Date - parsed_now.Date).Days >= 31)
+                string curr_time = DateTime.Now.ToString("MM/dd/yyyy");
+                foreach (var entry in entries)
                 {
-                    _context.OrdersList.Remove(entry);
+                    DateTime parsed_now = DateTime.ParseExact(curr_time, "MM/dd/yyyy", null);
+                    DateTime parsed_entry = DateTime.ParseExact(entry.TimeMade, "MM/dd/yyyy", null);
+                    if ((parsed_entry.Date - parsed_now.Date).Days >= 31)
+                    {
+                        _context.OrdersList.Remove(entry);
+                    }
                 }
+                _context.SaveChanges();
             }
-            _context.SaveChanges();
         }
 
         //POST: OrdersLists/AddToCart/5
