@@ -127,6 +127,13 @@ namespace Pellio.Controllers
         {
             var removed = _context.Products
            .First(m => m.Id == id);
+
+            string uid = Request.Cookies["uuidc"];
+            var userorders = await _context.OrdersList
+            .FirstOrDefaultAsync(m => m.UserId == uid);
+
+            userorders.Total -= removed.Price;
+
             _context.Products
            .Remove(removed);
 
