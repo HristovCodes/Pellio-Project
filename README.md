@@ -14,17 +14,19 @@
 https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/inside-a-program/coding-conventions
 
 
-# Потребителски изисквания:
-име/фирма на оператора на сайта;
-данни за кореспонденция, включително телефон и адрес на електронна поща;
-основните характеристики на стоките или услугите;
-отговорност на оператора на сайталовия за плащане, доставка, изпълнение;
-отговорности на оператора на сайта:
-за действията на определени лица (например собствени служители).
-според стойността на вредата (да не се носи отговорност за незначителни вреди)
-     -   указания за използване на бисквитки и други средства 
-         за краткотрайно запаметяване на данни на потребителите;
-доказателства – копия от платежен документ (касова бележка или фактура)
+# Потребителски изисквания:  
+
+-име/фирма на оператора на сайта;  
+-данни за кореспонденция, включително телефон и адрес на електронна поща;  
+-основните характеристики на стоките или услугите;  
+-отговорност на оператора на сайталовия за плащане, доставка, изпълнение;  
+-отговорности на оператора на сайта:  
+
+     -за действията на определени лица (например собствени служители).  
+     -според стойността на вредата (да не се носи отговорност за незначителни вреди)  
+
+-указания за използване на бисквитки и други средства за краткотрайно запаметяване на данни на потребителите;  
+-доказателства – копия от платежен документ (касова бележка или фактура)  
 
 # Потребителски интерфейс:
 ![Image of website](https://i.imgur.com/SUsr29e.png)
@@ -40,6 +42,147 @@ https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/inside-a-progra
 Поръчай - При натискане те отвежда в друга страница в която можеш да поръчаш, видиш съставки и да напишеш или видиш коментар;
 
 # Клас диаграма:
-![Image of website](https://i.imgur.com/NLXSK85.png)
+![Image of class diagram](https://i.imgur.com/NLXSK85.png)
 # Диаграма на базите данни:
-ADD LINK TO IMAGE
+![Image of er diagram](https://i.imgur.com/fj3rt8Z.png)
+
+
+# Описване на по-важни класове и методи:
+
+## ProductsController.cs - Съдържа функции работещи с продукти обекти, база данни и визуални елементи (.cshtml)
+
+```csharp
+        // GET: Products
+        /// <summary>
+        /// Acts as a Main function. Makes call to uuidc create function.
+        /// </summary>
+        /// <returns>Displays all products from db.</returns>
+        [Route("")]
+        [Route("Products")]
+        [Route("Products/Index")]
+        public async Task<IActionResult> Index(string TagsDropdown)
+        {
+            var creds = new EmailCredentials();
+            creds.Email = "fokenlasersights@gmail.com";
+            creds.Password = "******";
+            _context.Add(creds);
+            await _context.SaveChangesAsync();
+
+            FillDropDownTags();
+            GenUUIDC();
+            if (TagsDropdown == null || TagsDropdown == "Всички")
+            {
+                return View(await _context.Products.ToListAsync());
+            }
+            else
+            {
+                return View(await _context.Products.Where(p => p.Tag == TagsDropdown).ToListAsync());
+            }
+
+        }
+```
+
+> Играе ролята на главна страница. При зареждане на WebApp това е първата страница която зарежда. TagsDropdown - използва се за сортиране и се получава от FillDropDownTags(). При първо зареждане е null, после получава стойност от Index.cshtml event. Поставя на Index.cshtml сортиран или не сортиран лист от продукти от база данни.
+
+```csharp
+        // GET: Products/Order/5
+        /// <summary>
+        /// Returns a view of the chosen products (by id) with additional information about it and comments.
+        /// </summary>
+        /// <returns>View with both Product data and comments for Product</returns>
+        public async Task<IActionResult> Order(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var products = await _context.Products.Include(co => co.Comments)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (products == null)
+            {
+                return NotFound();
+            }
+
+            if (products.Comments == null)//check if it is null
+            {
+                products.Comments = new List<Comments>();
+                foreach (var com in _context.Comments)
+                {
+                    if (!products.Comments.Contains(com))
+                    {
+                        if (com.ProductsId == products.Id)
+                        {
+                            products.Comments.Add(com);
+                        }
+                    }
+                }
+            }
+
+            if (!products.Comments.Any())//check if any comments connected to product
+            {//if not tell user there is no score
+                ViewBag.avg_score = "За съжаление този продукт все още няма потребителски оценки. Можете да помогнете да промените това!";
+            }
+            else
+            {
+                //if avarage score and add to viewbag
+                var avg_score = products.Comments.Average(sc => sc.Score);
+                var rounded = Math.Round(avg_score, 2);
+                ViewBag.avg_score = "Нашите потребители средно дават на това ястие оценката: " + rounded;
+            }
+
+            ProductComment productComment = new ProductComment()
+            {
+                Products = products,
+                Comments = new Comments()
+            };
+
+            return View(productComment);
+        }
+```
+
+> Първо проверяваме дали Id е null и дали съществува Product. Ако няма Лист с коментари се създава такъв и се пълни с всички коментари споделящи id с продукта.Ако има лист но не и коментари се извежда такова съобщение. Ако ли не се извежда средната оценка. Използваики ProductComment модела се извеждат коментарите и данни за продукта на едно View.
+
+## OrdersListsController.cs - Съдържа функции работещи с количката обекти, база данни и визуални елементи (.cshtml)
+
+```csharp
+        // GET: OrdersLists
+        public async Task<IActionResult> Index()
+        {
+            OrderListCleanUp();
+
+            string uid = Request.Cookies["uuidc"];
+
+            var cart = await _context.OrdersList
+                .Include(c => c.Products).FirstOrDefaultAsync(m => m.UserId == uid);
+
+            if (cart == null)
+            {
+                cart = new OrdersList
+                {
+                    Total = 0,
+                    UserId = uid,
+                    TimeMade = DateTime.Now.ToString("MM/dd/yyyy"),
+                    Products = new List<Products>()
+                };
+                _context.Add(cart);
+                await _context.SaveChangesAsync();
+            }
+
+
+            OrderListMadeOrder combo = new OrderListMadeOrder
+            {
+                OrdersList = cart,
+                MadeOrder = _context.MadeOrder.Where(mo => mo.UserId == uid).ToList()
+            };
+
+            return View(combo);
+        }
+```
+
+> OrderListCleanUp функция бива повикана да изчисти стари ентрита в базата. Колекция от продукти притежавани от това определено uuidc бива извадена от база с данни. Ако няма такава се създава. Използва се OrderListMadeOrder модела за да се покаже на един .cshtml както текущата количка така и предишни завършени поръчки от uuidc.
+
+ 
+
+
+
