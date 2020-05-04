@@ -38,6 +38,11 @@ namespace Pellio.Controllers
             creds.Email = "fokenlasersights@gmail.com";
             creds.Password = "***REMOVED***";
             _context.Add(creds);
+            //var ccode = new PercentOffCode();
+            //ccode.Code = "WORK";
+            //ccode.Percentage = 0.5m;
+            //ccode.Available = true;
+            //_context.Add(ccode);
             await _context.SaveChangesAsync();
             //debug^
 
@@ -190,6 +195,17 @@ namespace Pellio.Controllers
                 _context.Products.Add(tobeadded);
             }
             file.Close();
+            var todd = new PercentOffCode();
+            todd.Code = "todd";
+            todd.Percentage = 0m;
+            todd.Available = false;
+            _context.Add(todd);
+            _context.SaveChanges();
+            var code = new PercentOffCode();
+            code.Code = "bruh";
+            code.Percentage = 50m;
+            code.Available = true;
+            _context.Add(code);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

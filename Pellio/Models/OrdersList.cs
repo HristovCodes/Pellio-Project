@@ -13,5 +13,7 @@ namespace Pellio.Models
         public string TimeMade { get; set; }
 
         public List<Products> Products { get; set; }
+        public int PercentOffCodeId { get; set; }
+        public PercentOffCode PercentOffCode { get; set; }
     }
 }
