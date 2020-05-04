@@ -28,7 +28,10 @@
     <input type="submit" name="TagsDropdown" value="Всички" id="TagsDropdown" class="input" />
     @foreach (var tag in ViewBag.TagsforDropdown)
     {
-        <input type="submit" name="TagsDropdown" value="@tag" id="TagsDropdown" class="input" />
+        @if (tag != null)
+        {
+            <input type="submit" name="TagsDropdown" value="@tag" id="TagsDropdown" class="input" />
+        }
     }
 </form>
 <div id="items"></div>

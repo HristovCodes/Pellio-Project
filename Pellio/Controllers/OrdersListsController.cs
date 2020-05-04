@@ -32,7 +32,7 @@ namespace Pellio.Controllers
             string uid = Request.Cookies["uuidc"];
 
             var cart = await _context.OrdersList
-                .Include(c => c.Products).FirstOrDefaultAsync(m => m.UserId == uid);
+                .Include(c => c.Products).Include(co => co.PercentOffCode).FirstOrDefaultAsync(m => m.UserId == uid);
 
             if (cart == null)
             {
@@ -41,7 +41,8 @@ namespace Pellio.Controllers
                     Total = 0,
                     UserId = uid,
                     TimeMade = DateTime.Now.ToString("MM/dd/yyyy"),
-                    Products = new List<Products>()
+                    Products = new List<Products>(),
+                    PercentOffCode = _context.PercentOffCodes.FirstOrDefault()
                 };
                 _context.Add(cart);
                 await _context.SaveChangesAsync();
@@ -55,6 +56,33 @@ namespace Pellio.Controllers
             };
 
             return View(combo);
+        }
+
+        public async Task<IActionResult> UseDiscountCode(string code)
+        {
+            string uid = Request.Cookies["uuidc"];
+            var code_form_db = _context.PercentOffCodes.Include(c => c.OrdersList)
+                .Where(c => c.Code == code).FirstOrDefault();
+            if (code_form_db != null && code_form_db.Available == true)
+            {
+                var ol = _context.OrdersList.Include(c => c.Products).Where(u => u.UserId == uid).FirstOrDefault();
+                ol.PercentOffCode = code_form_db;
+                _context.SaveChanges();
+                //var oldos = _context.OrdersList.Include(c => c.Products).Where(u => u.UserId == uid).FirstOrDefault();
+                TempData["used_code"] =
+                    $"Поздравления! Вие използвахте кода {code_form_db.Code} които ви дава {String.Format("{0:0}", code_form_db.Percentage)}% отстъпка.";
+            }
+            else
+            {
+                TempData["used_code"] = "Съжелява ме. но този код не е истински или е вече използван";
+            }
+            //var ccode = new PercentOffCode();
+            //ccode.Code = "bruh";
+            //ccode.Percentage = 0.5m;
+            //ccode.Available = true;
+            //_context.Add(ccode);
+            //_context.SaveChanges();
+            return RedirectToAction(nameof(Index));
         }
 
         private void OrderListCleanUp()
@@ -120,7 +148,8 @@ namespace Pellio.Controllers
                     Total = 0,
                     UserId = uid,
                     TimeMade = DateTime.Now.ToString("MM/dd/yyyy"),
-                    Products = new List<Products>()
+                    Products = new List<Products>(),
+                    PercentOffCode = _context.PercentOffCodes.FirstOrDefault()
                 };
                 _context.OrdersList.Add(userorders);
             }
@@ -139,6 +168,10 @@ namespace Pellio.Controllers
                 Ingredients = "dont show"
             };
             userorders.Total += pr.Price;
+            //if(userorders.PercentOffCode != null && userorders.PercentOffCode.Available == true)
+            //{
+            //    userorders.Total = userorders.Total - (userorders.Total * (userorders.PercentOffCode.Percentage / 100));
+            //}
             userorders.Products.Add(newproduct);
 
             _context.SaveChanges();
