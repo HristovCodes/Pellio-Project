@@ -167,7 +167,7 @@ namespace Pellio.Controllers
                 _context.Add(comments);
                 await _context.SaveChangesAsync();
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Order" , new {id = id});
             }
             return View(comments);
         }

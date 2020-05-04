@@ -23,22 +23,30 @@
                 @item.Price лв
             </p>
         }
-    <p class="total">
-        Total:
         @if (Model.OrdersList.PercentOffCode != null && Model.OrdersList.PercentOffCode.Available == true)
         {
-        <span>
-            @{ Model.OrdersList.Total = Model.OrdersList.Total - (Model.OrdersList.Total * (Model.OrdersList.PercentOffCode.Percentage / 100));}
-            @Model.OrdersList.Total.ToString("F") лв (-@String.Format("{0:0}", Model.OrdersList.PercentOffCode.Percentage)%)
-        </span>
+            <p>Активен код: @Model.OrdersList.PercentOffCode.Code (@String.Format("{0:0}", Model.OrdersList.PercentOffCode.Percentage)%)</p>
         }
         else
         {
-            <span>
-                @Model.OrdersList.Total лв
-            </span>
+            <p>Нямате активен код.</p>
         }
-    </p>
+        <p class="total">
+            Total:
+            @if (Model.OrdersList.PercentOffCode != null && Model.OrdersList.PercentOffCode.Available == true)
+            {
+                <span>
+                    @{ Model.OrdersList.Total = Model.OrdersList.Total - (Model.OrdersList.Total * (Model.OrdersList.PercentOffCode.Percentage / 100));}
+                    @Model.OrdersList.Total.ToString("F") лв (-@String.Format("{0:0}", Model.OrdersList.PercentOffCode.Percentage)%)
+                </span>
+            }
+            else
+            {
+                <span>
+                    @Model.OrdersList.Total лв
+                </span>
+            }
+        </p>
         <form class="orderform" asp-controller="OrdersLists" asp-action="OrderingMainLogicFunc">
             <p>Моля въвете вашият адрес, телефон, име и E-Mail, за да можем да изпълним вашата поръчка.</p>
             <div class="flex">

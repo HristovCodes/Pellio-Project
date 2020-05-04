@@ -231,6 +231,7 @@ namespace Pellio.Controllers
                 neworder.Canceled = false;
                 var userorders = await _context.OrdersList
                     .Include(m => m.Products)
+                    .Include(co => co.PercentOffCode)
                     .FirstOrDefaultAsync(m => m.UserId == uid);
                 string temp_product_names = "";
                 foreach (var nameb in userorders.Products)
@@ -241,7 +242,7 @@ namespace Pellio.Controllers
                 neworder.Products_names = temp_product_names;
                 //supposted to be a many-to-many????
                 //"works" fix^
-                neworder.FinalPrice = userorders.Total;
+                neworder.FinalPrice = userorders.Total - (userorders.Total * (userorders.PercentOffCode.Percentage / 100));
                 _context.MadeOrder.Add(neworder);
                 _context.SaveChanges();
             }
@@ -287,9 +288,13 @@ namespace Pellio.Controllers
             string uid = Request.Cookies["uuidc"];
             var ordersList = await _context.OrdersList
                 .Include(c => c.Products)
+                .Include(co => co.PercentOffCode)
                 .FirstAsync(m => m.UserId == uid);
             var productList = ordersList.Products;
             _context.OrdersList.Remove(ordersList);
+            var used_code = _context.PercentOffCodes.Where(n => n.Code == ordersList.PercentOffCode.Code).FirstOrDefault().Available = false;
+            //used_code.Available = false;
+            ordersList.PercentOffCode = _context.PercentOffCodes.FirstOrDefault();
             _context.Products.RemoveRange(productList);
             await _context.SaveChangesAsync();
         }
