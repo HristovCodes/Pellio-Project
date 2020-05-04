@@ -88,5 +88,10 @@
     .image {
         width: 300px;
         height: 300px;
+        transition: transform ease-in-out 300ms;
+    }
+
+    .image:hover {
+        transform: scale(1.2) translate(10%, 10%);
     }
 }
