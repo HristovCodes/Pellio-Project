@@ -22,7 +22,10 @@
         </p>
         <div class="form">
             <form asp-action="AddToCart">
-                <input class="input" type="submit" value="Поръчай" asp-controller="OrdersLists" asp-action="AddToCart" asp-route-id="@Model.Products.Id" />
+                <input class="input" type="submit" value="Добави в количката" asp-controller="OrdersLists" asp-action="AddToCart" asp-route-id="@Model.Products.Id" />
+            </form>
+            <form asp-action="GoToCart">
+                <input class="input" type="submit" value="Поръчай" asp-controller="OrdersLists" asp-action="GoToCart" asp-route-id="@Model.Products.Id" />
             </form>
         </div>
     </div>

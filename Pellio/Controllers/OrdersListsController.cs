@@ -78,7 +78,7 @@ namespace Pellio.Controllers
 
         //POST: OrdersLists/AddToCart/5
         /// <summary>
-        /// Adds Product object to Orderlist entry in db with specific uuidc
+        /// Adds product to cart no redirects
         /// </summary>
         /// <param name="id">id of Product queried from db</param>
         /// <returns></returns>
@@ -86,9 +86,33 @@ namespace Pellio.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddToCart(int? id)
         {
+            ProductToCart(id);
+            return RedirectToAction("Index", "Products");
+        }
+
+        //POST: OrdersLists/GoToCart/5
+        /// <summary>
+        /// Adds product to cart and redirects to cart
+        /// </summary>
+        /// <param name="id">id of Product queried from db</param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> GoToCart(int? id)
+        {
+            ProductToCart(id);
+            return RedirectToAction(nameof(Index));
+        }
+
+        /// <summary>
+        /// Adds Product object to Orderlist entry in db with specific uuidc
+        /// </summary>
+        public void ProductToCart(int? id)
+        {
             string uid = Request.Cookies["uuidc"];
-            var userorders = await _context.OrdersList
-            .FirstOrDefaultAsync(m => m.UserId == uid);
+            var userorders = _context.OrdersList
+            .FirstOrDefault(m => m.UserId == uid);
+
             if (userorders == null)
             {
                 userorders = new OrdersList
@@ -104,19 +128,20 @@ namespace Pellio.Controllers
             {
                 userorders.Products = new List<Products>();
             }
-            var product = _context.Products.Find(id);
+
+            var pr = _context.Products.Find(id);
+
             var newproduct = new Products
             {
-                ProductName = product.ProductName,
-                Price = product.Price,
-                ImageUrl = product.ImageUrl,
+                ProductName = pr.ProductName,
+                Price = pr.Price,
+                ImageUrl = pr.ImageUrl,
                 Ingredients = "dont show"
             };
-            userorders.Total += product.Price;
+            userorders.Total += pr.Price;
             userorders.Products.Add(newproduct);
 
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            _context.SaveChanges();
         }
 
         // POST: OrdersLists/DeleteProduct/5

@@ -17,5 +17,10 @@ namespace Pellio.Controllers
         {
             return View();
         }
+
+        public IActionResult Faq()
+        {
+            return View();
+        }
     }
 }
