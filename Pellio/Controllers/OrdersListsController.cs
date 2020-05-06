@@ -27,7 +27,7 @@ namespace Pellio.Controllers
         // GET: OrdersLists
         public async Task<IActionResult> Index()
         {
-            OrderListCleanUp();
+            //OrderListCleanUp();
 
             string uid = Request.Cookies["uuidc"];
 

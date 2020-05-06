@@ -38,11 +38,11 @@ namespace Pellio.Controllers
             creds.Email = "fokenlasersights@gmail.com";
             creds.Password = "***REMOVED***";
             _context.Add(creds);
-            //var ccode = new PercentOffCode();
-            //ccode.Code = "WORK";
-            //ccode.Percentage = 0.5m;
-            //ccode.Available = true;
-            //_context.Add(ccode);
+            var code = new PercentOffCode();
+            code.Code = "bruh";
+            code.Percentage = 50m;
+            code.Available = true;
+            _context.Add(code);
             await _context.SaveChangesAsync();
             //debug^
 
@@ -78,7 +78,8 @@ namespace Pellio.Controllers
                     {
                         Products = new List<Products>(),
                         Total = 0,
-                        UserId = uuid
+                        UserId = uuid,
+                        PercentOffCode = _context.PercentOffCodes.FirstOrDefault()
                     });
                     _context.SaveChanges();
                 }
