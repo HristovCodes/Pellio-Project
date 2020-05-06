@@ -40,6 +40,11 @@ namespace Pellio.Controllers
                 creds.Email = "fokenlasersights@gmail.com";
                 creds.Password = "***REMOVED***";
                 _context.Add(creds);
+                var todd = new PercentOffCode();
+                todd.Code = "todd";
+                todd.Percentage = 0m;
+                todd.Available = false;
+                _context.Add(todd);
             }
             //var ccode = new PercentOffCode();
             //ccode.Code = "WORK";
