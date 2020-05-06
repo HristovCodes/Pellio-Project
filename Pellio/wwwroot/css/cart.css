@@ -43,6 +43,7 @@
     justify-self: end;
     align-self: start;
 }
+
 .removebutton {
     background-color: #cf3e3e;
     color: #ffffffff;
@@ -71,7 +72,7 @@
     text-align: start;
 }
 
-.input {
+.input, .prvspurchasesbtn {
     -moz-box-sizing: content-box; /* or `border-box` */
     -webkit-box-sizing: content-box;
     box-sizing: content-box;
@@ -93,24 +94,7 @@
     background-color: #6f7eea;
 }
 
-.input[type=submit] {
-    color: #fff;
-    padding: 5px 0;
-    border: 2px solid #102094;
-    background-color: #1428BE;
-    border-radius: 5px;
-    transition: transform 200ms ease-in-out, background-color 300ms ease-in-out, color 300ms ease-in-out;
-}
-
-.input[type=submit]:hover {
-    transform: scale(1.05);
-    color: #000000;
-    border: 2px solid #051487;
-    background-color: #6f7eea;
-    border-radius: 5px;
-}
-
-.input[type=submit] {
+.input[type=submit], .prvspurchasesbtn {
     color: #fff;
     padding: 5px 10px;
     border: 2px solid #102094;
@@ -119,7 +103,7 @@
     transition: transform 200ms ease-in-out, background-color 300ms ease-in-out, color 300ms ease-in-out;
 }
 
-.input[type=submit]:hover {
+.input[type=submit]:hover, .prvspurchasesbtn:hover {
     transform: scale(1.05);
     color: #000000;
     border: 2px solid #051487;
@@ -140,8 +124,61 @@
 .total span {    
     color: #1428BE;
 }
+
 .hide {
     display: none;
+}
+
+.prvspurchases {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(255, 255, 255, 0.33);
+    z-index: 2;
+}
+
+.prvspurchases:hover {
+    cursor: pointer;
+}
+
+.prvspurchasesbtn {
+    text-align: center;
+}
+
+.prvspurchasesbtn:hover {
+    cursor: pointer;
+}
+
+.window {
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #6f7eea;
+    border-radius: 15px;
+    width: 60%;
+    height: 70%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.window:hover {
+    cursor: default;
+}
+
+.window p {
+    color: #fff;
+    text-align: center;
+    font-size: 1.15em;
+    margin: 15px 0;
+}
+
+.bold {
+    font-weight: 600;
 }
 
 @media (min-width: 400px) {
@@ -149,7 +186,6 @@
         width: 65%;
         grid-template-columns: 1fr 3fr 1fr;
     }
-}
 
 @media (min-width: 600px) {
     .grid {

@@ -59,7 +59,8 @@
                 <label class="label" for="phone">Телефонен номер:</label>
                 <input class="input" type="tel" name="phone" id="phone" pattern="[0-9]{10}" required />
                 <input class="hide" type="text" name="mes" id="mes" value="@messegformail" />
-                <input class="input" type="submit" value="Поръчаи" />
+                <input class="input" type="submit" value="Поръчай" />
+                <div id="openwindow" class="prvspurchasesbtn">Последни поръчки</div>
             </div>
         </form>
         <p>@TempData["used_code"]</p>
@@ -73,21 +74,26 @@
         }
     </div>
 
-    <div>
-        @if(!Model.MadeOrder.Any())@*no items*@
-        {
-            <p>Изглжда че до сега не сте направили поръчки</p>
-        }
-        else
-        {
-            foreach(var madeorder in Model.MadeOrder)
+    <div id="closewindow" class="hide">
+        <div id="window" class="window">
+            @if (!Model.MadeOrder.Any())@*no items*@
             {
-                <p>@madeorder.TimeOfOrder</p>
-                <p>@madeorder.Products_names</p>
-                <p>@madeorder.FinalPrice</p>
+                <p>Изглжда че до сега не сте направили поръчки</p>
             }
-        }
+            else
+            {
+                foreach (var madeorder in Model.MadeOrder.Skip(Math.Max(0, Model.MadeOrder.Count() - 3)))
+                {
+                    <p class="bold">@madeorder.TimeOfOrder</p>
+                    <p>@madeorder.Products_names</p>
+                    <p>@madeorder.FinalPrice</p>
+                }
+            }
+        </div>
     </div>
 </div>
 
+
+
 <script src="~/js/formvalidation.js"></script>
+<script src="~/js/previousorders.js"></script>
