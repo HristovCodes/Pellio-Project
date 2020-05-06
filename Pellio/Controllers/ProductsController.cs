@@ -34,10 +34,13 @@ namespace Pellio.Controllers
         [Route("Products/Index")]
         public async Task<IActionResult> Index(string TagsDropdown)
         {
-            var creds = new EmailCredentials();
-            creds.Email = "fokenlasersights@gmail.com";
-            creds.Password = "***REMOVED***";
-            _context.Add(creds);
+            if (_context.EmailCredentials.Count() == 0)
+            {
+                var creds = new EmailCredentials();
+                creds.Email = "fokenlasersights@gmail.com";
+                creds.Password = "***REMOVED***";
+                _context.Add(creds);
+            }
             //var ccode = new PercentOffCode();
             //ccode.Code = "WORK";
             //ccode.Percentage = 0.5m;
@@ -167,7 +170,7 @@ namespace Pellio.Controllers
                 _context.Add(comments);
                 await _context.SaveChangesAsync();
 
-                return RedirectToAction("Order" , new {id = id});
+                return RedirectToAction("Order", new { id = id });
             }
             return View(comments);
         }
