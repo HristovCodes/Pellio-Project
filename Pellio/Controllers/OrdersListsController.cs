@@ -259,25 +259,65 @@ namespace Pellio.Controllers
         /// <param name="mes">short for messege</param>
         async public Task SendMail(string rec, string mes)
         {
+            string uid = Request.Cookies["uuidc"];
             try
             {
                 if (ModelState.IsValid)
                 {
-                    var credsfromdb = _context.EmailCredentials.FirstOrDefault();
-                    var client = new SmtpClient("smtp.gmail.com", 587)
+                    var completed = _context.MadeOrder.Where(c => c.UserId == uid).Count();
+                    if (completed % 3 == 0)
                     {
+                        var code = new PercentOffCode
+                        {
+                            Code = CodeGenerate(),
+                            Percentage = 5,
+                            Available = true
+                        };
+                        _context.PercentOffCodes.Add(code);
+                        var credsfromdb = _context.EmailCredentials.FirstOrDefault();
+                        var client = new SmtpClient("smtp.gmail.com", 587)
+                        {
+                            Credentials = new NetworkCredential(credsfromdb.Email, credsfromdb.Password),
+                            EnableSsl = true
+                        };
+                        mes = mes.TrimEnd(',');
+                        client.Send("fokenlasersights@gmail.com", rec, "Вашата покупка от Pellio-Foods пможе да получи намаление с код " + code.Code + ", направена на " + DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"), mes.TrimEnd(','));
+                    }
+                    else
+                    {
+                        var credsfromdb = _context.EmailCredentials.FirstOrDefault();
+                        var client = new SmtpClient("smtp.gmail.com", 587)
+                        {
 
-                        Credentials = new NetworkCredential(credsfromdb.Email, credsfromdb.Password),
-                        EnableSsl = true
-                    };
-                    mes = mes.TrimEnd(',');
-                    client.Send("fokenlasersights@gmail.com", rec, "Вашата покупка от Pellio-Foods направена на " + DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"), mes.TrimEnd(','));
+                            Credentials = new NetworkCredential(credsfromdb.Email, credsfromdb.Password),
+                            EnableSsl = true
+                        };
+                        mes = mes.TrimEnd(',');
+                        client.Send("fokenlasersights@gmail.com", rec, "Вашата покупка от Pellio-Foods направена на " + DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"), mes.TrimEnd(','));
+                    }
                 }
             }
             catch (Exception e)
             {
                 throw e;
             }
+        }
+
+        public static string CodeGenerate()
+
+        {
+            var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            var stringChars = new char[8];
+            var random = new Random();
+
+            for (int i = 0; i < stringChars.Length; i++)
+            {
+                stringChars[i] = chars[random.Next(chars.Length)];
+            }
+
+            var finalString = new String(stringChars);
+
+            return finalString;
         }
 
         /// <summary>
