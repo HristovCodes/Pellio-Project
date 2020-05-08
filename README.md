@@ -35,7 +35,7 @@ https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/inside-a-progra
 -да има номер за обратна връзка;  
 -да има информация относно ресторанта;  
 -да има категории с който да се сортират продуктите по зададения критерии;  
-
+-плащането да става в брой и в българска валута;  
 
 # Потребителски интерфейс:
 ![Image of website](https://i.imgur.com/SUsr29e.png)
@@ -90,8 +90,8 @@ https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/inside-a-progra
 
         }
 ```
-
 > Играе ролята на главна страница. При зареждане на WebApp това е първата страница която зарежда. TagsDropdown - използва се за сортиране и се получава от FillDropDownTags(). При първо зареждане е null, после получава стойност от Index.cshtml event. Поставя на Index.cshtml сортиран или не сортиран лист от продукти от база данни.
+
 
 ```csharp
         // GET: Products/Order/5
@@ -149,7 +149,6 @@ https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/inside-a-progra
             return View(productComment);
         }
 ```
-
 > Първо проверяваме дали Id е null и дали съществува Product. Ако няма Лист с коментари се създава такъв и се пълни с всички коментари споделящи id с продукта.Ако има лист но не и коментари се извежда такова съобщение. Ако ли не се извежда средната оценка. Използваики ProductComment модела се извеждат коментарите и данни за продукта на едно View.
 
 ## OrdersListsController.cs - Съдържа функции работещи с количката обекти, база данни и визуални елементи (.cshtml)
@@ -188,10 +187,80 @@ https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/inside-a-progra
             return View(combo);
         }
 ```
-
 > OrderListCleanUp функция бива повикана да изчисти стари ентрита в базата. Колекция от продукти притежавани от това определено uuidc бива извадена от база с данни. Ако няма такава се създава. Използва се OrderListMadeOrder модела за да се покаже на един .cshtml както текущата количка така и предишни завършени поръчки от uuidc.
 
- 
+
+ ```csharp
+        /// <summary>
+        /// Sends the email via gmail smtp server
+        /// </summary>
+        /// <param name="rec">short for reciver</param>
+        /// <param name="mes">short for messege</param>
+        async public Task SendMail(string rec, string mes)
+        {
+            string uid = Request.Cookies["uuidc"];
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var completed = _context.MadeOrder.Where(c => c.UserId == uid).Count();
+                    if (completed % 3 == 0)
+                    {
+                        var code = new PercentOffCode
+                        {
+                            Code = CodeGenerate(),
+                            Percentage = 5,
+                            Available = true
+                        };
+                        _context.PercentOffCodes.Add(code);
+                        var credsfromdb = _context.EmailCredentials.FirstOrDefault();
+                        var client = new SmtpClient("smtp.gmail.com", 587)
+                        {
+                            Credentials = new NetworkCredential(credsfromdb.Email, credsfromdb.Password),
+                            EnableSsl = true
+                        };
+                        mes = mes.TrimEnd(',');
+                        client.Send("fokenlasersights@gmail.com", rec, "Вашата покупка от Pellio-Foods пможе да получи намаление с код " + code.Code + ", направена на " + DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"), mes.TrimEnd(','));
+                    }
+                    else
+                    {
+                        var credsfromdb = _context.EmailCredentials.FirstOrDefault();
+                        var client = new SmtpClient("smtp.gmail.com", 587)
+                        {
+
+                            Credentials = new NetworkCredential(credsfromdb.Email, credsfromdb.Password),
+                            EnableSsl = true
+                        };
+                        mes = mes.TrimEnd(',');
+                        client.Send("fokenlasersights@gmail.com", rec, "Вашата покупка от Pellio-Foods направена на " + DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"), mes.TrimEnd(','));
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+```  
+> SendMail функцията бива извиквана когато потребителят поръчва избраните от него продукти. На първа и всяка следваща трета поръчка на определеното uuidc, се изпраща код с отстъпка от 5%, който може да се използва един път и се пази в базата в случай че искат да го използват за друга поръчка. За останалите поръчки се изпраща друго съобщение без кода за отстъпка.
 
 
+ ```csharp
+        public static string CodeGenerate()
 
+        {
+            var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            var stringChars = new char[8];
+            var random = new Random();
+
+            for (int i = 0; i < stringChars.Length; i++)
+            {
+                stringChars[i] = chars[random.Next(chars.Length)];
+            }
+
+            var finalString = new String(stringChars);
+
+            return finalString;
+        }
+```  
+> CodeGenerate генерира този код, използван в функцията SendMail, който се изпраща на определеното uuidc, за да използва своето намаление. Той се състой от 8 случайни знака.
