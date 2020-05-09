@@ -51,7 +51,7 @@ namespace Pellio.Controllers
             //ccode.Percentage = 0.5m;
             //ccode.Available = true;
             //_context.Add(ccode);
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
             //debug^
 
             FillDropDownTags();
@@ -82,12 +82,12 @@ namespace Pellio.Controllers
                 if (_context.OrdersList
                     .Include(c => c.Products).FirstOrDefault(m => m.UserId == uuid) == null)
                 {
-                    _context.Add(new OrdersList
+                    _context.OrdersList.Add(new OrdersList
                     {
                         Products = new List<Products>(),
                         Total = 0,
                         UserId = uuid,
-                        PercentOffCode = _context.PercentOffCodes.FirstOrDefault()
+                        PercentOffCode = new PercentOffCode()
                     });
                     _context.SaveChanges();
                 }
