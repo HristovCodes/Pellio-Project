@@ -329,12 +329,12 @@ namespace Pellio.Controllers
             var ordersList = await _context.OrdersList
                 .Include(c => c.Products)
                 .Include(co => co.PercentOffCode)
-                .FirstAsync(m => m.UserId == uid);
+                .FirstAsync(m => m.UserId == uid);//finds cart
             var productList = ordersList.Products;
             _context.OrdersList.Remove(ordersList);
-            var used_code = _context.PercentOffCodes.Where(n => n.Code == ordersList.PercentOffCode.Code).FirstOrDefault().Available = false;
-            //used_code.Available = false;
-            ordersList.PercentOffCode = _context.PercentOffCodes.FirstOrDefault();
+            var used_code = _context.PercentOffCodes.Where(n => n.Code == ordersList.PercentOffCode.Code).FirstOrDefault();
+            _context.PercentOffCodes.Remove(used_code);//finds and removes code from db
+            ordersList.PercentOffCode = _context.PercentOffCodes.FirstOrDefault();//replaces with empty code
             _context.Products.RemoveRange(productList);
             await _context.SaveChangesAsync();
         }
