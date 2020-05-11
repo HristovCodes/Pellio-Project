@@ -3,28 +3,29 @@
   <Class Name="Pellio.Controllers.HomeController">
     <Position X="2" Y="1.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>BAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>BAAAAAAAgAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Controllers\HomeController.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Pellio.Controllers.OrdersListsController">
     <Position X="4" Y="1.25" Width="1.5" />
-    <Compartments>
-      <Compartment Name="Fields" Collapsed="true" />
-    </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAABAEAACAABAAAAAAAAAgAAAAAAAAAAAEIAQAAACA=</HashCode>
+      <HashCode>AAEABAEAACAABAAAAAAAAAgAAAgAAAAAAAEIAQAAASA=</HashCode>
       <FileName>Controllers\OrdersListsController.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Pellio.Controllers.ProductsController">
     <Position X="6" Y="1.25" Width="1.5" />
-    <Compartments>
-      <Compartment Name="Fields" Collapsed="true" />
-    </Compartments>
     <TypeIdentifier>
-      <HashCode>AAEACAAIAAAABACAAAAAAAAABAAAAgAAAAEAAAAAAAA=</HashCode>
+      <HashCode>AAEACAAIAAAABACAAAAAAAAABAAAAgAAAQEAAAAAAAA=</HashCode>
       <FileName>Controllers\ProductsController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Pellio.Data.PellioContext">
+    <Position X="8" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAAAAAAAAAAAIEAAAEAAAAAAAAIAAAAAAIAQ=</HashCode>
+      <FileName>Data\PellioContext.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />
