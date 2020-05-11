@@ -46,6 +46,11 @@
     width: 100%;
 }
 
+.input {
+    margin: 5px 0;
+    width: 180px;
+}
+
 .comment {
     width: 100%;
     padding: 25px 0;

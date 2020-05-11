@@ -209,6 +209,7 @@ namespace Pellio.Controllers
             await SendMail(rec, mes);
             await AddOrderToDb(name, address, phone, rec);
             await ClearCart();
+            //napravi nqkude check dali total e po malko ot 0, ako e NE pravi poruchka - Ivailo
             return RedirectToAction(nameof(Index));
         }
 

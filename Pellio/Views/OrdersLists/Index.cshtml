@@ -23,14 +23,6 @@
                 @item.Price лв
             </p>
         }
-        @if (Model.OrdersList.PercentOffCode != null && Model.OrdersList.PercentOffCode.Available == true)
-        {
-            <p>Активен код: @Model.OrdersList.PercentOffCode.Code (@String.Format("{0:0}", Model.OrdersList.PercentOffCode.Percentage)%)</p>
-        }
-        else
-        {
-            <p>Нямате активен код.</p>
-        }
         <p class="total">
             Total:
             @if (Model.OrdersList.PercentOffCode != null && Model.OrdersList.PercentOffCode.Available == true)
@@ -59,19 +51,17 @@
                 <label class="label" for="phone">Телефонен номер:</label>
                 <input class="input" type="tel" name="phone" id="phone" pattern="[0-9]{10}" required />
                 <input class="hide" type="text" name="mes" id="mes" value="@messegformail" />
+                <label class="label" for="code">Код:</label>
+                <input class="input" type="text" name="code" id="code" />
+                @if (Model.OrdersList.PercentOffCode != null && Model.OrdersList.PercentOffCode.Available == true)
+                {
+                    <label class="label">Активен код: @Model.OrdersList.PercentOffCode.Code (@String.Format("{0:0}", Model.OrdersList.PercentOffCode.Percentage)%)</label>
+                }
                 <input class="input" type="submit" value="Поръчай" />
                 <div id="openwindow" class="prvspurchasesbtn">Последни поръчки</div>
             </div>
         </form>
-        <p>@TempData["used_code"]</p>
-        @if (Model.OrdersList.Products.Count != 0)
-        {
-            <form class="usedcodeform" asp-controller="OrdersLists" asp-action="UseDiscountCode">
-                <label class="label" for="code">Код:</label>
-                <input class="input" type="text" name="code" id="code" required />
-                <input class="input" type="submit" value="Провери кода" />
-            </form>
-        }
+        <!-- premestih butona otgore opravi coda v controllera -->
     </div>
 
     <div id="closewindow" class="hide">
