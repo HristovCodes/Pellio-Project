@@ -1,31 +1,52 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="Pellio.Controllers.HomeController">
-    <Position X="2" Y="1.25" Width="1.5" />
+    <Position X="0.5" Y="1" Width="1.5" />
     <TypeIdentifier>
       <HashCode>BAAAAAAAgAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Controllers\HomeController.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Pellio.Controllers.OrdersListsController">
-    <Position X="4" Y="1.25" Width="1.5" />
+    <Position X="2.5" Y="1" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAEABAEAACAABAAAAAAAAAgAAAgAAAAAAAEIAQAAASA=</HashCode>
+      <HashCode>ACEABAEAACAABAAAAAAAAAgAAAgAAAAAAAEIAQAAASA=</HashCode>
       <FileName>Controllers\OrdersListsController.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Pellio.Controllers.ProductsController">
-    <Position X="6" Y="1.25" Width="1.5" />
+    <Position X="4.5" Y="1" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAEACAAIAAAABACAAAAAAAAABAAAAgAAAQEAAAAAAAA=</HashCode>
       <FileName>Controllers\ProductsController.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Pellio.Data.PellioContext">
-    <Position X="8" Y="1.25" Width="1.5" />
+    <Position X="6.5" Y="1" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAEAAAAAAAAAAAIEAAAEAAAAAAAAIAAAAAAIAQ=</HashCode>
       <FileName>Data\PellioContext.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Pellio.Models.Products">
+    <Position X="2.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACQAAAAQAgAAAAAAAAACAAAAAAAAAAAAAAAACIIAA=</HashCode>
+      <FileName>Models\Products.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Pellio.Models.Comments">
+    <Position X="4.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQCAAAEAAAAAAgAAAAAAAQAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Models\Comments.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Pellio.Models.Ingredient">
+    <Position X="0.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAARAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Ingredient.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />
