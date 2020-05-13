@@ -51,7 +51,7 @@ https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/inside-a-progra
 Поръчай - При натискане те отвежда в друга страница в която можеш да поръчаш, видиш съставки и да напишеш или видиш коментар;
 
 # Клас диаграма:
-![Image of class diagram](https://i.imgur.com/NLXSK85.png)
+![Image of class diagram](https://github.com/HristovCodes/Pellio-Project/blob/master/Pellio/patternMatchingClassDiagram.png)
 # Диаграма на базите данни:
 ![Image of er diagram](https://i.imgur.com/fj3rt8Z.png)
 
