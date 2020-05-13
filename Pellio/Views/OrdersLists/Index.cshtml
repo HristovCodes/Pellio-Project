@@ -9,18 +9,18 @@
 <div>
     @{ string messegformail = "Храните които поръчахте са: ";}
     <div class="grid">
-        @foreach (var item in Model.OrdersList.Products)
+        @foreach (var item in Model.OrdersList.ProductsOrderLists)
         {
-            messegformail = messegformail + item.ProductName + " (" + item.Price + "), ";
-            <img class="image" src="@item.ImageUrl" alt="@item.ProductName" />
+            messegformail = messegformail + item.Products.ProductName + " (" + item.Products.Price + "), ";
+            <img class="image" src="@item.Products.ImageUrl" alt="@item.Products.ProductName" />
             <h2 class="name">
-                @item.ProductName
+                @item.Products.ProductName
             </h2>
             <form class="removeform">
-                <input asp-controller="OrdersLists" asp-action="DeleteProduct" asp-route-id="@item.Id" type="submit" value="X" class="removebutton" />
+                <input asp-controller="OrdersLists" asp-action="DeleteProduct" asp-route-id="@item.Products.Id" type="submit" value="X" class="removebutton" />
             </form>
             <p class="price">
-                @item.Price лв
+                @item.Products.Price лв
             </p>
         }
         <p class="total">

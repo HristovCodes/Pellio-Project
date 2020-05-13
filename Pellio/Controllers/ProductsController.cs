@@ -134,8 +134,8 @@ namespace Pellio.Controllers
                 {
                     _context.OrdersList.Add(new OrdersList
                     {
-                        Products = new List<Products>(),
                         Total = 0,
+                        //Products = new List<Products>(),
                         UserId = uuid,
                         PercentOffCode = new PercentOffCode()
                     });
