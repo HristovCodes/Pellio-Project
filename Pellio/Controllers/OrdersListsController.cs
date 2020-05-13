@@ -27,12 +27,13 @@ namespace Pellio.Controllers
         // GET: OrdersLists
         public async Task<IActionResult> Index()
         {
-            //OrderListCleanUp();
-
             string uid = Request.Cookies["uuidc"];
 
             var cart = await _context.OrdersList
-                .Include(c => c.Products).Include(co => co.PercentOffCode).FirstOrDefaultAsync(m => m.UserId == uid);
+                .Include(co => co.PercentOffCode)
+                .Include(pol => pol.ProductsOrderLists)
+                .ThenInclude(p => p.Products)
+                .FirstOrDefaultAsync(m => m.UserId == uid);
 
             if (cart == null)
             {
@@ -65,7 +66,11 @@ namespace Pellio.Controllers
                 .Where(c => c.Code == code).FirstOrDefault();
             if (code_form_db != null && code_form_db.Available == true)
             {
-                var ol = _context.OrdersList.Include(c => c.Products).Where(u => u.UserId == uid).FirstOrDefault();
+                var ol = _context.OrdersList
+                .Include(co => co.PercentOffCode)
+                .Include(pol => pol.ProductsOrderLists)
+                .ThenInclude(p => p.Products)
+                .Where(u => u.UserId == uid).First();
                 ol.PercentOffCode = code_form_db;
                 _context.SaveChanges();
                 //var oldos = _context.OrdersList.Include(c => c.Products).Where(u => u.UserId == uid).FirstOrDefault();
@@ -83,25 +88,6 @@ namespace Pellio.Controllers
             //_context.Add(ccode);
             //_context.SaveChanges();
             return RedirectToAction(nameof(Index));
-        }
-
-        private void OrderListCleanUp()
-        {
-            var entries = _context.OrdersList.Include(c => c.Products).ToList();
-            if (entries.Any())
-            {
-                string curr_time = DateTime.Now.ToString("MM/dd/yyyy");
-                foreach (var entry in entries)
-                {
-                    DateTime parsed_now = DateTime.ParseExact(curr_time, "MM/dd/yyyy", null);
-                    DateTime parsed_entry = DateTime.ParseExact(entry.TimeMade, "MM/dd/yyyy", null);
-                    if ((parsed_entry.Date - parsed_now.Date).Days >= 31)
-                    {
-                        _context.OrdersList.Remove(entry);
-                    }
-                }
-                _context.SaveChanges();
-            }
         }
 
         //POST: OrdersLists/AddToCart/5
@@ -345,7 +331,7 @@ namespace Pellio.Controllers
         /// <summary>
         /// Counts items in the users cart and makes a cookie with the count for use inside js
         /// </summary>
-        private void UpdateItemsCount()
+        private async void UpdateItemsCount()
         {
             CookieOptions cookieOptionss = new CookieOptions();
             cookieOptionss.Expires = DateTime.Now.AddDays(30);
@@ -357,8 +343,13 @@ namespace Pellio.Controllers
 
             string uid = Request.Cookies["uuidc"];
 
-            var productsincart = _context.OrdersList.Include(c => c.Products).FirstOrDefault(m => m.UserId == uid);
-            string count = productsincart.Products.Count().ToString();
+            var productsincart = await _context.OrdersList
+                .Include(co => co.PercentOffCode)
+                .Include(c => c.ProductsOrderLists)
+                .ThenInclude(ol => ol.Products)
+                .FirstAsync(m => m.UserId == uid);
+            string count = productsincart.ProductsOrderLists.Count().ToString();
+            //seems to do the same thing
 
             Response.Cookies.Delete("cartitems");
             Response.Cookies.Append("cartitems", count, cookieOptionss);

@@ -15,5 +15,6 @@ namespace Pellio.Models
         public List<Products> Products { get; set; }
         public int PercentOffCodeId { get; set; }
         public PercentOffCode PercentOffCode { get; set; }
+        public List<ProductsOrderList> ProductsOrderLists { get; set; }
     }
 }

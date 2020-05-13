@@ -46,6 +46,53 @@ namespace Pellio.Controllers
                 todd.Available = false;
                 _context.Add(todd);
             }
+
+            //var pro = _context.Products.First();
+            //var pro2 = _context.Products.Where(c => c.Id == 2).First();
+            //var ol = new OrdersList();
+            //ol.PercentOffCode = new PercentOffCode
+            //{
+            //    Code = "bruh",
+            //    Percentage = 0,
+            //    Available = false
+            //};
+            //ol.UserId = Request.Cookies["uuidc"];
+            //var li = new List<ProductsOrderList>();
+            //li.Add(new ProductsOrderList { 
+            //    Products = pro,
+            //    OrdersList = ol
+            //});
+            //li.Add(new ProductsOrderList
+            //{
+            //    Products = pro2,
+            //    OrdersList = ol
+            //});
+            //ol.ProductsOrderLists = li;
+            //ol.ProductsOrderLists = new List<ProductsOrderList>
+            //{
+            //    new ProductsOrderList
+            //    {
+            //        Products = pro,
+            //        OrdersList = ol
+            //    }
+            //};
+            //_context.OrdersList.Add(ol);
+
+            var ohgod = _context.OrdersList
+                .Include(x => x.ProductsOrderLists)
+                .ThenInclude(cs => cs.Products)
+                .ToList();
+            foreach (var a in ohgod)
+            {
+                Debug.WriteLine(a.UserId);
+                //foreach (var b in a.ProductsOrderLists)
+                //{
+                //    Debug.WriteLine(b.Products.ProductName);
+                //}
+                Debug.WriteLine(a.ProductsOrderLists.Count());
+            }
+
+
             //var ccode = new PercentOffCode();
             //ccode.Code = "WORK";
             //ccode.Percentage = 0.5m;
@@ -80,7 +127,10 @@ namespace Pellio.Controllers
                 Response.Cookies.Append("uuidc", uuid, cookieOptionss);
 
                 if (_context.OrdersList
-                    .Include(c => c.Products).FirstOrDefault(m => m.UserId == uuid) == null)
+                .Include(co => co.PercentOffCode)
+                .Include(pol => pol.ProductsOrderLists)
+                .ThenInclude(p => p.Products)
+                .FirstOrDefaultAsync(m => m.UserId == uuid) == null)
                 {
                     _context.OrdersList.Add(new OrdersList
                     {
