@@ -13,6 +13,8 @@ using Moq;
 using Pellio.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 namespace UnitTest
 {
@@ -52,6 +54,30 @@ namespace UnitTest
             var after = pcr.ViewBag.TagsforDropdown;
             //Assert
             Assert.AreNotEqual(before, after);
+        }
+
+        [TestMethod]
+        public void OrderReturnsView()
+        {
+            // Arrange
+            ProductsController controller = new ProductsController(null);
+            // Act
+            Task<IActionResult> result = controller.Order(null);
+            // Assert
+            Assert.IsNotNull(result);
+        }
+
+        [TestMethod]
+        public async Task OrderReturnsNotFoundIfGivenNull()
+        {
+            // Arrange
+            ProductsController controller = new ProductsController(null);
+            // Act
+            IActionResult action = await controller.Order(null);
+            var StatusCodeResult = (IStatusCodeActionResult)action; 
+            // Assert
+            Assert.IsNotNull(action);
+            Assert.AreEqual(404, StatusCodeResult.StatusCode);
         }
     }
 }
