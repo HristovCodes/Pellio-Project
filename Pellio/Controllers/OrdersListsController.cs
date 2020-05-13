@@ -174,6 +174,7 @@ namespace Pellio.Controllers
             //}
             userorders.Products.Add(newproduct);
 
+            UpdateItemsCount();
             _context.SaveChanges();
         }
 
@@ -196,6 +197,7 @@ namespace Pellio.Controllers
            .Remove(removed);
 
             await _context.SaveChangesAsync();
+            UpdateItemsCount();
             return RedirectToAction(nameof(Index));
         }
 
@@ -338,6 +340,28 @@ namespace Pellio.Controllers
             ordersList.PercentOffCode = _context.PercentOffCodes.FirstOrDefault();//replaces with empty code
             _context.Products.RemoveRange(productList);
             await _context.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Counts items in the users cart and makes a cookie with the count for use inside js
+        /// </summary>
+        private void UpdateItemsCount()
+        {
+            CookieOptions cookieOptionss = new CookieOptions();
+            cookieOptionss.Expires = DateTime.Now.AddDays(30);
+
+            if (Request.Cookies["cartitems"] == null)
+            {
+                Response.Cookies.Append("cartitems", "0", cookieOptionss);
+            }
+
+            string uid = Request.Cookies["uuidc"];
+
+            var productsincart = _context.OrdersList.Include(c => c.Products).FirstOrDefault(m => m.UserId == uid);
+            string count = productsincart.Products.Count().ToString();
+
+            Response.Cookies.Delete("cartitems");
+            Response.Cookies.Append("cartitems", count, cookieOptionss);
         }
     }
 }

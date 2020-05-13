@@ -18,7 +18,9 @@
                 <div nav="navlinks">
                     <ul class="flex">
                         <li class="cartli">
-                            <a class="navlink" asp-area="" asp-controller="OrdersLists" asp-action="Index">Кошница</a>
+                            <a id="cart" class="navlink" asp-area="" asp-controller="OrdersLists" asp-action="Index">
+                                Кошница
+                            </a>
                             <a class="navlink gotocart" asp-area="" asp-controller="OrdersLists" asp-action="Index"></a>
                         </li>
                         <li id="burger" class="burger">
@@ -57,6 +59,7 @@
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="/js/site.js" asp-append-version="true"></script>
+    <script src="/js/cartcount.js" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>
