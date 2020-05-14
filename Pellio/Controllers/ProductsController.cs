@@ -88,6 +88,11 @@ namespace Pellio.Controllers
                         Total = 0,
                         UserId = uuid,
                         PercentOffCode = new PercentOffCode()
+                        {
+                            Code = "todd",
+                            Percentage = 0,
+                            Available = false
+                        }
                     });
                     _context.SaveChanges();
                 }
