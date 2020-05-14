@@ -1,14 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Pellio.Models
+﻿namespace Pellio.Models
 {
+    /// <summary>
+    /// Stored email and password for when the user orders.
+    /// </summary>
     public class EmailCredentials
-    {//stored email and password for when the user orders
+    {
+        /// <summary>
+        /// Gets or sets Id value.
+        /// </summary>
+        /// <value>Always unique.</value>
         public int Id { get; set; }
+
+        /// <summary>
+        /// Gets or sets Email value.
+        /// </summary>
+        /// <value>Always unique.</value>
         public string Email { get; set; }
+
+        /// <summary>
+        /// Gets or sets Password value.
+        /// </summary>
+        /// <value>Always unique.</value>
         public string Password { get; set; }
     }
 }
