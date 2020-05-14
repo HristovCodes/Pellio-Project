@@ -28,8 +28,10 @@ namespace UnitTest
         {
             // Arrange
             ProductsController controller = new ProductsController(null);
+
             // Act
             Task<IActionResult> result = controller.Index(null);
+
             // Assert
             Assert.IsNotNull(result);
         }
@@ -47,10 +49,12 @@ namespace UnitTest
             context.Products.Add(pr);
             context.SaveChanges();
             ProductsController pcr = new ProductsController(context);
+
             // Act
             var before = pcr.ViewBag.TagsforDropdown;
             pcr.FillDropDownTags();
             var after = pcr.ViewBag.TagsforDropdown;
+
             //Assert
             Assert.AreNotEqual(before, after);
         }
@@ -60,8 +64,10 @@ namespace UnitTest
         {
             // Arrange
             ProductsController controller = new ProductsController(null);
+
             // Act
             Task<IActionResult> result = controller.Order(null);
+
             // Assert
             Assert.IsNotNull(result);
         }
@@ -71,9 +77,11 @@ namespace UnitTest
         {
             // Arrange
             ProductsController controller = new ProductsController(null);
+
             // Act
             IActionResult action = await controller.Order(null);
             var StatusCodeResult = (IStatusCodeActionResult)action; 
+
             // Assert
             Assert.IsNotNull(action);
             Assert.AreEqual(404, StatusCodeResult.StatusCode);
@@ -93,15 +101,18 @@ namespace UnitTest
             context.SaveChanges();
             //setting up mock db^
             ProductsController pcr = new ProductsController(context);
+
             // Act
             IActionResult action = await pcr.Order(2);//id 2 does not exist
             var StatusCodeResult = (IStatusCodeActionResult)action;//cast to status code
+
             // Assert
             Assert.IsNotNull(action);
             Assert.AreEqual(404, StatusCodeResult.StatusCode);
         }
 
-        public async Task CheckIfOrderAddsLoseCommentsToProduct()
+        [TestMethod]
+        public async Task CheckIfAvarageMesgIsCorrect()
         {
             // Arrange
             var options = new DbContextOptionsBuilder<PellioContext>()
@@ -113,10 +124,20 @@ namespace UnitTest
             context.Products.Add(pr);
             Comments co = new Comments();
             co.Comment = "bruh";
-            co.ProductsId = 1;
+            co.Products = pr;
+            context.Comments.Add(co);
             context.SaveChanges();
             //setting up mock db^
             ProductsController pcr = new ProductsController(context);
+
+            //Act
+            var before = pcr.ViewBag.avg_score; ;
+            await pcr.Order(1);//id 1 is pizza
+            var after = pcr.ViewBag.avg_score;
+
+            // Assert
+            Assert.IsNotNull(pcr);
+            Assert.AreNotEqual(before, after);
         }
     }
 }
