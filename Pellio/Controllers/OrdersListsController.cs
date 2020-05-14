@@ -42,7 +42,7 @@ namespace Pellio.Controllers
                     Total = 0,
                     UserId = uid,
                     TimeMade = DateTime.Now.ToString("MM/dd/yyyy"),
-                    //Products = new List<Products>(),
+                    Products = new List<Products>(),
                     PercentOffCode = _context.PercentOffCodes.FirstOrDefault()
                 };
                 _context.Add(cart);
@@ -134,37 +134,31 @@ namespace Pellio.Controllers
                     Total = 0,
                     UserId = uid,
                     TimeMade = DateTime.Now.ToString("MM/dd/yyyy"),
-                    //Products = new List<Products>(),
+                    Products = new List<Products>(),
                     PercentOffCode = _context.PercentOffCodes.FirstOrDefault()
                 };
                 _context.OrdersList.Add(userorders);
             }
-            //else if (userorders.Products == null)
-            //{
-            //    userorders.Products = new List<Products>();
-            //}
+            else if (userorders.Products == null)
+            {
+                userorders.Products = new List<Products>();
+            }
 
             var pr = _context.Products.Find(id);
 
-            //var newproduct = new Products
-            //{
-            //    ProductName = pr.ProductName,
-            //    Price = pr.Price,
-            //    ImageUrl = pr.ImageUrl,
-            //    Ingredients = "dont show"
-            //};
-            userorders.ProductsOrderLists.Add(new ProductsOrderList
+            var newproduct = new Products
             {
-                OrdersList = userorders,
-                Products = pr
-            });
+                ProductName = pr.ProductName,
+                Price = pr.Price,
+                ImageUrl = pr.ImageUrl,
+                Ingredients = "dont show"
+            };
             userorders.Total += pr.Price;
             //if(userorders.PercentOffCode != null && userorders.PercentOffCode.Available == true)
             //{
             //    userorders.Total = userorders.Total - (userorders.Total * (userorders.PercentOffCode.Percentage / 100));
             //}
-            //userorders.Products.Add(newproduct);
-            //userorders.ProductsOrderLists = 
+            userorders.Products.Add(newproduct);
 
             UpdateItemsCount();
             _context.SaveChanges();
@@ -224,7 +218,7 @@ namespace Pellio.Controllers
                 neworder.TimeOfOrder = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss");
                 neworder.Complete = false;
                 neworder.Canceled = false;
-                var userorders = await _context.OrdersList//to do
+                var userorders = await _context.OrdersList
                     .Include(m => m.Products)
                     .Include(co => co.PercentOffCode)
                     .FirstOrDefaultAsync(m => m.UserId == uid);
@@ -322,11 +316,10 @@ namespace Pellio.Controllers
         {
             string uid = Request.Cookies["uuidc"];
             var ordersList = await _context.OrdersList
+                .Include(c => c.Products)
                 .Include(co => co.PercentOffCode)
-                .Include(pol => pol.ProductsOrderLists)
-                .ThenInclude(p => p.Products)
-                .FirstOrDefaultAsync(m => m.UserId == uid);//finds cart
-            var productList = ordersList.Products;//to do
+                .FirstAsync(m => m.UserId == uid);//finds cart
+            var productList = ordersList.Products;
             _context.OrdersList.Remove(ordersList);
             var used_code = _context.PercentOffCodes.Where(n => n.Code == ordersList.PercentOffCode.Code).FirstOrDefault();
             _context.PercentOffCodes.Remove(used_code);//finds and removes code from db
