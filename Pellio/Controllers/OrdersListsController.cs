@@ -37,7 +37,7 @@
         /// Generated random discount code.
         /// </summary>
         /// <returns>Randomly generated discount code.</returns>
-        public static string CodeGenerate()
+        public string CodeGenerate()
         {
             var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
             var stringChars = new StringBuilder(string.Empty, 8);

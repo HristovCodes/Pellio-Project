@@ -200,7 +200,7 @@
         /// <summary>
         /// Generates UUID. Generates new cart entry in db with said UUID.
         /// </summary>
-        private void GenUUIDC()
+        public void GenUUIDC()
         {
             if (Request.Cookies["uuidc"] == null)
             {

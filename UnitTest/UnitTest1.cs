@@ -10,10 +10,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Pellio.ViewModels;
 using Microsoft.AspNetCore.Http;
+using System.Web;
 using System.Collections.Generic;
 using System;
 using System.Threading;
 using System.Text;
+using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 
 namespace UnitTest
 {
@@ -191,35 +194,61 @@ namespace UnitTest
             Assert.IsNotNull(result);
         }
 
-        //[TestMethod]
-        //public async Task DataFromDbIsPassedToViewCorrectly()
-        //{
-        //    // Arrange
-        //    var options = new DbContextOptionsBuilder<PellioContext>()
-        //        .UseInMemoryDatabase(databaseName: "PellioDb")
-        //        .Options;
-        //    var context = new PellioContext(options);
-        //    Products pr = new Products();
-        //    pr.ProductName = "pizza";
-        //    context.Products.Add(pr);
-        //    context.SaveChanges();
-        //    //setting up mock db^
-        //    Request.Cookies["uuidc"];
-        //    //setting up mock cookies^
+        [TestMethod]
+        private void PercentOffCodeTextIsGenerated()
+        {
+            // Arrange
+            OrdersListsController controller = new OrdersListsController(null);
 
-        //    OrdersListsController controller = new OrdersListsController(null);
+            // Act
+            var result = "";
+            var before = result;
+            result = controller.CodeGenerate();
+            var after = result;
 
-        //    // Act
-        //    controller.AddToCart(1);
-        //    var actionResultTask = controller.Index();
-        //    actionResultTask.Wait();
-        //    var viewResult = actionResultTask.Result as ViewResult;
-        //    var model = (OrderListMadeOrder)(viewResult.Model);
-        //    // Assert
-        //    Assert.IsNotNull(viewResult);
-        //    Assert.Equals(1, model.OrdersList.Products.Count);
-        //    Assert.Equals("pizza", model.OrdersList.Products.First().ProductName);
-        //}
+            // Assert
+            Assert.IsNotNull(controller);
+            Assert.AreNotEqual(before, after);
+        }
+
+        [TestMethod]
+        public async Task DataFromDbIsPassedToViewCorrectly()
+        {
+            // Arrange
+            var options = new DbContextOptionsBuilder<PellioContext>()
+                .UseInMemoryDatabase(databaseName: "PellioDb")
+                .Options;
+            var _context = new PellioContext(options);
+            Products pr = new Products();
+            pr.ProductName = "pizza";
+            _context.Products.Add(pr);
+            _context.SaveChanges();
+            //setting up mock db^
+
+            OrdersListsController controller = new OrdersListsController(_context);
+            controller.ControllerContext = new ControllerContext();
+            controller.ControllerContext.HttpContext = new DefaultHttpContext();
+            var uuid = Guid.NewGuid().ToString();
+            CookieOptions cookieOptionss = new CookieOptions();
+            cookieOptionss.Expires = DateTime.Now.AddDays(30);
+            controller.Response.Cookies.Append("uuidc", uuid, cookieOptionss);
+            controller.Request.Headers["uuidc"] = uuid;
+            //setting up mock cookies^
+
+            // Act
+            var actionResultTask = controller.Index();
+            actionResultTask.Wait();
+            controller.AddToCart(1);
+            actionResultTask = controller.Index();
+            actionResultTask.Wait();
+            var viewResult = actionResultTask.Result as ViewResult;
+            var model = (OrderListMadeOrder)(viewResult.Model);
+
+            // Assert
+            Assert.IsNotNull(viewResult);
+            Assert.AreEqual(1, model.OrdersList.Products.Count);
+            Assert.AreEqual("pizza", model.OrdersList.Products.First().ProductName);
+        }
 
         #endregion
     }
