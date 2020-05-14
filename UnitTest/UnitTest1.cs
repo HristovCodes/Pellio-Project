@@ -1,30 +1,32 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Pellio.Controllers;
 using Pellio.Data;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
-using System;
-using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using Pellio.Models;
 using Microsoft.EntityFrameworkCore;
-using System.Diagnostics;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Pellio.ViewModels;
+using Microsoft.AspNetCore.Http;
+using System.Collections.Generic;
+using System;
+using System.Threading;
+using System.Text;
 
 namespace UnitTest
 {
-   
+
     [TestClass]
     public class UnitTest1
     {
-       
+
+        #region UnitTest ProductsController_tests
+        //below are ProductsController test
 
         [TestMethod]
-        public void IndexReturnsView()
+        public void ProductsControllerIndexReturnsView()
         {
             // Arrange
             ProductsController controller = new ProductsController(null);
@@ -139,5 +141,88 @@ namespace UnitTest
             Assert.IsNotNull(pcr);
             Assert.AreNotEqual(before, after);
         }
+
+        [TestMethod]
+        public async Task CommentGetsAddedToProductAndDb()
+        {
+            // Arrange
+            var options = new DbContextOptionsBuilder<PellioContext>()
+                .UseInMemoryDatabase(databaseName: "PellioDb")
+                .Options;
+            var context = new PellioContext(options);
+            Products pr = new Products();
+            pr.ProductName = "pizza";
+            context.Products.Add(pr);
+            context.SaveChanges();
+            Comments co = new Comments();
+            co.Comment = "bruh";
+            co.Products = pr;
+            co.Score = 1;
+            //setting up mock db^
+            ProductsController pcr = new ProductsController(context);
+
+            //Act
+            var before = context.Products.Include(x => x.Comments).First().Comments.Count;
+            await pcr.AddComment(1, co);
+            var after = context.Products.Include(x => x.Comments).First().Comments.Count;
+
+            //Assert
+            Assert.AreNotEqual(before, after);
+            Assert.AreEqual(0, before);
+            Assert.AreEqual(1, after);
+        }
+
+        //here end the ProductsController test
+        #endregion
+
+        #region UnitTest OrderListController_tests
+        //below OrderListController test
+
+        [TestMethod]
+        public void OrderListControllerIndexReturnsView()
+        {
+            // Arrange
+            OrdersListsController controller = new OrdersListsController(null);
+
+            // Act
+            Task<IActionResult> result = controller.Index();
+
+            // Assert
+            Assert.IsNotNull(result);
+        }
+
+        //[TestMethod]
+        //public async Task DataFromDbIsPassedToViewCorrectly()
+        //{
+        //    // Arrange
+        //    var options = new DbContextOptionsBuilder<PellioContext>()
+        //        .UseInMemoryDatabase(databaseName: "PellioDb")
+        //        .Options;
+        //    var context = new PellioContext(options);
+        //    Products pr = new Products();
+        //    pr.ProductName = "pizza";
+        //    context.Products.Add(pr);
+        //    context.SaveChanges();
+        //    //setting up mock db^
+        //    Request.Cookies["uuidc"];
+        //    //setting up mock cookies^
+
+        //    OrdersListsController controller = new OrdersListsController(null);
+
+        //    // Act
+        //    controller.AddToCart(1);
+        //    var actionResultTask = controller.Index();
+        //    actionResultTask.Wait();
+        //    var viewResult = actionResultTask.Result as ViewResult;
+        //    var model = (OrderListMadeOrder)(viewResult.Model);
+        //    // Assert
+        //    Assert.IsNotNull(viewResult);
+        //    Assert.Equals(1, model.OrdersList.Products.Count);
+        //    Assert.Equals("pizza", model.OrdersList.Products.First().ProductName);
+        //}
+
+        #endregion
     }
+
+    
 }
