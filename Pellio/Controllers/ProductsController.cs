@@ -95,18 +95,6 @@
                 return NotFound();
             }
 
-            if (products.Comments == null)
-            {
-                products.Comments = new List<Comments>();
-                foreach (var com in _context.Comments)
-                {
-                    if (!products.Comments.Contains(com) && com.ProductsId == products.Id)
-                    {
-                        products.Comments.Add(com);
-                    }
-                }
-            }
-
             // check if any comments connected to product
             if (!products.Comments.Any())
             { // if not tell user there is no score
@@ -114,7 +102,7 @@
             }
             else
             {
-                // if avarage score and add to viewbag
+                // else avarage score and add to viewbag
                 var avg_score = products.Comments.Average(sc => sc.Score);
                 var rounded = Math.Round(avg_score, 2);
                 ViewBag.avg_score = "Нашите потребители средно дават на това ястие оценката: " + rounded;

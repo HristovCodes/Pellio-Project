@@ -5,7 +5,6 @@ using Pellio.Controllers;
 using Pellio.Data;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Pellio.Data;
 using System.Linq;
 using System;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,8 +28,10 @@ namespace UnitTest
         {
             // Arrange
             ProductsController controller = new ProductsController(null);
+
             // Act
             Task<IActionResult> result = controller.Index(null);
+
             // Assert
             Assert.IsNotNull(result);
         }
@@ -48,10 +49,12 @@ namespace UnitTest
             context.Products.Add(pr);
             context.SaveChanges();
             ProductsController pcr = new ProductsController(context);
+
             // Act
             var before = pcr.ViewBag.TagsforDropdown;
             pcr.FillDropDownTags();
             var after = pcr.ViewBag.TagsforDropdown;
+
             //Assert
             Assert.AreNotEqual(before, after);
         }
@@ -61,8 +64,10 @@ namespace UnitTest
         {
             // Arrange
             ProductsController controller = new ProductsController(null);
+
             // Act
             Task<IActionResult> result = controller.Order(null);
+
             // Assert
             Assert.IsNotNull(result);
         }
@@ -72,12 +77,67 @@ namespace UnitTest
         {
             // Arrange
             ProductsController controller = new ProductsController(null);
+
             // Act
             IActionResult action = await controller.Order(null);
             var StatusCodeResult = (IStatusCodeActionResult)action; 
+
             // Assert
             Assert.IsNotNull(action);
             Assert.AreEqual(404, StatusCodeResult.StatusCode);
+        }
+
+        [TestMethod]
+        public async Task OrderReturnsNotFoundIfGivenUnrealId()
+        {
+            // Arrange
+            var options = new DbContextOptionsBuilder<PellioContext>()
+                .UseInMemoryDatabase(databaseName: "PellioDb")
+                .Options;
+            var context = new PellioContext(options);
+            Products pr = new Products();
+            pr.ProductName = "pizza";
+            context.Products.Add(pr);
+            context.SaveChanges();
+            //setting up mock db^
+            ProductsController pcr = new ProductsController(context);
+
+            // Act
+            IActionResult action = await pcr.Order(2);//id 2 does not exist
+            var StatusCodeResult = (IStatusCodeActionResult)action;//cast to status code
+
+            // Assert
+            Assert.IsNotNull(action);
+            Assert.AreEqual(404, StatusCodeResult.StatusCode);
+        }
+
+        [TestMethod]
+        public async Task CheckIfAvarageMesgIsCorrect()
+        {
+            // Arrange
+            var options = new DbContextOptionsBuilder<PellioContext>()
+                .UseInMemoryDatabase(databaseName: "PellioDb")
+                .Options;
+            var context = new PellioContext(options);
+            Products pr = new Products();
+            pr.ProductName = "pizza";
+            context.Products.Add(pr);
+            Comments co = new Comments();
+            co.Comment = "bruh";
+            co.Products = pr;
+            context.Comments.Add(co);
+            context.SaveChanges();
+            //setting up mock db^
+            ProductsController pcr = new ProductsController(context);
+
+            //Act
+            var before = pcr.ViewBag.avg_score; ;
+            await pcr.Order(1);//id 1 is pizza
+            var after = pcr.ViewBag.avg_score;
+
+            // Assert
+            Assert.IsNotNull(pcr);
+            Assert.AreNotEqual(before, after);
         }
     }
 }
