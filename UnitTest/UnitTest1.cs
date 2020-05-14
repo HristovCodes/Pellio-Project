@@ -5,7 +5,6 @@ using Pellio.Controllers;
 using Pellio.Data;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Pellio.Data;
 using System.Linq;
 using System;
 using Microsoft.Extensions.DependencyInjection;
@@ -78,6 +77,46 @@ namespace UnitTest
             // Assert
             Assert.IsNotNull(action);
             Assert.AreEqual(404, StatusCodeResult.StatusCode);
+        }
+
+        [TestMethod]
+        public async Task OrderReturnsNotFoundIfGivenUnrealId()
+        {
+            // Arrange
+            var options = new DbContextOptionsBuilder<PellioContext>()
+                .UseInMemoryDatabase(databaseName: "PellioDb")
+                .Options;
+            var context = new PellioContext(options);
+            Products pr = new Products();
+            pr.ProductName = "pizza";
+            context.Products.Add(pr);
+            context.SaveChanges();
+            //setting up mock db^
+            ProductsController pcr = new ProductsController(context);
+            // Act
+            IActionResult action = await pcr.Order(2);//id 2 does not exist
+            var StatusCodeResult = (IStatusCodeActionResult)action;//cast to status code
+            // Assert
+            Assert.IsNotNull(action);
+            Assert.AreEqual(404, StatusCodeResult.StatusCode);
+        }
+
+        public async Task CheckIfOrderAddsLoseCommentsToProduct()
+        {
+            // Arrange
+            var options = new DbContextOptionsBuilder<PellioContext>()
+                .UseInMemoryDatabase(databaseName: "PellioDb")
+                .Options;
+            var context = new PellioContext(options);
+            Products pr = new Products();
+            pr.ProductName = "pizza";
+            context.Products.Add(pr);
+            Comments co = new Comments();
+            co.Comment = "bruh";
+            co.ProductsId = 1;
+            context.SaveChanges();
+            //setting up mock db^
+            ProductsController pcr = new ProductsController(context);
         }
     }
 }
