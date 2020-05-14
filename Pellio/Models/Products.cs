@@ -16,7 +16,7 @@ namespace Pellio.Models
         public string ImageUrl { get; set; }
         public string Tag { get; set; }
         public List<Comments> Comments { get; set; }
-        public List<ProductsOrderList> ProductsOrderLists { get; set; }
+        public List<Ingredient> ListOfIngredients { get; set; }
 
     }
 }

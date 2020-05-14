@@ -21,20 +21,6 @@ namespace Pellio.Data
             //    .HasOne(a => a.PercentOffCode)
             //    .WithOne(b => b.OrdersList)
             //    .HasForeignKey<PercentOffCode>(b => b.OrdersListId);
-
-            modelBuilder.Entity<ProductsOrderList>()
-                .HasKey(x => new { x.OrderListId, x.ProductsId });
-
-            //If you name your foreign keys correctly, then you don't need this.
-            modelBuilder.Entity<ProductsOrderList>()
-                .HasOne(pt => pt.OrdersList)
-                .WithMany(p => p.ProductsOrderLists)
-                .HasForeignKey(pt => pt.OrderListId);
-
-            modelBuilder.Entity<ProductsOrderList>()
-                .HasOne(pt => pt.Products)
-                .WithMany(t => t.ProductsOrderLists)
-                .HasForeignKey(pt => pt.ProductsId);
         }
 
         public DbSet<Products> Products { get; set; }
