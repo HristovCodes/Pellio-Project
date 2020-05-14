@@ -61,7 +61,7 @@
         <div asp-validation-summary="ModelOnly" class=""></div>
         <div class="comment">
             <label asp-for="@Model.Comments.Name" class="title">Име:</label>
-            <input asp-for="@Model.Comments.Name" class="text" />
+            <input asp-for="@Model.Comments.Name" class="text" required/>
             <span asp-validation-for="@Model.Comments.Name" class=""></span>
         </div>
         <div class="comment">

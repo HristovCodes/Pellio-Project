@@ -64,8 +64,7 @@
         {
             if (ModelState.IsValid)
             {
-                int productid = int.Parse(HttpContext.Request.Path.ToString().Substring(21));
-                comments.ProductsId = productid;
+                comments.ProductsId = id;
                 _context.Add(comments);
                 await _context.SaveChangesAsync();
 
