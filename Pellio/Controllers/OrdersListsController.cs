@@ -335,6 +335,7 @@
             _context.PercentOffCodes.Remove(used_code); // finds and removes code from db
             ordersList.PercentOffCode = _context.PercentOffCodes.FirstOrDefault(); // replaces with empty code
             _context.Products.RemoveRange(productList);
+            UpdateItemsCount();
             await _context.SaveChangesAsync();
         }
 
