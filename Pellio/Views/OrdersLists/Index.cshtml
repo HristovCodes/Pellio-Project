@@ -25,19 +25,9 @@
         }
         <p class="total">
             Total:
-            @if (Model.OrdersList.PercentOffCode != null && Model.OrdersList.PercentOffCode.Available == true)
-            {
-                <span>
-                    @{ Model.OrdersList.Total = Model.OrdersList.Total - (Model.OrdersList.Total * (Model.OrdersList.PercentOffCode.Percentage / 100));}
-                    @Model.OrdersList.Total.ToString("F") лв (-@String.Format("{0:0}", Model.OrdersList.PercentOffCode.Percentage)%)
-                </span>
-            }
-            else
-            {
-                <span>
-                    @Model.OrdersList.Total лв
-                </span>
-            }
+            <span>
+                @Model.OrdersList.Total лв
+            </span>
         </p>
         <form class="orderform" asp-controller="OrdersLists" asp-action="OrderingMainLogicFunc">
             <p>Моля въвете вашият адрес, телефон, име и E-Mail, за да можем да изпълним вашата поръчка.</p>
@@ -53,22 +43,17 @@
                 <input class="hide" type="text" name="mes" id="mes" value="@messegformail" />
                 <label class="label" for="code">Код:</label>
                 <input class="input" type="text" name="code" id="code" />
-                @if (Model.OrdersList.PercentOffCode != null && Model.OrdersList.PercentOffCode.Available == true)
-                {
-                    <label class="label">Активен код: @Model.OrdersList.PercentOffCode.Code (@String.Format("{0:0}", Model.OrdersList.PercentOffCode.Percentage)%)</label>
-                }
                 <input class="input" type="submit" value="Поръчай" />
                 <div id="openwindow" class="prvspurchasesbtn">Последни поръчки</div>
             </div>
         </form>
-        <!-- premestih butona otgore opravi coda v controllera -->
     </div>
 
     <div id="closewindow" class="hide">
         <div id="window" class="window">
             @if (!Model.MadeOrder.Any())@*no items*@
             {
-                <p>Изглжда че до сега не сте направили поръчки</p>
+                <p>Изглжда че до сега не сте правили поръчки</p>
             }
             else
             {
