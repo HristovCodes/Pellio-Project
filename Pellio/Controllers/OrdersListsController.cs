@@ -71,20 +71,7 @@ namespace Pellio.Controllers
                 var ol = _context.OrdersList.Include(c => c.Products).Where(u => u.UserId == uid).FirstOrDefault();
                 ol.PercentOffCode = code_form_db;
                 _context.SaveChanges();
-                //var oldos = _context.OrdersList.Include(c => c.Products).Where(u => u.UserId == uid).FirstOrDefault();
-                TempData["used_code"] =
-                    $"Поздравления! Вие използвахте кода {code_form_db.Code} които ви дава {String.Format("{0:0}", code_form_db.Percentage)}% отстъпка.";
             }
-            else
-            {
-                TempData["used_code"] = "Съжелява ме. но този код не е истински или е вече използван";
-            }
-            //var ccode = new PercentOffCode();
-            //ccode.Code = "bruh";
-            //ccode.Percentage = 0.5m;
-            //ccode.Available = true;
-            //_context.Add(ccode);
-            //_context.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
 
@@ -195,11 +182,12 @@ namespace Pellio.Controllers
         /// </summary>
         /// <returns>The cart view after ordering. (empty cart)</returns>
         [HttpPost]
-        public async Task<IActionResult> OrderingMainLogicFunc(string name, string address, string rec, int phone, string mes)
+        public async Task<IActionResult> OrderingMainLogicFunc(string name, string address, string rec, int phone, string mes, string code)
         {
-            await SendMail(rec, mes);
-            await AddOrderToDb(name, address, phone, rec);
-            await ClearCart();
+            UseDiscountCode(code);
+            SendMail(rec, mes);
+            AddOrderToDb(name, address, phone, rec);
+            ClearCart();
             //napravi nqkude check dali total e po malko ot 0, ako e NE pravi poruchka - Ivailo
             return RedirectToAction(nameof(Index));
         }
