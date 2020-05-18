@@ -2,13 +2,16 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
+    using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Options;
     using Pellio.Data;
     using Pellio.Models;
     using Pellio.ViewModels;
@@ -165,24 +168,24 @@
         /// </summary>
         /// <param name="categories">Categories for text in buttons for sorting.</param>
         /// <returns>Displays all products from db.</returns>
+        private readonly IWebHostEnvironment env;
         [Route("")]
         [Route("Products")]
         [Route("Products/Index")]
         public async Task<IActionResult> Index(string categories)
         {
-            if (_context.EmailCredentials.Count() == 0)
-            {
-                var creds = new EmailCredentials();
-                creds.Email = "fokenlasersights@gmail.com";
-                creds.Password = "***REMOVED***";
-                _context.Add(creds);
-                var todd = new PercentOffCode();
-                todd.Code = "todd";
-                todd.Percentage = 0m;
-                todd.Available = false;
-                _context.Add(todd);
-            }
-
+            //if (_context.EmailCredentials.Count() == 0)
+            //{
+            //    var creds = new EmailCredentials();
+            //    creds.Email = "fokenlasersights@gmail.com";
+            //    creds.Password = "***REMOVED***";
+            //    _context.Add(creds);
+            //    var todd = new PercentOffCode();
+            //    todd.Code = "todd";
+            //    todd.Percentage = 0m;
+            //    todd.Available = false;
+            //    _context.Add(todd);
+            //}
             _context.SaveChanges();
             FillDropDownTags();
             GenUUIDC();

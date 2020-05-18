@@ -10,6 +10,7 @@
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Options;
     using Pellio.Data;
     using Pellio.Models;
     using Pellio.ViewModels;
@@ -24,13 +25,16 @@
         /// </summary>
         private readonly PellioContext _context;
 
+        private readonly AppSettings _appSettings;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="OrdersListsController" /> class.
         /// </summary>
         /// <param name="context">Reference to database.</param>
-        public OrdersListsController(PellioContext context)
+        public OrdersListsController(PellioContext context, IOptions<AppSettings> appsettingsOptions)
         {
             _context = context;
+            _appSettings = appsettingsOptions.Value;
         }
 
         /// <summary>
@@ -40,15 +44,15 @@
         public string CodeGenerate()
         {
             var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-            var stringChars = new StringBuilder(string.Empty, 8);
+            var stringChars = new char[8];
             var random = new Random();
 
             for (int i = 0; i < stringChars.Length; i++)
             {
-                stringChars.Append(chars[random.Next(chars.Length)]);
+                stringChars[i] = (chars[random.Next(chars.Length)]);
             }
 
-            var finalString = stringChars.ToString();
+            var finalString = new String(stringChars);
 
             return finalString;
         }
@@ -186,7 +190,7 @@
             userorders.Total += pr.Price;
             userorders.Products.Add(newproduct);
 
-            UpdateItemsCount();
+            //UpdateItemsCount();
             _context.SaveChanges();
         }
 
@@ -212,7 +216,7 @@
            .Remove(removed);
 
             await _context.SaveChangesAsync();
-            UpdateItemsCount();
+            //UpdateItemsCount();
             return RedirectToAction(nameof(Index));
         }
 
@@ -233,6 +237,7 @@
             SendMail(rec, mes);
             await AddOrderToDb(name, address, phone, rec);
             await ClearCart();
+            //UpdateItemsCount();
             return RedirectToAction(nameof(Index));
         }
 
@@ -294,10 +299,9 @@
                         Available = true
                     };
                     _context.PercentOffCodes.Add(code);
-                    var credsfromdb = _context.EmailCredentials.FirstOrDefault();
                     var client = new SmtpClient("smtp.gmail.com", 587)
                     {
-                        Credentials = new NetworkCredential(credsfromdb.Email, credsfromdb.Password),
+                        Credentials = new NetworkCredential(_appSettings.Email_name, _appSettings.Email_pass),
                         EnableSsl = true
                     };
                     mes = mes.TrimEnd(',');
@@ -305,10 +309,9 @@
                 }
                 else
                 {
-                    var credsfromdb = _context.EmailCredentials.FirstOrDefault();
                     var client = new SmtpClient("smtp.gmail.com", 587)
                     {
-                        Credentials = new NetworkCredential(credsfromdb.Email, credsfromdb.Password),
+                        Credentials = new NetworkCredential(_appSettings.Email_name, _appSettings.Email_pass),
                         EnableSsl = true
                     };
 
@@ -335,7 +338,7 @@
             _context.PercentOffCodes.Remove(used_code); // finds and removes code from db
             ordersList.PercentOffCode = _context.PercentOffCodes.FirstOrDefault(); // replaces with empty code
             _context.Products.RemoveRange(productList);
-            UpdateItemsCount();
+            //UpdateItemsCount();
             await _context.SaveChangesAsync();
         }
 

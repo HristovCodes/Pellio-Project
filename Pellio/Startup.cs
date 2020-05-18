@@ -7,6 +7,7 @@ namespace Pellio
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using Pellio.Data;
+    using Pellio.Models;
 
     /// <summary>
     /// Configures services and other important stuff at startup.
@@ -17,16 +18,24 @@ namespace Pellio
         /// Initializes a new instance of the <see cref="Startup" /> class.
         /// </summary>
         /// <param name="configuration">The configuration to use.</param>
-        public Startup(IConfiguration configuration)
+        public IConfiguration Configuration { get; set; }
+        public Startup(Microsoft.AspNetCore.Hosting.IWebHostEnvironment env)
         {
-            this.Configuration = configuration;
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(env.ContentRootPath)
+                .AddJsonFile("appsettings.json", false, true)
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", false)
+                .AddEnvironmentVariables();
+            Configuration = builder.Build();
+
+            //var envirnemt = Configuration["bruh:Email_name"];
         }
 
         /// <summary>
         /// Gets the Configuration.
         /// </summary>
         /// <value>Always inuque.</value>
-        public IConfiguration Configuration { get; }
+        //public IConfiguration Configuration { get; }
 
         /// <summary>
         /// This method gets called by the runtime. Use this method to add services to the container.
@@ -34,6 +43,7 @@ namespace Pellio
         /// <param name="services">Services to be used.</param>
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<AppSettings>(Configuration.GetSection("Env_vals"));
             services.AddControllersWithViews();
             services.AddDbContext<PellioContext>(options =>
                     options.UseSqlServer(this.Configuration.GetConnectionString("PellioContext")));

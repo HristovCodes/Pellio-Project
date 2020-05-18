@@ -37,12 +37,6 @@
         public DbSet<OrdersList> OrdersList { get; set; }
 
         /// <summary>
-        /// Gets or sets EmailCredentials dbset.
-        /// </summary>
-        /// <value>Always unique.</value>
-        public DbSet<EmailCredentials> EmailCredentials { get; set; }
-
-        /// <summary>
         /// Gets or sets MadeOrder dbset.
         /// </summary>
         /// <value>Always unique.</value>
