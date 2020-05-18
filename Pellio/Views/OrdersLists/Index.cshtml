@@ -26,7 +26,7 @@
         @{ messegformail += $"\n Вие използвахте кода {Model.OrdersList.PercentOffCode.Code}!";
             decimal offprice = Model.OrdersList.Total - (Model.OrdersList.Total * (Model.OrdersList.PercentOffCode.Percentage / 100));
             messegformail += $"\n Цената ви се обновява {Model.OrdersList.Total} - {Model.OrdersList.PercentOffCode.Percentage}% = {offprice}";
-         }@*there is a better way but this is how it's gonna be for now at least*@
+        }@*there is a better way but this is how it's gonna be for now at least*@
         <p class="total">
             Total:
             <span>
@@ -70,6 +70,7 @@
             }
         </div>
     </div>
+    <div id="status"></div>
 </div>
 
 
