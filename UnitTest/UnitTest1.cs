@@ -250,6 +250,52 @@ namespace UnitTest
             Assert.AreEqual("pizza", model.OrdersList.Products.First().ProductName);
         }
 
+        [TestMethod]
+        public async Task ProductsInCartCountIsUpdatedCorrectly()
+        {
+            // Arrange
+            var options = new DbContextOptionsBuilder<PellioContext>()
+                .UseInMemoryDatabase(databaseName: "PellioDb")
+                .Options;
+            var _context = new PellioContext(options);
+            Products pr = new Products();
+            pr.ProductName = "pizza";
+            _context.Products.Add(pr);
+            _context.SaveChanges();
+            //setting up mock db^
+
+            OrdersListsController controller = new OrdersListsController(_context);
+            controller.ControllerContext = new ControllerContext();
+            controller.ControllerContext.HttpContext = new DefaultHttpContext();
+            var uuid = Guid.NewGuid().ToString();
+            CookieOptions cookieOptionss = new CookieOptions();
+            cookieOptionss.Expires = DateTime.Now.AddDays(30);
+            controller.Response.Cookies.Append("uuidc", uuid, cookieOptionss);
+            controller.Response.Cookies.Append("cartitems", "0", cookieOptionss);
+            controller.Request.Headers["uuidc"] = uuid;
+            //setting up mock cookies^
+
+            // Act
+
+            var actionResultTask = controller.Index();
+            actionResultTask.Wait();
+            controller.AddToCart(1);
+            actionResultTask = controller.Index();
+            actionResultTask.Wait();
+            var viewResult = actionResultTask.Result as ViewResult;
+            var model = (OrderListMadeOrder)(viewResult.Model);
+            string count = _context.OrdersList.Include(c => c.Products)
+                                              .First()
+                                              .Products.Count
+                                              .ToString();
+            controller.Request.Headers["cartitems"] = count;
+
+            // Assert
+            Assert.IsNotNull(viewResult);
+            Assert.AreEqual(count, model.OrdersList.Products.Count.ToString());
+            Assert.AreEqual(controller.Request.Headers["cartitems"].ToString(), model.OrdersList.Products.Count.ToString());
+        }
+
         #endregion
     }
 

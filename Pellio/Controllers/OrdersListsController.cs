@@ -342,7 +342,7 @@
         /// <summary>
         /// Counts items in the users cart and makes a cookie with the count for use inside js.
         /// </summary>
-        private void UpdateItemsCount()
+        public void UpdateItemsCount()
         {
             CookieOptions cookieOptionss = new CookieOptions
             {
