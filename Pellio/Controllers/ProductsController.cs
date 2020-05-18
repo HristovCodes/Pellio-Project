@@ -174,18 +174,6 @@
         [Route("Products/Index")]
         public async Task<IActionResult> Index(string categories)
         {
-            //if (_context.EmailCredentials.Count() == 0)
-            //{
-            //    var creds = new EmailCredentials();
-            //    creds.Email = "fokenlasersights@gmail.com";
-            //    creds.Password = "***REMOVED***";
-            //    _context.Add(creds);
-            //    var todd = new PercentOffCode();
-            //    todd.Code = "todd";
-            //    todd.Percentage = 0m;
-            //    todd.Available = false;
-            //    _context.Add(todd);
-            //}
             _context.SaveChanges();
             FillDropDownTags();
             GenUUIDC();
