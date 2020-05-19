@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Net;
     using System.Net.Mail;
@@ -11,9 +12,11 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Options;
+    using OpenCage.Geocode;
     using Pellio.Data;
     using Pellio.Models;
     using Pellio.ViewModels;
+    using ServiceStack.Text;
 
     /// <summary>
     /// This class controls everything that has to do with ordering.
@@ -241,6 +244,27 @@
             UpdateItemsCount();
             return RedirectToAction(nameof(Index));
         }
+
+
+        /// <summary>
+        /// Called from view (Order.chhtml). Using Opencagedata API finds address from IP location
+        /// </summary>
+        /// <param name="lat">latitude</param>
+        /// <param name="lon">longitude</param>
+        /// <returns>Rough address based on IP locatino</returns>
+        [HttpPost]
+        public async Task<IActionResult> GeoLock(string lat, string lon)
+        {
+            var gc = new Geocoder(_appSettings.Geocode_key);//mades ne instance of geocoder with API key
+            var reserveresult = gc.ReverseGeocode(double.Parse(lat, CultureInfo.InvariantCulture), double.Parse(lon, CultureInfo.InvariantCulture), "bg", false);
+            //gets address from latitude and longitude conveted to double
+            TempData["re_addres"] = reserveresult.Results[0].Formatted;
+            //Extracts address from returned by API data and adds it to TempData
+            //TempData lives for one jump
+            //When the user clicks off the Cart their address will not be saved
+            return RedirectToAction(nameof(Index));
+        }
+
 
         /// <summary>
         /// Creates MadeOrder objects. Feeds it data. Saves it to DB.

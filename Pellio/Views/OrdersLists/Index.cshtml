@@ -46,7 +46,14 @@
                 <label class="label" for="name">Име:</label>
                 <input class="input" type="text" name="name" id="name" required />
                 <label class="label" for="address">Адрес:</label>
-                <input class="input" type="text" name="address" id="address" required />
+                @if (TempData["re_addres"] != null)//checks if there is data
+                {
+                    <input class="input" type="text" name="address" id="address" value="@TempData["re_addres"]" required />
+                }//if not add empty input
+                else
+                {
+                    <input class="input" type="text" name="address" id="address" required />
+                }
                 <label class="label" for="rec">E-Mail:</label>
                 <input class="input" type="email" name="rec" id="rec" required />
                 <label class="label" for="phone">Телефонен номер:</label>
@@ -58,6 +65,14 @@
                 <div id="openwindow" class="prvspurchasesbtn">Последни поръчки</div>
             </div>
         </form>
+        <form id="idk" class="idk" asp-controller="OrdersLists" asp-action="GeoLock">
+            <p>Желаете ли да намерим адресът ви?</p>
+            <input class="hide" type="text" name="lat" id="lat"/>
+            <input class="hide" type="text" name="lon" id="lon"/>
+            @*<input class="loc_input" type="submit" value="Намери" />*@
+            <p>@ViewData["re_addres"]</p>
+        </form>
+        <button onclick="getLoc()">Намери</button>
     </div>
 
     <div id="closewindow" class="hide">
@@ -82,5 +97,5 @@
 
 
 
-<script src="~/js/formvalidation.js"></script>
-<script src="~/js/previousorders.js"></script>
+<script defer src="~/js/formvalidation.js"></script>
+<script defer src="~/js/previousorders.js"></script>

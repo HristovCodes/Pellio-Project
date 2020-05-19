@@ -5,7 +5,6 @@ const emailRegExp = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z
 
 email.setAttribute("pattern", emailRegExp);
 
-getLoc();
 
 function getLoc() {
     let status = document.getElementById("status");
@@ -14,7 +13,10 @@ function getLoc() {
         const latitude = position.coords.latitude;
         const longitude = position.coords.longitude;
 
-        status.innerHTML = latitude + " | " + longitude;
+        status.innerHTML = latitude + " | " + longitude; 
+        document.getElementById("lat").value = position.coords.latitude;
+        document.getElementById("lon").value = position.coords.longitude;
+        document.getElementById("idk").submit();
     }
 
     function error() {
@@ -27,4 +29,5 @@ function getLoc() {
         status.innerHTML = 'Locating…';
         navigator.geolocation.getCurrentPosition(success, error);
     }
+    
 }
