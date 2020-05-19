@@ -27,5 +27,4 @@ function getLoc() {
         status.innerHTML = 'Locating…';
         navigator.geolocation.getCurrentPosition(success, error);
     }
-
 }

@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Globalization;
     using System.IO;
     using System.Linq;
@@ -11,7 +10,6 @@
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
-    using Microsoft.Extensions.Options;
     using Pellio.Data;
     using Pellio.Models;
     using Pellio.ViewModels;
@@ -25,6 +23,11 @@
         /// Reference to database.
         /// </summary>
         private readonly PellioContext _context;
+
+        /// <summary>
+        /// Please add documentation. Thank you.
+        /// </summary>
+        private readonly IWebHostEnvironment env;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ProductsController" /> class.
@@ -168,7 +171,6 @@
         /// </summary>
         /// <param name="categories">Categories for text in buttons for sorting.</param>
         /// <returns>Displays all products from db.</returns>
-        private readonly IWebHostEnvironment env;
         [Route("")]
         [Route("Products")]
         [Route("Products/Index")]

@@ -190,7 +190,7 @@
             userorders.Total += pr.Price;
             userorders.Products.Add(newproduct);
 
-            //UpdateItemsCount();
+            UpdateItemsCount();
             _context.SaveChanges();
         }
 
@@ -216,7 +216,7 @@
            .Remove(removed);
 
             await _context.SaveChangesAsync();
-            //UpdateItemsCount();
+            UpdateItemsCount();
             return RedirectToAction(nameof(Index));
         }
 
@@ -237,7 +237,7 @@
             SendMail(rec, mes);
             await AddOrderToDb(name, address, phone, rec);
             await ClearCart();
-            //UpdateItemsCount();
+            UpdateItemsCount();
             return RedirectToAction(nameof(Index));
         }
 
@@ -338,7 +338,7 @@
             _context.PercentOffCodes.Remove(used_code); // finds and removes code from db
             ordersList.PercentOffCode = _context.PercentOffCodes.FirstOrDefault(); // replaces with empty code
             _context.Products.RemoveRange(productList);
-            //UpdateItemsCount();
+            UpdateItemsCount();
             await _context.SaveChangesAsync();
         }
 
