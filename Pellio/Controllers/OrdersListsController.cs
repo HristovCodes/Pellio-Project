@@ -23,9 +23,9 @@
         /// <summary>
         /// Reference to database.
         /// </summary>
-        private readonly PellioContext _context;
+        private readonly PellioContext _context;//db conn
 
-        private readonly AppSettings _appSettings;
+        private readonly AppSettings _appSettings;//private conn to appsetttings file
 
         /// <summary>
         /// Initializes a new instance of the <see cref="OrdersListsController" /> class.
@@ -35,6 +35,7 @@
         {
             _context = context;
             _appSettings = appsettingsOptions.Value;
+            //gets vals from appsettings and adds them to _appsettings
         }
 
         /// <summary>

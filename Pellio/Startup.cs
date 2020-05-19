@@ -18,6 +18,11 @@ namespace Pellio
         /// Initializes a new instance of the <see cref="Startup" /> class.
         /// </summary>
         /// <param name="configuration">The configuration to use.</param>
+
+        /// <summary>
+        /// Gets the Configuration.
+        /// </summary>
+        /// <value>Always inuque.</value>
         public IConfiguration Configuration { get; set; }
         public Startup(Microsoft.AspNetCore.Hosting.IWebHostEnvironment env)
         {
@@ -26,15 +31,14 @@ namespace Pellio
                 .AddJsonFile("appsettings.json", false, true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", false)
                 .AddEnvironmentVariables();
+            //makes asp read and use appsettings
+            //https://www.youtube.com/watch?v=nIoDpTPIle8
             Configuration = builder.Build();
 
-            //var envirnemt = Configuration["bruh:Email_name"];
+            //var envirnemt = Configuration["bruh:Email_name"];//debug
         }
 
-        /// <summary>
-        /// Gets the Configuration.
-        /// </summary>
-        /// <value>Always inuque.</value>
+        
         //public IConfiguration Configuration { get; }
 
         /// <summary>
@@ -44,6 +48,7 @@ namespace Pellio
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<AppSettings>(Configuration.GetSection("Env_vals"));
+            //get variables from "Env_vals" section from appsettings
             services.AddControllersWithViews();
             services.AddDbContext<PellioContext>(options =>
                     options.UseSqlServer(this.Configuration.GetConnectionString("PellioContext")));

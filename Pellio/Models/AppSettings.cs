@@ -9,5 +9,6 @@ namespace Pellio.Models
     {
         public string Email_name { get; set; }
         public string Email_pass { get; set; }
+        public string Geocode_key { get; set; }
     }
 }
