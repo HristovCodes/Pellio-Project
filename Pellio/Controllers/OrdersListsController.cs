@@ -258,7 +258,18 @@
             var gc = new Geocoder(_appSettings.Geocode_key);//mades ne instance of geocoder with API key
             var reserveresult = gc.ReverseGeocode(double.Parse(lat, CultureInfo.InvariantCulture), double.Parse(lon, CultureInfo.InvariantCulture), "bg", false);
             //gets address from latitude and longitude conveted to double
-            TempData["re_addres"] = reserveresult.Results[0].Formatted;
+            if(reserveresult.Status.Code == 200)
+            {
+                TempData["re_addres"] = reserveresult.Results[0].Formatted;
+            }
+            else
+            {
+                TempData["re_addres"] = "";
+                Console.WriteLine(reserveresult.Status.Code);
+                Console.WriteLine(reserveresult.Status.Message);
+                Console.WriteLine("Some problem with the library. Overused key? Look^");
+            }
+            
             //Extracts address from returned by API data and adds it to TempData
             //TempData lives for one jump
             //When the user clicks off the Cart their address will not be saved
