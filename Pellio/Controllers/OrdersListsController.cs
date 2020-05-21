@@ -341,6 +341,7 @@
                         EnableSsl = true
                     };
                     mes = mes.TrimEnd(',');
+                    mes = mes.Replace("&", "\n");
                     client.Send("fokenlasersights@gmail.com", rec, "Вашата покупка от Pellio-Foods пможе да получи намаление с код " + code.Code + ", направена на " + DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"), mes.TrimEnd(','));
                 }
                 else
@@ -394,9 +395,15 @@
             }
 
             string uid = Request.Cookies["uuidc"];
-            string count = _context.OrdersList.Include(c => c.Products)
+            string count = "0";
+
+            if (_context.OrdersList.Include(c => c.Products).FirstOrDefault(m => m.UserId == uid) != null)
+            {
+                count = _context.OrdersList.Include(c => c.Products)
                                               .FirstOrDefault(m => m.UserId == uid).Products.Count
                                               .ToString();
+            }
+
             Response.Cookies.Delete("cartitems");
             Response.Cookies.Append("cartitems", count, cookieOptionss);
         }
