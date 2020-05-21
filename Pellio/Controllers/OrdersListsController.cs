@@ -394,9 +394,15 @@
             }
 
             string uid = Request.Cookies["uuidc"];
-            string count = _context.OrdersList.Include(c => c.Products)
+            string count = "0";
+
+            if (_context.OrdersList.Include(c => c.Products).FirstOrDefault(m => m.UserId == uid) != null)
+            {
+                count = _context.OrdersList.Include(c => c.Products)
                                               .FirstOrDefault(m => m.UserId == uid).Products.Count
                                               .ToString();
+            }
+
             Response.Cookies.Delete("cartitems");
             Response.Cookies.Append("cartitems", count, cookieOptionss);
         }

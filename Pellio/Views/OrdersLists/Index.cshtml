@@ -11,7 +11,7 @@
     <div class="grid">
         @foreach (var item in Model.OrdersList.Products)
         {
-            messegformail = messegformail + item.ProductName + " (" + item.Price + ")\n";
+            messegformail = messegformail + "- " + item.ProductName + " (" + item.Price + ")\n";
             <img class="image" src="@item.ImageUrl" alt="@item.ProductName" />
             <h2 class="name">
                 @item.ProductName
