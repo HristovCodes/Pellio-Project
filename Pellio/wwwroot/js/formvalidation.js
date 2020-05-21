@@ -5,6 +5,13 @@ const emailRegExp = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z
 
 email.setAttribute("pattern", emailRegExp);
 
+window.onload = CheckAddressValue();
+function CheckAddressValue() {
+    if (document.getElementById("address").value == "") {
+        getLoc();
+    }
+}
+
 
 function getLoc() {
     let status = document.getElementById("status");
