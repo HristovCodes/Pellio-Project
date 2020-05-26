@@ -27,7 +27,7 @@
         /// Gets or sets a value indicating whether the code is avaliable or not.
         /// </summary>
         /// <value>Always unique.</value>
-        public bool Available { get; set; }
+        public bool Usable { get; set; }
 
         /// <summary>
         /// Gets or sets OrdersListId value.

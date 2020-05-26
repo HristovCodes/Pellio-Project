@@ -153,13 +153,13 @@
             var todd = new PercentOffCode();
             todd.Code = "todd";
             todd.Percentage = 0m;
-            todd.Available = false;
+            todd.Usable = false;
             _context.Add(todd);
             _context.SaveChanges();
             var code = new PercentOffCode();
             code.Code = "bruh";
             code.Percentage = 50m;
-            code.Available = true;
+            code.Usable = true;
             _context.Add(code);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
@@ -214,7 +214,7 @@
                         {
                             Code = "todd",
                             Percentage = 0,
-                            Available = false
+                            Usable = false
                         }
                     });
                     _context.SaveChanges();

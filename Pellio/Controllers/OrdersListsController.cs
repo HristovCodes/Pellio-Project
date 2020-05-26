@@ -42,7 +42,7 @@
         }
 
         /// <summary>
-        /// Generated random discount code.
+        /// Generated a random 8 digit discount code.
         /// </summary>
         /// <returns>Randomly generated discount code.</returns>
         public string CodeGenerate()
@@ -86,7 +86,7 @@
                     {
                         Code = "todd",
                         Percentage = 0,
-                        Available = false
+                        Usable = false
                     }
                 };
                 _context.Add(cart);
@@ -112,7 +112,7 @@
             string uid = Request.Cookies["uuidc"];
             var code_form_db = _context.PercentOffCodes.Include(c => c.OrdersList)
                 .Where(c => c.Code == code).FirstOrDefault();
-            if (code_form_db != null && code_form_db.Available)
+            if (code_form_db != null && code_form_db.Usable)
             {
                 var ol = _context.OrdersList.Include(c => c.Products).Where(u => u.UserId == uid).FirstOrDefault();
                 ol.PercentOffCode = code_form_db;
@@ -172,7 +172,7 @@
                     {
                         Code = "todd",
                         Percentage = 0,
-                        Available = false
+                        Usable = false
                     }
                 };
                 _context.OrdersList.Add(userorders);
@@ -332,7 +332,7 @@
                     {
                         Code = CodeGenerate(),
                         Percentage = 5,
-                        Available = true
+                        Usable = true
                     };
                     _context.PercentOffCodes.Add(code);
                     var client = new SmtpClient("smtp.gmail.com", 587)

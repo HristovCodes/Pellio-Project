@@ -23,7 +23,7 @@
                 @item.Price лв
             </p>
         }
-        @{ if (Model.OrdersList.PercentOffCode.Code == "todd")
+        @{ if (Model.OrdersList.PercentOffCode.Usable == true)
             {
                 @*otherwise it says you are using a 0% off code*@
                 @*scuffed check if you can use should keep Available for checks?*@
