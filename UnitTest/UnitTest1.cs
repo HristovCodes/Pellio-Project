@@ -17,6 +17,9 @@ using System.Threading;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
+using System.Collections.Specialized;
+using Microsoft.Extensions.Options;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace UnitTest
 {
@@ -24,6 +27,21 @@ namespace UnitTest
     [TestClass]
     public class UnitTest1
     {
+        ServiceProvider _provider;
+
+        public void Prep_Appsettings()
+        {
+            var services = new ServiceCollection();
+            // mock PersonSettings
+            services.AddTransient<IOptions<AppSettings>>(
+                 provider => Options.Create<AppSettings>(new AppSettings
+                 {
+                     Email_name = "name",
+                     Email_pass = "pass",
+                     Geocode_key = "key"
+                 }));
+            _provider = services.BuildServiceProvider();
+        }
 
         #region UnitTest ProductsController_tests
         //below are ProductsController test
@@ -185,7 +203,9 @@ namespace UnitTest
         public void OrderListControllerIndexReturnsView()
         {
             // Arrange
-            OrdersListsController controller = new OrdersListsController(null);
+            Prep_Appsettings();
+            IOptions<AppSettings> app_settings_options = _provider.GetService<IOptions<AppSettings>>();
+            OrdersListsController controller = new OrdersListsController(null, app_settings_options);
 
             // Act
             Task<IActionResult> result = controller.Index();
@@ -198,7 +218,9 @@ namespace UnitTest
         private void PercentOffCodeTextIsGenerated()
         {
             // Arrange
-            OrdersListsController controller = new OrdersListsController(null);
+            Prep_Appsettings();
+            IOptions<AppSettings> app_settings_options = _provider.GetService<IOptions<AppSettings>>();
+            OrdersListsController controller = new OrdersListsController(null, app_settings_options);
 
             // Act
             var result = "";
@@ -225,7 +247,9 @@ namespace UnitTest
             _context.SaveChanges();
             //setting up mock db^
 
-            OrdersListsController controller = new OrdersListsController(_context);
+            Prep_Appsettings();
+            IOptions<AppSettings> app_settings_options = _provider.GetService<IOptions<AppSettings>>();
+            OrdersListsController controller = new OrdersListsController(_context, app_settings_options);
             controller.ControllerContext = new ControllerContext();
             controller.ControllerContext.HttpContext = new DefaultHttpContext();
             var uuid = Guid.NewGuid().ToString();
@@ -264,7 +288,9 @@ namespace UnitTest
             _context.SaveChanges();
             //setting up mock db^
 
-            OrdersListsController controller = new OrdersListsController(_context);
+            Prep_Appsettings();
+            IOptions<AppSettings> app_settings_options = _provider.GetService<IOptions<AppSettings>>();
+            OrdersListsController controller = new OrdersListsController(_context, app_settings_options);
             controller.ControllerContext = new ControllerContext();
             controller.ControllerContext.HttpContext = new DefaultHttpContext();
             var uuid = Guid.NewGuid().ToString();

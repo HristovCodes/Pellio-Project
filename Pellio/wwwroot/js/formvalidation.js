@@ -9,7 +9,9 @@ window.onload = CheckAddressValue();
 function CheckAddressValue() {
     if (document.getElementById("address").value == "") {
         getLoc();
-    }
+    }//execs getLoc() on page load if the value in address in empty
+    //It is on load but if you call an on load function that reloads the page you brick that page
+    //Simple way to avoid that
 }
 
 
@@ -23,7 +25,9 @@ function getLoc() {
         status.innerHTML = latitude + " | " + longitude; 
         document.getElementById("lat").value = position.coords.latitude;
         document.getElementById("lon").value = position.coords.longitude;
-        document.getElementById("idk").submit();
+        //update vals in hidden form (Is there a better way to get values to the controller?)
+        //couldn't find one
+        document.getElementById("address_gen").submit();//submits the hidden form
     }
 
     function error() {
