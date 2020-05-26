@@ -322,6 +322,262 @@ namespace UnitTest
             Assert.AreEqual(controller.Request.Headers["cartitems"].ToString(), model.OrdersList.Products.Count.ToString());
         }
 
+        [TestMethod]
+        public async Task UsingCodeFuncActuallyUsingCodeAndAddingDbConnection()
+        {
+            // Arrange
+            var options = new DbContextOptionsBuilder<PellioContext>()
+                .UseInMemoryDatabase(databaseName: "PellioDb")
+                .Options;
+            var _context = new PellioContext(options);
+            Products pr = new Products();
+            pr.ProductName = "pizza";
+            _context.Products.Add(pr);
+            PercentOffCode poc = new PercentOffCode();
+            poc.Code = "potato";//something random to compare to
+            poc.Usable = true;
+            poc.Percentage = 50;//needed here?
+            _context.PercentOffCodes.Add(poc);
+            _context.SaveChanges();
+            //setting up mock db^
+
+            Prep_Appsettings();
+            IOptions<AppSettings> app_settings_options = _provider.GetService<IOptions<AppSettings>>();
+            OrdersListsController controller = new OrdersListsController(_context, app_settings_options);
+            controller.ControllerContext = new ControllerContext();
+            controller.ControllerContext.HttpContext = new DefaultHttpContext();
+            var uuid = Guid.NewGuid().ToString();
+            CookieOptions cookieOptionss = new CookieOptions();
+            cookieOptionss.Expires = DateTime.Now.AddDays(30);
+            controller.Response.Cookies.Append("uuidc", uuid, cookieOptionss);
+            controller.Response.Cookies.Append("cartitems", "0", cookieOptionss);
+            controller.Request.Headers["uuidc"] = uuid;
+            //setting up mock cookies^
+
+            // Act
+
+            var actionResultTask = controller.Index();
+            actionResultTask.Wait();
+            controller.AddToCart(1);
+            actionResultTask = controller.Index();
+            actionResultTask.Wait();
+            var before = _context.OrdersList.Include(c => c.PercentOffCode)
+                                                    .First()
+                                                    .PercentOffCode.Code
+                                                    .ToString();
+            controller.UseDiscountCode("potato");
+            var after = _context.OrdersList.Include(c => c.PercentOffCode)
+                 .First()
+                 .PercentOffCode.Code
+                 .ToString();
+            var viewResult = actionResultTask.Result as ViewResult;
+
+            // Assert
+            Assert.IsNotNull(viewResult);
+            Assert.AreNotEqual(before, after);
+        }
+
+        [TestMethod]
+        public async Task ProductIsAddedToCart()
+        {
+            // Arrange
+            var options = new DbContextOptionsBuilder<PellioContext>()
+                .UseInMemoryDatabase(databaseName: "PellioDb")
+                .Options;
+            var _context = new PellioContext(options);
+            Products pr = new Products();
+            pr.ProductName = "pizza";
+            _context.Products.Add(pr);
+            _context.SaveChanges();
+            //setting up mock db^
+
+            Prep_Appsettings();
+            IOptions<AppSettings> app_settings_options = _provider.GetService<IOptions<AppSettings>>();
+            OrdersListsController controller = new OrdersListsController(_context, app_settings_options);
+            controller.ControllerContext = new ControllerContext();
+            controller.ControllerContext.HttpContext = new DefaultHttpContext();
+            var uuid = Guid.NewGuid().ToString();
+            CookieOptions cookieOptionss = new CookieOptions();
+            cookieOptionss.Expires = DateTime.Now.AddDays(30);
+            controller.Response.Cookies.Append("uuidc", uuid, cookieOptionss);
+            controller.Response.Cookies.Append("cartitems", "0", cookieOptionss);
+            controller.Request.Headers["uuidc"] = uuid;
+            //setting up mock cookies^
+
+            // Act
+
+            var actionResultTask = controller.Index();
+            actionResultTask.Wait();
+            int before = _context.OrdersList.Include(c => c.Products)
+                                              .First()
+                                              .Products.Count;
+            controller.AddToCart(1);
+            actionResultTask = controller.Index();
+            actionResultTask.Wait();
+            var viewResult = actionResultTask.Result as ViewResult;
+            int after = _context.OrdersList.Include(c => c.Products)
+                                              .First()
+                                              .Products.Count;
+
+            // Assert
+            Assert.IsNotNull(viewResult);
+            Assert.AreNotEqual(before, after);
+        }
+
+        [TestMethod]
+        public async Task ProductIsDeletedFromCart()
+        {
+            // Arrange
+            var options = new DbContextOptionsBuilder<PellioContext>()
+                .UseInMemoryDatabase(databaseName: "PellioDb")
+                .Options;
+            var _context = new PellioContext(options);
+            Products pr = new Products();
+            pr.ProductName = "pizza";
+            _context.Products.Add(pr);
+            _context.SaveChanges();
+            //setting up mock db^
+
+            Prep_Appsettings();
+            IOptions<AppSettings> app_settings_options = _provider.GetService<IOptions<AppSettings>>();
+            OrdersListsController controller = new OrdersListsController(_context, app_settings_options);
+            controller.ControllerContext = new ControllerContext();
+            controller.ControllerContext.HttpContext = new DefaultHttpContext();
+            var uuid = Guid.NewGuid().ToString();
+            CookieOptions cookieOptionss = new CookieOptions();
+            cookieOptionss.Expires = DateTime.Now.AddDays(30);
+            controller.Response.Cookies.Append("uuidc", uuid, cookieOptionss);
+            controller.Response.Cookies.Append("cartitems", "0", cookieOptionss);
+            controller.Request.Headers["uuidc"] = uuid;
+            //setting up mock cookies^
+
+            // Act
+
+            var actionResultTask = controller.Index();
+            actionResultTask.Wait();
+            int before = _context.OrdersList.Include(c => c.Products)
+                                              .First()
+                                              .Products.Count;
+            controller.AddToCart(1);
+            actionResultTask = controller.Index();
+            actionResultTask.Wait();
+            controller.DeleteProduct(2);
+            actionResultTask = controller.Index();
+            actionResultTask.Wait();
+            var viewResult = actionResultTask.Result as ViewResult;
+            int after = _context.OrdersList.Include(c => c.Products)
+                                              .First()
+                                              .Products.Count;
+
+            // Assert
+            Assert.IsNotNull(viewResult);
+            Assert.AreEqual(before, after);
+        }
+
+        [TestMethod]
+        public async Task OrderIsCompletedAndAddedToDb()
+        {
+            // Arrange
+            var options = new DbContextOptionsBuilder<PellioContext>()
+                .UseInMemoryDatabase(databaseName: "PellioDb")
+                .Options;
+            var _context = new PellioContext(options);
+            Products pr = new Products();
+            pr.ProductName = "pizza";
+            _context.Products.Add(pr);
+            _context.SaveChanges();
+            //setting up mock db^
+
+            Prep_Appsettings();
+            IOptions<AppSettings> app_settings_options = _provider.GetService<IOptions<AppSettings>>();
+            OrdersListsController controller = new OrdersListsController(_context, app_settings_options);
+            controller.ControllerContext = new ControllerContext();
+            controller.ControllerContext.HttpContext = new DefaultHttpContext();
+            var uuid = Guid.NewGuid().ToString();
+            CookieOptions cookieOptionss = new CookieOptions();
+            cookieOptionss.Expires = DateTime.Now.AddDays(30);
+            controller.Response.Cookies.Append("uuidc", uuid, cookieOptionss);
+            controller.Response.Cookies.Append("cartitems", "0", cookieOptionss);
+            controller.Request.Headers["uuidc"] = uuid;
+            //setting up mock cookies^
+
+            // Act
+            var actionResultTask = controller.Index();
+            actionResultTask.Wait();
+            int before = _context.MadeOrder.Count();
+            controller.AddToCart(1);
+            actionResultTask = controller.Index();
+            actionResultTask.Wait();
+            controller.AddOrderToDb("name", "adres", 123, "email");
+            actionResultTask = controller.Index();
+            actionResultTask.Wait();
+            var viewResult = actionResultTask.Result as ViewResult;
+            int after = _context.MadeOrder.Count();
+
+            // Assert
+            Assert.IsNotNull(viewResult);
+            Assert.AreNotEqual(before, after);
+        }
+
+        [TestMethod]
+        public async Task CartIsCorrectlyCleared()
+        {
+            // Arrange
+            var options = new DbContextOptionsBuilder<PellioContext>()
+                .UseInMemoryDatabase(databaseName: "PellioDb")
+                .Options;
+            var _context = new PellioContext(options);
+            Products pr = new Products();
+            pr.ProductName = "pizza";
+            _context.Products.Add(pr);
+            PercentOffCode poc = new PercentOffCode();
+            poc.Code = "potatos";
+            poc.Percentage = 50;
+            poc.Usable = true;
+            _context.SaveChanges();
+            //setting up mock db^
+
+            Prep_Appsettings();
+            IOptions<AppSettings> app_settings_options = _provider.GetService<IOptions<AppSettings>>();
+            OrdersListsController controller = new OrdersListsController(_context, app_settings_options);
+            controller.ControllerContext = new ControllerContext();
+            controller.ControllerContext.HttpContext = new DefaultHttpContext();
+            var uuid = Guid.NewGuid().ToString();
+            CookieOptions cookieOptionss = new CookieOptions();
+            cookieOptionss.Expires = DateTime.Now.AddDays(30);
+            controller.Response.Cookies.Append("uuidc", uuid, cookieOptionss);
+            controller.Response.Cookies.Append("cartitems", "0", cookieOptionss);
+            controller.Request.Headers["uuidc"] = uuid;
+            //setting up mock cookies^
+
+            // Act
+            var actionResultTask = controller.Index();
+            actionResultTask.Wait();
+            int before_ol_count = _context.OrdersList.Include(c => c.Products)
+                                             .First()
+                                             .Products.Count;
+            controller.AddToCart(1);
+            actionResultTask = controller.Index();
+            actionResultTask.Wait();
+            controller.UseDiscountCode("potatos");
+            string before_code = _context.OrdersList.Include(c => c.PercentOffCode)
+                                             .First()
+                                             .PercentOffCode.Code;
+            actionResultTask = controller.Index();
+            actionResultTask.Wait();
+            controller.ClearCart();
+            string after_code = _context.OrdersList.Include(c => c.PercentOffCode)
+                                             .Where(b => b.UserId == uuid)
+                                             .First()
+                                             .PercentOffCode.Code;
+            var viewResult = actionResultTask.Result as ViewResult;
+
+            // Assert
+            Assert.IsNotNull(viewResult);
+            Assert.AreNotEqual(before_ol_count, null);//its empty trying to get Count will throw error
+            Assert.AreNotEqual(before_code, before_code);
+        }
+
         #endregion
     }
 

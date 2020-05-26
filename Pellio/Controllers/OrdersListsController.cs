@@ -157,6 +157,11 @@
         public void ProductToCart(int? id)
         {
             string uid = Request.Cookies["uuidc"];
+            if(uid == null || uid == "")
+            {
+                RedirectToAction("Index", "Products");//checks if somehow uid is empty
+                //redirect to main index to gen
+            }
             var userorders = _context.OrdersList
             .FirstOrDefault(m => m.UserId == uid);
 
@@ -251,7 +256,7 @@
         /// </summary>
         /// <param name="lat">latitude</param>
         /// <param name="lon">longitude</param>
-        /// <returns>Rough address based on IP locatino</returns>
+        /// <returns>Rough address based on IP location</returns>
         [HttpPost]
         public async Task<IActionResult> GeoLock(string lat, string lon)
         {
@@ -323,6 +328,8 @@
         public void SendMail(string rec, string mes)
         {
             string uid = Request.Cookies["uuidc"];
+            var codebruh = _context.OrdersList.Include(c => c.PercentOffCode)
+                .Where(a => a.UserId == uid).First().PercentOffCode.Code;
             if (ModelState.IsValid)
             {
                 var completed = _context.MadeOrder.Where(c => c.UserId == uid).Count();
@@ -362,7 +369,7 @@
         /// Clears all Product items from DB table OrderList with specific UUIDC.
         /// </summary>
         /// <returns>Returns nothing.</returns>
-        private async Task ClearCart()
+        public async Task ClearCart()
         {
             string uid = Request.Cookies["uuidc"];
             var ordersList = await _context.OrdersList
@@ -373,7 +380,12 @@
             _context.OrdersList.Remove(ordersList);
             var used_code = _context.PercentOffCodes.Where(n => n.Code == ordersList.PercentOffCode.Code).FirstOrDefault();
             _context.PercentOffCodes.Remove(used_code); // finds and removes code from db
-            ordersList.PercentOffCode = _context.PercentOffCodes.FirstOrDefault(); // replaces with empty code
+            ordersList.PercentOffCode = new PercentOffCode()
+            {
+                Code = "todd",
+                Percentage = 0,
+                Usable = false
+            };// replaces with empty code
             _context.Products.RemoveRange(productList);
             UpdateItemsCount();
             await _context.SaveChangesAsync();
