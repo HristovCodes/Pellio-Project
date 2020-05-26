@@ -534,6 +534,7 @@ namespace UnitTest
             poc.Code = "potatos";
             poc.Percentage = 50;
             poc.Usable = true;
+            _context.PercentOffCodes.Add(poc);
             _context.SaveChanges();
             //setting up mock db^
 
@@ -559,15 +560,11 @@ namespace UnitTest
             controller.AddToCart(1);
             actionResultTask = controller.Index();
             actionResultTask.Wait();
-            controller.UseDiscountCode("potatos");
             string before_code = _context.OrdersList.Include(c => c.PercentOffCode)
                                              .First()
                                              .PercentOffCode.Code;
-            actionResultTask = controller.Index();
-            actionResultTask.Wait();
-            controller.ClearCart();
+            controller.UseDiscountCode("potatos");
             string after_code = _context.OrdersList.Include(c => c.PercentOffCode)
-                                             .Where(b => b.UserId == uuid)
                                              .First()
                                              .PercentOffCode.Code;
             var viewResult = actionResultTask.Result as ViewResult;
@@ -575,7 +572,7 @@ namespace UnitTest
             // Assert
             Assert.IsNotNull(viewResult);
             Assert.AreNotEqual(before_ol_count, null);//its empty trying to get Count will throw error
-            Assert.AreNotEqual(before_code, before_code);
+            Assert.AreNotEqual(before_code, after_code);
         }
 
         #endregion
