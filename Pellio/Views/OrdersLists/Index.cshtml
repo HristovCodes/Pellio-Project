@@ -25,9 +25,7 @@
         }
         @{ if (Model.OrdersList.PercentOffCode.Usable == true)
             {
-                @*otherwise it says you are using a 0% off code*@
-                @*scuffed check if you can use should keep Available for checks?*@
-                @*also for some reason 0.00, 0.00m, 0.00M are not true in if ??????*@
+                @*Would use value check on Percentage, but it seems to ignore the if call???*@
                 messegformail += "& Вие използвахте кода " + Model.OrdersList.PercentOffCode.Code + "!";
                 decimal offprice = Model.OrdersList.Total - (Model.OrdersList.Total * (Model.OrdersList.PercentOffCode.Percentage / 100));
                 messegformail += "& Цената ви се обновява " + Model.OrdersList.Total + " - " + Model.OrdersList.PercentOffCode.Percentage + "% = " + offprice + ".";
@@ -69,7 +67,7 @@
             <input class="hide" type="text" name="lat" id="lat"/>
             <input class="hide" type="text" name="lon" id="lon"/>
             @*<input class="loc_input" type="submit" value="Намери" />*@
-            <p>@ViewData["re_addres"]</p>
+            @*<p>@ViewData["re_addres"]</p>*@
         </form>
     </div>
 
