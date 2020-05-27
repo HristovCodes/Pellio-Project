@@ -18,16 +18,17 @@ function getcookie(cookiename) {
 
 window.onload = genUUIDcookie();
 
-function genUUIDcookie () {
-    if (getcookie("uuidc") === "0") {
+
+function genUUIDcookie() {
+    if (document.cookie.indexOf('uuidc=') == -1) {
         console.log("Loaded.");
         let expdate = new Date();
         expdate.setMonth(expdate.getMonth() + 1);
         expdate = expdate.toUTCString();
 
         document.cookie = "uuidc =" + uuidv4() + ";" + "expires =" + expdate + ";";
-    }
-};
+    }   
+}
 
 function uuidv4() {
     return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
