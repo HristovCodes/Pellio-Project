@@ -178,7 +178,26 @@
         {
             _context.SaveChanges();
             FillDropDownTags();
-            GenUUIDC();
+
+            string uuid = Request.Cookies["uuidc"];
+
+            if (_context.OrdersList
+                    .Include(c => c.Products).FirstOrDefault(m => m.UserId == uuid) == null)
+            {
+                _context.OrdersList.Add(new OrdersList
+                {
+                    Products = new List<Products>(),
+                    Total = 0,
+                    UserId = uuid,
+                    PercentOffCode = new PercentOffCode()
+                    {
+                        Code = "todd",
+                        Percentage = 0,
+                        Usable = false
+                    }
+                });
+                _context.SaveChanges();
+            }
 
             if (categories == null || categories == "Всички")
             {
@@ -187,38 +206,6 @@
             else
             {
                 return View(await _context.Products.Where(p => p.Tag == categories).ToListAsync());
-            }
-        }
-
-        /// <summary>
-        /// Generates UUID. Generates new cart entry in db with said UUID.
-        /// </summary>
-        public void GenUUIDC()
-        {
-            if (Request.Cookies["uuidc"] == null)
-            {
-                var uuid = Guid.NewGuid().ToString();
-                CookieOptions cookieOptionss = new CookieOptions();
-                cookieOptionss.Expires = DateTime.Now.AddDays(30);
-                Response.Cookies.Append("uuidc", uuid, cookieOptionss);
-
-                if (_context.OrdersList
-                    .Include(c => c.Products).FirstOrDefault(m => m.UserId == uuid) == null)
-                {
-                    _context.OrdersList.Add(new OrdersList
-                    {
-                        Products = new List<Products>(),
-                        Total = 0,
-                        UserId = uuid,
-                        PercentOffCode = new PercentOffCode()
-                        {
-                            Code = "todd",
-                            Percentage = 0,
-                            Usable = false
-                        }
-                    });
-                    _context.SaveChanges();
-                }
             }
         }
     }
