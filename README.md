@@ -10,7 +10,7 @@
 # Нужни познания за работа по Pellio:
 За да може един разработчик да разбира и работи по приложението “Pellio” трябва да бъде запознат със следните технологии - C#;  .NET;  EF;  ES6;  HTML5;  CSS3; MVC; MSSQLSERVER и като платформа Visual Studio 2019.
 
-# Използвани библиотеки
+# Използвани библиотеки:
 A .Net Wrapper for The OpenCage Geocoder - https://github.com/gingemonster/dotnet-opencage-geocode
 
 # Конвенвенциите които спазваме са тук: 
