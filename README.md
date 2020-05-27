@@ -10,6 +10,9 @@
 # Нужни познания за работа по Pellio:
 За да може един разработчик да разбира и работи по приложението “Pellio” трябва да бъде запознат със следните технологии - C#;  .NET;  EF;  ES6;  HTML5;  CSS3; MVC; MSSQLSERVER и като платформа Visual Studio 2019.
 
+# Използвани библиотеки:
+A .Net Wrapper for The OpenCage Geocoder - https://github.com/gingemonster/dotnet-opencage-geocode
+
 # Конвенвенциите които спазваме са тук: 
 https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/inside-a-program/coding-conventions
 
@@ -32,6 +35,7 @@ https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/inside-a-progra
 -да се изписва съдържанието на продукта;  
 -да се вижда цената преди и след поръчка;  
 -кодовете за отстъпка да работят на всяка първа и трета следваща поръчка;  
+-при съгласяване от потребител да се намери приблизителният адрес от IP;
 -да има номер за обратна връзка;  
 -да има информация относно ресторанта;  
 -да има категории с който да се сортират продуктите по зададения критерии;  
@@ -53,7 +57,7 @@ https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/inside-a-progra
 # Клас диаграма:
 ![Image of class diagram](https://github.com/HristovCodes/Pellio-Project/blob/master/Pellio/patternMatchingClassDiagram.png)
 # Диаграма на базите данни:
-![Image of er diagram](https://i.imgur.com/fj3rt8Z.png)
+![Image of er diagram](https://i.imgur.com/CZJT6Nl.png)
 
 
 # Описване на по-важни класове и методи:
