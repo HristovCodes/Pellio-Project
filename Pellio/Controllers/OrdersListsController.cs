@@ -240,10 +240,10 @@
         /// <param name="code">Discount code that user entered.</param>
         /// <returns>The cart view after ordering (empty cart).</returns>
         [HttpPost]
-        public async Task<IActionResult> OrderingMainLogicFunc(string name, string address, string rec, int phone, string mes, string code)
+        public async Task<IActionResult> OrderingMainLogicFunc(string name, string address, string rec, int phone, string code)
         {
             UseDiscountCode(code);
-            SendMail(rec, mes);
+            SendMail(rec);
             await AddOrderToDb(name, address, phone, rec);
             await ClearCart();
             UpdateItemsCount();
@@ -320,14 +320,49 @@
             _context.SaveChanges();
         }
 
+
+        /// <summary>
+        /// Generates the messege used in the email
+        /// </summary>
+        /// <returns>Messege used in the email</returns>
+        private string GenEmailMsg()
+        {
+            string msgformail = "";
+            string uid = Request.Cookies["uuidc"];
+            var userorders = _context.OrdersList
+                .Include(m => m.Products)
+                .Include(co => co.PercentOffCode)
+                .First(m => m.UserId == uid);
+            
+            if(userorders.PercentOffCode != null && userorders.PercentOffCode.Usable == true)
+            {
+                msgformail += "\n Вие използвахте кода " + userorders.PercentOffCode.Code + "!";
+                msgformail += "& Крайната цената се обновява " + userorders.Total + "-" + userorders.PercentOffCode.Percentage + "% = ";
+                decimal temp_final = userorders.Total - (userorders.Total * (userorders.PercentOffCode.Percentage / 100));
+                msgformail += temp_final.ToString("F") + "лв .";
+                msgformail += "\n Храните които поръчахте са:";
+            }
+            else
+            {
+                msgformail += "\n Храните които поръчахте са:";
+            }
+            
+            foreach(var item in userorders.Products)
+            {
+                msgformail += "\n - " + item.ProductName + $"({item.Price})";
+            }
+            return msgformail;
+        }
+
         /// <summary>
         /// Sends the email via gmail Smtp server.
         /// </summary>
         /// <param name="rec">Short for reciver.</param>
         /// <param name="mes">Short for messege.</param>
-        public void SendMail(string rec, string mes)
+        public void SendMail(string rec)
         {
             string uid = Request.Cookies["uuidc"];
+            string mes = GenEmailMsg();
             var codebruh = _context.OrdersList.Include(c => c.PercentOffCode)
                 .Where(a => a.UserId == uid).First().PercentOffCode.Code;
             if (ModelState.IsValid)
@@ -347,8 +382,8 @@
                         Credentials = new NetworkCredential(_appSettings.Email_name, _appSettings.Email_pass),
                         EnableSsl = true
                     };
-                    mes = mes.TrimEnd(',');
-                    mes = mes.Replace("&", "\n");
+                    //mes = mes.TrimEnd(',');
+                    //mes = mes.Replace("&", "\n");
                     client.Send("fokenlasersights@gmail.com", rec, "Вашата покупка от Pellio-Foods пможе да получи намаление с код " + code.Code + ", направена на " + DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"), mes.TrimEnd(','));
                 }
                 else

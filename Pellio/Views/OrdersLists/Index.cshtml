@@ -7,11 +7,9 @@
 <link rel="stylesheet" href="~/css/cart.css" />
 
 <div>
-    @{ string messegformail = "Храните които поръчахте са: ";}
     <div class="grid">
         @foreach (var item in Model.OrdersList.Products)
         {
-            messegformail = messegformail + "& - " + item.ProductName + " (" + item.Price + ")";
             <img class="image" src="@item.ImageUrl" alt="@item.ProductName" />
             <h2 class="name">
                 @item.ProductName
@@ -23,15 +21,6 @@
                 @item.Price лв
             </p>
         }
-        @{ if (Model.OrdersList.PercentOffCode.Usable == true)
-            {
-                @*Would use value check on Percentage, but it seems to ignore the if call???*@
-                messegformail += "& Вие използвахте кода " + Model.OrdersList.PercentOffCode.Code + "!";
-                decimal offprice = Model.OrdersList.Total - (Model.OrdersList.Total * (Model.OrdersList.PercentOffCode.Percentage / 100));
-                messegformail += "& Цената ви се обновява " + Model.OrdersList.Total + " - " + Model.OrdersList.PercentOffCode.Percentage + "% = " + offprice + ".";
-            }
-
-        }@*there is a better way but this is how it's gonna be for now at least*@
         <p class="total">
             Total:
             <span>
@@ -56,18 +45,22 @@
                 <input class="input" type="email" name="rec" id="rec" required />
                 <label class="label" for="phone">Телефонен номер:</label>
                 <input class="input" type="tel" name="phone" id="phone" pattern="[0-9]{10}" required />
-                <input class="hide" type="text" name="mes" id="mes" value="@messegformail" />
                 <label class="label" for="code">Код:</label>
                 <input class="input" type="text" name="code" id="code" />
-                <input class="input" type="submit" value="Поръчай" />
+                @if (Model.OrdersList.Products.Count != 0)
+                {
+                    <input class="input" type="submit" value="Поръчай" />
+                }
+                else
+                {
+                    <p>Не можете да поръчате без да имате продукти в кошницата!</p>
+                }
                 <div id="openwindow" class="prvspurchasesbtn">Последни поръчки</div>
             </div>
         </form>
         <form id="address_gen" class="idk" asp-controller="OrdersLists" asp-action="GeoLock">
             <input class="hide" type="text" name="lat" id="lat"/>
             <input class="hide" type="text" name="lon" id="lon"/>
-            @*<input class="loc_input" type="submit" value="Намери" />*@
-            @*<p>@ViewData["re_addres"]</p>*@
         </form>
     </div>
 
