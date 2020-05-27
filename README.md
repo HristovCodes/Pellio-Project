@@ -57,7 +57,7 @@ https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/inside-a-progra
 # Клас диаграма:
 ![Image of class diagram](https://github.com/HristovCodes/Pellio-Project/blob/master/Pellio/patternMatchingClassDiagram.png)
 # Диаграма на базите данни:
-![Image of er diagram](https://i.imgur.com/fj3rt8Z.png)
+![Image of er diagram](https://i.imgur.com/CZJT6Nl.png)
 
 
 # Описване на по-важни класове и методи:
