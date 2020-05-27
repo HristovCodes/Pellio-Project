@@ -47,16 +47,6 @@
             ViewBag.TagsforDropdown = tags;
         }
 
-        /// GET: Products/CheckAll
-        /// <summary>
-        /// Returns a view with all the products the in database.
-        /// </summary>
-        /// <returns>Returns a view with containing a list of all products.</returns>
-        public async Task<IActionResult> CheckAll()
-        {
-            return View(await _context.Products.ToListAsync());
-        }
-
         /// POST: Products/AddComment/5
         /// <summary>
         /// Adds a comment to the database that is associated with a certain product.
