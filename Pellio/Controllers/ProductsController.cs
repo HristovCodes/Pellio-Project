@@ -178,17 +178,17 @@
         {
             _context.SaveChanges();
             FillDropDownTags();
-
-            string uuid = Request.Cookies["uuidc"];
+            
+            string uid = Request.Cookies["uuidc"];
 
             if (_context.OrdersList
-                    .Include(c => c.Products).FirstOrDefault(m => m.UserId == uuid) == null)
+                    .Include(c => c.Products).FirstOrDefault(m => m.UserId == uid) == null)
             {
                 _context.OrdersList.Add(new OrdersList
                 {
                     Products = new List<Products>(),
                     Total = 0,
-                    UserId = uuid,
+                    UserId = uid,
                     PercentOffCode = new PercentOffCode()
                     {
                         Code = "todd",

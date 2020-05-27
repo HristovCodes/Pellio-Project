@@ -157,11 +157,6 @@
         public void ProductToCart(int? id)
         {
             string uid = Request.Cookies["uuidc"];
-            if(uid == null || uid == "")
-            {
-                RedirectToAction("Index", "Products");//checks if somehow uid is empty
-                //redirect to main index to gen
-            }
             var userorders = _context.OrdersList
             .FirstOrDefault(m => m.UserId == uid);
 

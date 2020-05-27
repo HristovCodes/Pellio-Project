@@ -1,14 +1,16 @@
 ﻿let cart = document.getElementById("cart");
 
-cart.innerHTML = getcookie(" cartitems") + " | Кошница ";
+cart.innerHTML = getcookie("cartitems") + " | Кошница ";
 
 function getcookie(cookiename) {
     let cookies = document.cookie;
     let allcookies = cookies.split(";");
 
     for (let i = 0; i < allcookies.length; i++) {
+        allcookies[i] = allcookies[i].trim();
         name = allcookies[i].split('=')[0];
         value = allcookies[i].split('=')[1];
+        console.log(allcookies[i]);
         if (name === cookiename) {
             return value;
         }
@@ -18,7 +20,6 @@ function getcookie(cookiename) {
 
 window.onload = genUUIDcookie();
 
-
 function genUUIDcookie() {
     if (document.cookie.indexOf('uuidc=') == -1) {
         console.log("Loaded.");
@@ -26,7 +27,7 @@ function genUUIDcookie() {
         expdate.setMonth(expdate.getMonth() + 1);
         expdate = expdate.toUTCString();
 
-        document.cookie = "uuidc =" + uuidv4() + ";" + "expires =" + expdate + ";";
+        document.cookie = "uuidc=" + uuidv4() + ";" + "path=/;" + "expires=" + expdate + ";";
     }   
 }
 
