@@ -332,7 +332,7 @@
             if(userorders.PercentOffCode != null && userorders.PercentOffCode.Usable == true)
             {
                 msgformail += "\n Вие използвахте кода " + userorders.PercentOffCode.Code + "!";
-                msgformail += "& Крайната цената се обновява " + userorders.Total + "-" + userorders.PercentOffCode.Percentage + "% = ";
+                msgformail += "\n Крайната цената се обновява " + userorders.Total + "-" + userorders.PercentOffCode.Percentage + "% = ";
                 decimal temp_final = userorders.Total - (userorders.Total * (userorders.PercentOffCode.Percentage / 100));
                 msgformail += temp_final.ToString("F") + "лв .";
                 msgformail += "\n Храните които поръчахте са:";
