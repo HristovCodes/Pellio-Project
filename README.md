@@ -12,7 +12,8 @@
 
 # Пускане на проекта:
 - Изтегляне на .NET Core 3.1 SDK или по-късна версия;  
-- Изтегляне на Asp.Net Core 3.1 Framework или по-късна версия;  
+- Изтегляне на Asp.Net Core 3.1 Framework или по-късна версия; 
+- Проверет дали имате ASP.NET and web development за Visual Studio 2019 инсталирано от Visual Studio Installer;
 - Отвраряне на проекта във Visual Studio 2019 или по ново след клониране;  
 - Приемане на HTTPS сертификата;  
 - Пускане с CTRL + F5;  
