@@ -164,7 +164,7 @@
         [Route("")]
         [Route("Products")]
         [Route("Products/Index")]
-        public async Task<IActionResult> Index(string categories)
+        public async Task<IActionResult> Index(string TagsDropdown)
         {
             _context.SaveChanges();
             FillDropDownTags();
@@ -189,13 +189,13 @@
                 _context.SaveChanges();
             }
 
-            if (categories == null || categories == "Всички")
+            if (TagsDropdown == null || TagsDropdown == "Всички")
             {
                 return View(await _context.Products.ToListAsync());
             }
             else
             {
-                return View(await _context.Products.Where(p => p.Tag == categories).ToListAsync());
+                return View(await _context.Products.Where(p => p.Tag == TagsDropdown).ToListAsync());
             }
         }
     }
