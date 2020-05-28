@@ -334,7 +334,7 @@
                 msgformail += "\n Вие използвахте кода " + userorders.PercentOffCode.Code + "!";
                 msgformail += "\n Крайната цената се обновява " + userorders.Total + "-" + userorders.PercentOffCode.Percentage + "% = ";
                 decimal temp_final = userorders.Total - (userorders.Total * (userorders.PercentOffCode.Percentage / 100));
-                msgformail += temp_final.ToString("F") + "лв .";
+                msgformail += temp_final.ToString("F") + "лв.";
                 msgformail += "\n Храните които поръчахте са:";
             }
             else
