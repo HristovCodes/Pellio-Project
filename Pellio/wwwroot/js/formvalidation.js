@@ -19,10 +19,7 @@ function getLoc() {
     let status = document.getElementById("status");
 
     function success(position) {
-        const latitude = position.coords.latitude;
-        const longitude = position.coords.longitude;
 
-        status.innerHTML = latitude + " | " + longitude; 
         document.getElementById("lat").value = position.coords.latitude;
         document.getElementById("lon").value = position.coords.longitude;
         //update vals in hidden form (Is there a better way to get values to the controller?)
