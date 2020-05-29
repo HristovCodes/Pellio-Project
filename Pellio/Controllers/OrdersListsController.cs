@@ -379,7 +379,7 @@
                     };
                     //mes = mes.TrimEnd(',');
                     //mes = mes.Replace("&", "\n");
-                    client.Send("fokenlasersights@gmail.com", rec, "Вашата покупка от Pellio-Foods пможе да получи намаление с код " + code.Code + ", направена на " + DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"), mes.TrimEnd(','));
+                    client.Send("fokenlasersights@gmail.com", rec, "Вашата покупка от Pellio-Foods може да получи намаление с код " + code.Code + ", направена на " + DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"), mes.TrimEnd(','));
                 }
                 else
                 {
