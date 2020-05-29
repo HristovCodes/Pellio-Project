@@ -204,53 +204,48 @@ https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/inside-a-progra
 
  ```csharp
         /// <summary>
-        /// Sends the email via gmail smtp server
+        /// Sends the email via gmail Smtp server.
         /// </summary>
-        /// <param name="rec">short for reciver</param>
-        /// <param name="mes">short for messege</param>
-        async public Task SendMail(string rec, string mes)
+        /// <param name="rec">Short for reciver.</param>
+        /// <param name="mes">Short for messege.</param>
+        public void SendMail(string rec)
         {
             string uid = Request.Cookies["uuidc"];
-            try
+            string mes = GenEmailMsg();
+            var codebruh = _context.OrdersList.Include(c => c.PercentOffCode)
+                .Where(a => a.UserId == uid).First().PercentOffCode.Code;
+            if (ModelState.IsValid)
             {
-                if (ModelState.IsValid)
+                var completed = _context.MadeOrder.Where(c => c.UserId == uid).Count();
+                if (completed % 3 == 0)
                 {
-                    var completed = _context.MadeOrder.Where(c => c.UserId == uid).Count();
-                    if (completed % 3 == 0)
+                    var code = new PercentOffCode
                     {
-                        var code = new PercentOffCode
-                        {
-                            Code = CodeGenerate(),
-                            Percentage = 5,
-                            Available = true
-                        };
-                        _context.PercentOffCodes.Add(code);
-                        var credsfromdb = _context.EmailCredentials.FirstOrDefault();
-                        var client = new SmtpClient("smtp.gmail.com", 587)
-                        {
-                            Credentials = new NetworkCredential(credsfromdb.Email, credsfromdb.Password),
-                            EnableSsl = true
-                        };
-                        mes = mes.TrimEnd(',');
-                        client.Send("fokenlasersights@gmail.com", rec, "Вашата покупка от Pellio-Foods пможе да получи намаление с код " + code.Code + ", направена на " + DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"), mes.TrimEnd(','));
-                    }
-                    else
+                        Code = CodeGenerate(),
+                        Percentage = 5,
+                        Usable = true
+                    };
+                    _context.PercentOffCodes.Add(code);
+                    var client = new SmtpClient("smtp.gmail.com", 587)
                     {
-                        var credsfromdb = _context.EmailCredentials.FirstOrDefault();
-                        var client = new SmtpClient("smtp.gmail.com", 587)
-                        {
-
-                            Credentials = new NetworkCredential(credsfromdb.Email, credsfromdb.Password),
-                            EnableSsl = true
-                        };
-                        mes = mes.TrimEnd(',');
-                        client.Send("fokenlasersights@gmail.com", rec, "Вашата покупка от Pellio-Foods направена на " + DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"), mes.TrimEnd(','));
-                    }
+                        Credentials = new NetworkCredential(_appSettings.Email_name, _appSettings.Email_pass),
+                        EnableSsl = true
+                    };
+                    //mes = mes.TrimEnd(',');
+                    //mes = mes.Replace("&", "\n");
+                    client.Send("fokenlasersights@gmail.com", rec, "Вашата покупка от Pellio-Foods пможе да получи намаление с код " + code.Code + ", направена на " + DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"), mes.TrimEnd(','));
                 }
-            }
-            catch (Exception e)
-            {
-                throw e;
+                else
+                {
+                    var client = new SmtpClient("smtp.gmail.com", 587)
+                    {
+                        Credentials = new NetworkCredential(_appSettings.Email_name, _appSettings.Email_pass),
+                        EnableSsl = true
+                    };
+
+                    mes = mes.TrimEnd(',');
+                    client.Send("fokenlasersights@gmail.com", rec, "Вашата покупка от Pellio-Foods направена на " + DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"), mes.TrimEnd(','));
+                }
             }
         }
 ```  
