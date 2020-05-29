@@ -272,3 +272,5 @@ https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/inside-a-progra
         }
 ```  
 > CodeGenerate генерира този код, използван в функцията SendMail, който се изпраща на определеното uuidc, за да използва своето намаление. Той се състой от 8 случайни знака.
+
+Github link - https://github.com/HristovCodes/Pellio-Project
