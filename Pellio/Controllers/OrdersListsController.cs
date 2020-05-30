@@ -207,6 +207,11 @@
         /// <returns>Redirects to cart.</returns>
         public async Task<IActionResult> DeleteProduct(int? id)
         {
+            if (_context.Products
+           .First(m => m.Id == id) == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
             var removed = _context.Products
            .First(m => m.Id == id);
 
@@ -258,7 +263,7 @@
             var gc = new Geocoder(_appSettings.Geocode_key);//mades ne instance of geocoder with API key
             var reserveresult = gc.ReverseGeocode(double.Parse(lat, CultureInfo.InvariantCulture), double.Parse(lon, CultureInfo.InvariantCulture), "bg", false);
             //gets address from latitude and longitude conveted to double
-            if(reserveresult.Status.Code == 200)
+            if (reserveresult.Status.Code == 200)
             {
                 TempData["re_addres"] = reserveresult.Results[0].Formatted;
             }
@@ -269,7 +274,7 @@
                 Console.WriteLine(reserveresult.Status.Message);
                 Console.WriteLine("Some problem with the library. Overused key? Look^");
             }
-            
+
             //Extracts address from returned by API data and adds it to TempData
             //TempData lives for one jump
             //When the user clicks off the Cart their address will not be saved
@@ -328,8 +333,8 @@
                 .Include(m => m.Products)
                 .Include(co => co.PercentOffCode)
                 .First(m => m.UserId == uid);
-            
-            if(userorders.PercentOffCode != null && userorders.PercentOffCode.Usable == true)
+
+            if (userorders.PercentOffCode != null && userorders.PercentOffCode.Usable == true)
             {
                 msgformail += "\n Вие използвахте кода " + userorders.PercentOffCode.Code + "!";
                 msgformail += "\n Крайната цената се обновява " + userorders.Total + "лв - " + userorders.PercentOffCode.Percentage + "% = ";
@@ -341,8 +346,8 @@
             {
                 msgformail += "\n Храните които поръчахте са:";
             }
-            
-            foreach(var item in userorders.Products)
+
+            foreach (var item in userorders.Products)
             {
                 msgformail += "\n - " + item.ProductName + $"({item.Price})";
             }
