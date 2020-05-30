@@ -339,7 +339,7 @@
             }
             else
             {
-                msgformail += "\n Общата цена на вашата поръчка е " + userorders.Total;
+                msgformail += "\n Общата цена на вашата поръчка е " + userorders.Total + "лв.";
                 msgformail += "\n Храните които поръчахте са:";
             }
             
