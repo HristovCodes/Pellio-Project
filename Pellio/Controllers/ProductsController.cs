@@ -166,7 +166,6 @@
         [Route("Products/Index")]
         public async Task<IActionResult> Index(string TagsDropdown)
         {
-            _context.SaveChanges();
             FillDropDownTags();
             
             string uid = Request.Cookies["uuidc"];
