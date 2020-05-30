@@ -74,24 +74,40 @@ https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/inside-a-progra
 ## ProductsController.cs - Съдържа функции работещи с продукти обекти, база данни и визуални елементи (.cshtml)
 
 ```csharp
-        // GET: Products
+        /// GET: Products
         /// <summary>
         /// Acts as a Main function. Makes call to uuidc create function.
         /// </summary>
+        /// <param name="categories">Categories for text in buttons for sorting.</param>
         /// <returns>Displays all products from db.</returns>
         [Route("")]
         [Route("Products")]
         [Route("Products/Index")]
         public async Task<IActionResult> Index(string TagsDropdown)
         {
-            var creds = new EmailCredentials();
-            creds.Email = "fokenlasersights@gmail.com";
-            creds.Password = "******";
-            _context.Add(creds);
-            await _context.SaveChangesAsync();
-
+            _context.SaveChanges();
             FillDropDownTags();
-            GenUUIDC();
+            
+            string uid = Request.Cookies["uuidc"];
+
+            if (_context.OrdersList
+                    .Include(c => c.Products).FirstOrDefault(m => m.UserId == uid) == null)
+            {
+                _context.OrdersList.Add(new OrdersList
+                {
+                    Products = new List<Products>(),
+                    Total = 0,
+                    UserId = uid,
+                    PercentOffCode = new PercentOffCode()
+                    {
+                        Code = "todd",
+                        Percentage = 0,
+                        Usable = false
+                    }
+                });
+                _context.SaveChanges();
+            }
+
             if (TagsDropdown == null || TagsDropdown == "Всички")
             {
                 return View(await _context.Products.ToListAsync());
@@ -100,8 +116,9 @@ https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/inside-a-progra
             {
                 return View(await _context.Products.Where(p => p.Tag == TagsDropdown).ToListAsync());
             }
-
         }
+    }
+}
 ```
 > Играе ролята на главна страница. При зареждане на WebApp това е първата страница която зарежда. TagsDropdown - използва се за сортиране и се получава от FillDropDownTags(). При първо зареждане е null, после получава стойност от Index.cshtml event. Поставя на Index.cshtml сортиран или не сортиран лист от продукти от база данни.
 
@@ -163,44 +180,6 @@ https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/inside-a-progra
         }
 ```
 > Първо проверяваме дали Id е null и дали съществува Product. Ако няма Лист с коментари се създава такъв и се пълни с всички коментари споделящи id с продукта.Ако има лист но не и коментари се извежда такова съобщение. Ако ли не се извежда средната оценка. Използвайки ProductComment модела се извеждат коментарите и данни за продукта на едно View.
-
-## OrdersListsController.cs - Съдържа функции работещи с количката обекти, база данни и визуални елементи (.cshtml)
-
-```csharp
-        // GET: OrdersLists
-        public async Task<IActionResult> Index()
-        {
-            OrderListCleanUp();
-
-            string uid = Request.Cookies["uuidc"];
-
-            var cart = await _context.OrdersList
-                .Include(c => c.Products).FirstOrDefaultAsync(m => m.UserId == uid);
-
-            if (cart == null)
-            {
-                cart = new OrdersList
-                {
-                    Total = 0,
-                    UserId = uid,
-                    TimeMade = DateTime.Now.ToString("MM/dd/yyyy"),
-                    Products = new List<Products>()
-                };
-                _context.Add(cart);
-                await _context.SaveChangesAsync();
-            }
-
-
-            OrderListMadeOrder combo = new OrderListMadeOrder
-            {
-                OrdersList = cart,
-                MadeOrder = _context.MadeOrder.Where(mo => mo.UserId == uid).ToList()
-            };
-
-            return View(combo);
-        }
-```
-> OrderListCleanUp функция бива повикана да изчисти стари ентрита в базата. Колекция от продукти притежавани от това определено uuidc бива извадена от база с данни. Ако няма такава се създава. Използва се OrderListMadeOrder модела за да се покаже на един .cshtml както текущата количка така и предишни завършени поръчки от uuidc.
 
 
  ```csharp
