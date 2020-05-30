@@ -23,11 +23,7 @@
 # Използвани библиотеки:
 A .Net Wrapper for The OpenCage Geocoder - https://github.com/gingemonster/dotnet-opencage-geocode
 
-<<<<<<< HEAD
 # Конвенциите които спазваме са тук:
-=======
-# Конвенциите които спазваме са тук: 
->>>>>>> ad7b216db3484f2eabd31c2570f4e008346bb66b
 https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/inside-a-program/coding-conventions
 
 
