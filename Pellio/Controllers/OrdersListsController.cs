@@ -263,7 +263,11 @@
             var gc = new Geocoder(_appSettings.Geocode_key);//mades ne instance of geocoder with API key
             var reserveresult = gc.ReverseGeocode(double.Parse(lat, CultureInfo.InvariantCulture), double.Parse(lon, CultureInfo.InvariantCulture), "bg", false);
             //gets address from latitude and longitude conveted to double
+<<<<<<< HEAD
             if (reserveresult.Status.Code == 200)
+=======
+            if(reserveresult.Status.Code == 200)
+>>>>>>> ad7b216db3484f2eabd31c2570f4e008346bb66b
             {
                 TempData["re_addres"] = reserveresult.Results[0].Formatted;
             }
@@ -274,7 +278,11 @@
                 Console.WriteLine(reserveresult.Status.Message);
                 Console.WriteLine("Some problem with the library. Overused key? Look^");
             }
+<<<<<<< HEAD
 
+=======
+            
+>>>>>>> ad7b216db3484f2eabd31c2570f4e008346bb66b
             //Extracts address from returned by API data and adds it to TempData
             //TempData lives for one jump
             //When the user clicks off the Cart their address will not be saved
@@ -344,10 +352,10 @@
             }
             else
             {
-                msgformail += "\n Храните които поръчахте са:";
+                msgformail += "\n Общата цена на вашата поръчка е " + userorders.Total + "лв.";
             }
-
-            foreach (var item in userorders.Products)
+            
+            foreach(var item in userorders.Products)
             {
                 msgformail += "\n - " + item.ProductName + $"({item.Price})";
             }
@@ -384,7 +392,7 @@
                     };
                     //mes = mes.TrimEnd(',');
                     //mes = mes.Replace("&", "\n");
-                    client.Send("fokenlasersights@gmail.com", rec, "Вашата покупка от Pellio-Foods може да получи намаление с код " + code.Code + ", направена на " + DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"), mes.TrimEnd(','));
+                    client.Send("fokenlasersights@gmail.com", rec, "Вашата покупка от Pellio-Foods може да получи намаление с код " + code.Code + $"({code.Percentage}%), направена на " + DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"), mes.TrimEnd(','));
                 }
                 else
                 {
