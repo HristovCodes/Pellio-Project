@@ -168,44 +168,6 @@ https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/inside-a-progra
 ```
 > Първо проверяваме дали Id е null и дали съществува Product. Ако няма Лист с коментари се създава такъв и се пълни с всички коментари споделящи id с продукта.Ако има лист но не и коментари се извежда такова съобщение. Ако ли не се извежда средната оценка. Използвайки ProductComment модела се извеждат коментарите и данни за продукта на едно View.
 
-## OrdersListsController.cs - Съдържа функции работещи с количката обекти, база данни и визуални елементи (.cshtml)
-
-```csharp
-        // GET: OrdersLists
-        public async Task<IActionResult> Index()
-        {
-            OrderListCleanUp();
-
-            string uid = Request.Cookies["uuidc"];
-
-            var cart = await _context.OrdersList
-                .Include(c => c.Products).FirstOrDefaultAsync(m => m.UserId == uid);
-
-            if (cart == null)
-            {
-                cart = new OrdersList
-                {
-                    Total = 0,
-                    UserId = uid,
-                    TimeMade = DateTime.Now.ToString("MM/dd/yyyy"),
-                    Products = new List<Products>()
-                };
-                _context.Add(cart);
-                await _context.SaveChangesAsync();
-            }
-
-
-            OrderListMadeOrder combo = new OrderListMadeOrder
-            {
-                OrdersList = cart,
-                MadeOrder = _context.MadeOrder.Where(mo => mo.UserId == uid).ToList()
-            };
-
-            return View(combo);
-        }
-```
-> OrderListCleanUp функция бива повикана да изчисти стари ентрита в базата. Колекция от продукти притежавани от това определено uuidc бива извадена от база с данни. Ако няма такава се създава. Използва се OrderListMadeOrder модела за да се покаже на един .cshtml както текущата количка така и предишни завършени поръчки от uuidc.
-
 
  ```csharp
         /// <summary>
