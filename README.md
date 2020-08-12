@@ -1,3 +1,40 @@
+# Bulgarian/English(WIP)
+# English:
+# Software Documentation
+# Team:
+Ivailo Hristov - Damian Atanasov - Bojidar Atanasov
+
+# What is Pellio?
+"Pellio is a platform for ordering food online and a website that allows users to connect with our restaraunt. In "Pellio" we believe that ordering food online needs to be easy and without any complications. With a few clicks you can order anything from our huge variety of different cuisines. "Pellio" guarantees you a broad range of food choices all on reasonable prices. The products we offer will be displayed on the home page, all in one place, for the ease of the user. Upon clicking the button for ordering you will be redirected to a page consisting of the product's name, ingredients, price, reviews and a button to add the product to your cart. After you, the user, have chosen your desired dishes you can click the cart button in the top right corner which will take you to the order page where you can finalize your order and see the products in your cart. To complete the order one must input their adress, phone number, name and e-mail adress.
+
+# Skills required to work on Pellio:
+- To Do
+
+# Building and running the project
+- To Do
+
+# Libraries used
+- To Do
+
+# Code style conventions
+- To Do
+
+# User requirements
+- To Do
+
+# UI
+- To Do
+
+# Class Diagram
+![Image of class diagram](https://github.com/HristovCodes/Pellio-Project/blob/master/Pellio/patternMatchingClassDiagram.png)
+
+# Entity Relationship Diagram (DB Diagram)
+![Image of er diagram](https://i.imgur.com/CZJT6Nl.png)
+
+# Explanation of the more important classes and their methods
+- To Do
+
+# Bulgarian:
 # Софтуерна Документация
 # ⬛Pellio⬛ 
 # Отбор:
@@ -67,7 +104,6 @@ https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/inside-a-progra
 ![Image of class diagram](https://github.com/HristovCodes/Pellio-Project/blob/master/Pellio/patternMatchingClassDiagram.png)
 # Диаграма на базите данни:
 ![Image of er diagram](https://i.imgur.com/CZJT6Nl.png)
-
 
 # Описване на по-важни класове и методи:
 
