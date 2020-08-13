@@ -1,4 +1,4 @@
-# Bulgarian/English
+# [Bulgarian](https://github.com/HristovCodes/Pellio-Project#bulgarian)/[English](https://github.com/HristovCodes/Pellio-Project/blob/master/README.md#english)
 # English:
 # Software Documentation
 # Team:
