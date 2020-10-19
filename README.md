@@ -1,3 +1,256 @@
+# [Bulgarian](https://github.com/HristovCodes/Pellio-Project#bulgarian)/[English](https://github.com/HristovCodes/Pellio-Project/blob/master/README.md#english)
+# English:
+# Software Documentation
+# Team:
+Ivailo Hristov - Damian Atanasov - Bojidar Atanasov
+
+# What is Pellio?
+"Pellio is a platform for ordering food online and a website that allows users to connect with our restaraunt. In "Pellio" we believe that ordering food online needs to be easy and without any complications. With a few clicks you can order anything from our huge variety of different cuisines. "Pellio" guarantees you a broad range of food choices all on reasonable prices. The products we offer will be displayed on the home page, all in one place, for the ease of the user. Upon clicking the button for ordering you will be redirected to a page consisting of the product's name, ingredients, price, reviews and a button to add the product to your cart. After you, the user, have chosen your desired dishes you can click the cart button in the top right corner which will take you to the order page where you can finalize your order and see the products in your cart. To complete the order one must input their adress, phone number, name and e-mail adress.
+
+# Skills required to work on Pellio:
+For a develepor to be able to work on "Pellio" he would need to be familiar with the following technologies:
+- C#
+- .Net
+- EF
+- ES6
+- HTML5
+- CC3
+- MSSQLServer
+- MVC
+
+# Building and running the project
+- Install .Net Core 3.1 SDK or later
+- Install Asp.Net Core 3.1 Framework or later
+- Make sure that Asp.Net and web develepment for VS2019 is installed from Visual Studio Installer
+- Accept the HTTPS certificate upon launch of the project
+- Press CTRL + F5
+- Navigate to local host if your browser doesn't do it automatically
+- Press the "FillDB" button on the main page to fill the database with test data.
+
+# Libraries used
+- A .Net Wrapper for The OpenCage Geocoder - https://github.com/gingemonster/dotnet-opencage-geocode
+
+# Code style conventions
+- The project follows the official code style conventions used by Microsoft which be found [here](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/inside-a-program/coding-conventions).
+
+# User requirements
+- a way for communication including phone and e-mail
+- main characteristics of the good/services offered
+- explanation on the use of cookies and other ways of saving user data
+- working cart
+- all products should be visible on the main page
+- each products should have a description
+- price should be displayed before and after purchase
+- discount codes should be given out for the first purchase and every third one after that
+- after agreeing to it the user should be able to fill in their adress automatically by IP
+- about section for the restaraunt
+- different categories that allow sorting by the specified criteria
+- payment in cash and in bulgarian currency
+
+# UI
+![Image of website](https://i.imgur.com/SUsr29e.png)
+
+Cart - Pressing it will take you the cart page where you edit and finalize your order.
+
+Navigation (menu) - Dropdown menu with links to Contacts, About and Cart.
+
+Contacts - Here you can find FaQ's and ways to get in contact with us.
+
+About - Information about the restaraunt.
+
+Order - Pressing it it will take you to a page where you can order the product and see information about it like ingredients, price and also leave and see reviews.
+
+# Class Diagram
+![Image of class diagram](https://github.com/HristovCodes/Pellio-Project/blob/master/Pellio/patternMatchingClassDiagram.png)
+
+# Entity Relationship Diagram (DB Diagram)
+![Image of er diagram](https://i.imgur.com/CZJT6Nl.png)
+
+# Explanation of the more important classes and their methods
+## ProductsController.cs - Contains methods for working with products, the databse and visual elements (.cshtml)
+
+
+```csharp
+        /// GET: Products
+        /// <summary>
+        /// Acts as a Main function. Makes call to uuidc create function.
+        /// </summary>
+        /// <param name="categories">Categories for text in buttons for sorting.</param>
+        /// <returns>Displays all products from db.</returns>
+        [Route("")]
+        [Route("Products")]
+        [Route("Products/Index")]
+        public async Task<IActionResult> Index(string TagsDropdown)
+        {
+            _context.SaveChanges();
+            FillDropDownTags();
+            
+            string uid = Request.Cookies["uuidc"];
+
+            if (_context.OrdersList
+                    .Include(c => c.Products).FirstOrDefault(m => m.UserId == uid) == null)
+            {
+                _context.OrdersList.Add(new OrdersList
+                {
+                    Products = new List<Products>(),
+                    Total = 0,
+                    UserId = uid,
+                    PercentOffCode = new PercentOffCode()
+                    {
+                        Code = "todd",
+                        Percentage = 0,
+                        Usable = false
+                    }
+                });
+                _context.SaveChanges();
+            }
+
+            if (TagsDropdown == null || TagsDropdown == "Всички")
+            {
+                return View(await _context.Products.ToListAsync());
+            }
+            else
+            {
+                return View(await _context.Products.Where(p => p.Tag == TagsDropdown).ToListAsync());
+            }
+        }
+    }
+}
+```
+> Acts as a home page. Upon loading the web app this is the first thing you see. TagsDropdown - used for sorting and is used by FillDropDownTags(). On load it is null, afterwards it receives a value from an event in Index.cshtml. Returns a view Index.cshtml sorter/unsorted with a list of all the products in the database.
+
+
+```csharp
+        // GET: Products/Order/5
+        /// <summary>
+        /// Returns a view of the chosen products (by id) with additional information about it and comments.
+        /// </summary>
+        /// <returns>View with both Product data and comments for Product</returns>
+        public async Task<IActionResult> Order(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var products = await _context.Products.Include(co => co.Comments)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (products == null)
+            {
+                return NotFound();
+            }
+
+            if (products.Comments == null)//check if it is null
+            {
+                products.Comments = new List<Comments>();
+                foreach (var com in _context.Comments)
+                {
+                    if (!products.Comments.Contains(com))
+                    {
+                        if (com.ProductsId == products.Id)
+                        {
+                            products.Comments.Add(com);
+                        }
+                    }
+                }
+            }
+
+            if (!products.Comments.Any())//check if any comments connected to product
+            {//if not tell user there is no score
+                ViewBag.avg_score = "За съжаление този продукт все още няма потребителски оценки. Можете да помогнете да промените това!";
+            }
+            else
+            {
+                //if avarage score and add to viewbag
+                var avg_score = products.Comments.Average(sc => sc.Score);
+                var rounded = Math.Round(avg_score, 2);
+                ViewBag.avg_score = "Нашите потребители средно дават на това ястие оценката: " + rounded;
+            }
+
+            ProductComment productComment = new ProductComment()
+            {
+                Products = products,
+                Comments = new Comments()
+            };
+
+            return View(productComment);
+        }
+```
+> We check if Id is null and if it contains Product. If it doesn't have a List with comments we create one which is then filled with comments sharing the product's id. If there's a list but no comments a message is displayed notifying the user there's no reviews yet. Finally if everything is fine an average score is calculated and displayed including all the comments from the ProductComment model. All is returned in one view (info, reviews, score).
+
+
+ ```csharp
+        /// <summary>
+        /// Sends the email via gmail Smtp server.
+        /// </summary>
+        /// <param name="rec">Short for reciver.</param>
+        /// <param name="mes">Short for messege.</param>
+        public void SendMail(string rec)
+        {
+            string uid = Request.Cookies["uuidc"];
+            string mes = GenEmailMsg();
+            var codebruh = _context.OrdersList.Include(c => c.PercentOffCode)
+                .Where(a => a.UserId == uid).First().PercentOffCode.Code;
+            if (ModelState.IsValid)
+            {
+                var completed = _context.MadeOrder.Where(c => c.UserId == uid).Count();
+                if (completed % 3 == 0)
+                {
+                    var code = new PercentOffCode
+                    {
+                        Code = CodeGenerate(),
+                        Percentage = 5,
+                        Usable = true
+                    };
+                    _context.PercentOffCodes.Add(code);
+                    var client = new SmtpClient("smtp.gmail.com", 587)
+                    {
+                        Credentials = new NetworkCredential(_appSettings.Email_name, _appSettings.Email_pass),
+                        EnableSsl = true
+                    };
+                    //mes = mes.TrimEnd(',');
+                    //mes = mes.Replace("&", "\n");
+                    client.Send("fokenlasersights@gmail.com", rec, "Вашата покупка от Pellio-Foods може да получи намаление с код " + code.Code + ", направена на " + DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"), mes.TrimEnd(','));
+                }
+                else
+                {
+                    var client = new SmtpClient("smtp.gmail.com", 587)
+                    {
+                        Credentials = new NetworkCredential(_appSettings.Email_name, _appSettings.Email_pass),
+                        EnableSsl = true
+                    };
+
+                    mes = mes.TrimEnd(',');
+                    client.Send("fokenlasersights@gmail.com", rec, "Вашата покупка от Pellio-Foods направена на " + DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"), mes.TrimEnd(','));
+                }
+            }
+        }
+```  
+> The SendMail method is called when the user orders. For the first or every third purchase for any given uuidc a discount code (5%) is sent to the user which can be used once. For non-discount receiving orders a normal message is sent without a discount code.
+
+
+ ```csharp
+        public static string CodeGenerate()
+
+        {
+            var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            var stringChars = new char[8];
+            var random = new Random();
+
+            for (int i = 0; i < stringChars.Length; i++)
+            {
+                stringChars[i] = chars[random.Next(chars.Length)];
+            }
+
+            var finalString = new String(stringChars);
+
+            return finalString;
+        }
+```  
+> CodeGenerate generates the code used in SendMail which is sent to the user so they can use their discount. It consists of 8 random characters. [A-Za-z0-9]
+
+
+# Bulgarian:
 # Софтуерна Документация
 # ⬛Pellio⬛ 
 # Отбор:
@@ -67,7 +320,6 @@ https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/inside-a-progra
 ![Image of class diagram](https://github.com/HristovCodes/Pellio-Project/blob/master/Pellio/patternMatchingClassDiagram.png)
 # Диаграма на базите данни:
 ![Image of er diagram](https://i.imgur.com/CZJT6Nl.png)
-
 
 # Описване на по-важни класове и методи:
 
