@@ -14,7 +14,7 @@ For a develepor to be able to work on "Pellio" he would need to be familiar with
 - EF
 - ES6
 - HTML5
-- CC3
+- CSS3
 - MSSQLServer
 - MVC
 
