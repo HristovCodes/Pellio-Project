@@ -1,25 +1,3 @@
-# FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
-# WORKDIR /app
-
-# Copy csproj and restore as distinct layers
-# COPY Pellio/Pellio.sln ./Pellio/
-# COPY Pellio/*.csproj ./Pellio/
-# WORKDIR  /app/Pellio
-# RUN dotnet restore
-
-# Copy everything else and build
-# COPY Pellio/. ./Pellio/
-# COPY UnitTest/. ./UnitTest/
-# WORKDIR  /app/Pellio
-# RUN dotnet publish -c Release -o out
-
-# Build runtime image
-# FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
-# WORKDIR /app/Pellio
-# COPY --from=build /app/out ./
-# ENTRYPOINT ["dotnet", "Pellio.dll"]
-
-#               aasdasdas
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
 WORKDIR /source
 
@@ -39,4 +17,6 @@ RUN dotnet publish -c release -o /app --no-restore
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
 WORKDIR /app
 COPY --from=build /app ./
+ENV PORT=8080
+EXPOSE 8080
 ENTRYPOINT ["dotnet", "Pellio.dll"]
